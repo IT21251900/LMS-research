@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { queryLLM } from './src/utils/langchainHandler';
 import { extractTextFromPDF } from './src/utils/pdfParser';
+import { getRelevantContext, initializeVectorStore } from './src/utils/vectorStore';
 dotenv.config();
 
 const app = express();
@@ -16,21 +17,31 @@ app.get('/health', (req, res) => {
 app.use(express.json());
 
 app.post('/process-pdf', async (req: Request, res: Response) => {
-    const { pdfPath } = req.body;
+    const { pdfPath, question } = req.body;
 
     try {
+        // Step 1: Extract text from the PDF
         const extractedText = await extractTextFromPDF(pdfPath);
-        const llmResponse = await queryLLM(extractedText);
+
+        // Step 2: Initialize the vector store with extracted text
+        await initializeVectorStore(extractedText);
+
+        // Step 3: Retrieve relevant context based on the question
+        const relevantContext = await getRelevantContext(question);
+        const combinedContext = relevantContext.join('\n');
+
+        // Step 4: Ask the LLM a question with the retrieved context
+        const combinedInput = `Context: ${combinedContext}\n\nQuestion: ${question}`;
+        const llmResponse = await queryLLM(combinedInput);
 
         res.status(200).json({
-            extractedText,
+            relevantContext,
             llmResponse,
         });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to process PDF' });
+        res.status(500).json({ error: 'Failed to process PDF or query LLM' });
     }
 });
-
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

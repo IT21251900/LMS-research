@@ -8,6 +8,6 @@ const openAIModel = new OpenAI({
 });
 
 export const queryLLM = async (text: string): Promise<string> => {
-    const response = await openAIModel.invoke(text);
+    const response = await openAIModel.call(text);
     return response;
 };
