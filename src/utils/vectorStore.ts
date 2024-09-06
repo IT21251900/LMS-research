@@ -1,6 +1,7 @@
 import type { Document } from '@langchain/core/documents';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import dotenv from 'dotenv';
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 
 dotenv.config();
@@ -14,21 +15,26 @@ let vectorStore: MemoryVectorStore | null = null;
 
 // Initialize vector store
 export const initializeVectorStore = async (text: string): Promise<void> => {
-    const documents = createDocumentsFromText(text);
-    console.log('documents :', documents);
+    const documents = await createDocumentsFromText(text); // Await the promise
 
-    // Initialize the vector store with embeddings
-    vectorStore = new MemoryVectorStore(embeddings);
-    await vectorStore.addDocuments(documents);
+    if (!vectorStore) {
+        vectorStore = new MemoryVectorStore(embeddings);
+    }
+
+    await vectorStore.addDocuments(documents); // Add documents after awaiting the creation
 };
 
 // Split text into document objects
-const createDocumentsFromText = (text: string): Document[] => {
-    const texts = text.split('\n').filter(t => t.trim() !== '');
+const createDocumentsFromText = async (text: string): Promise<Document[]> => {
+    const splitter = new RecursiveCharacterTextSplitter({
+        chunkSize: 1500, // Increase or decrease this value based on content
+        chunkOverlap: 300, // Increase overlap to ensure context is maintained
+    });
 
-    return texts.map(t => ({
-        pageContent: t,
-        metadata: { source: 'extracted-pdf' }, // Add relevant metadata
+    const chunks = await splitter.createDocuments([text]); // Split the entire text into coherent chunks
+    return chunks.map(chunk => ({
+        pageContent: chunk.pageContent,
+        metadata: { source: 'extracted-pdf' },
     }));
 };
 
