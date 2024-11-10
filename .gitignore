@@ -1,2 +1,3 @@
-/backend/node_modules
-backend/package-lock.json
+/backend/mindmap-microservice/package-lock.json
+/backend/mindmap-microservice/node_modules
+
