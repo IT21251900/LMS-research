@@ -1,4 +1,8 @@
 import { Pinecone } from "@pinecone-database/pinecone";
+import dotenv from "dotenv";
+
+const env = process.env.NODE_ENV || "local"; 
+dotenv.config({ path: `.env.${env}` });
 
 const pc = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY!,

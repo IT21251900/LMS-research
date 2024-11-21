@@ -3,10 +3,12 @@ import express, { Request, Response } from 'express';
 import { queryLLM } from './utils/langchainHandler';
 import { extractTextFromPDF } from './utils/pdfParser';
 import { initializeVectorStore, getRelevantContext } from './utils/vectorStore';
-dotenv.config();
+
+const env = process.env.NODE_ENV || "local"; 
+dotenv.config({ path: `.env.${env}` });
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4001;
 
 app.use(express.json());
 
