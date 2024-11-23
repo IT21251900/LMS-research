@@ -13,6 +13,7 @@ import {
 import fs from "fs";
 import { OpenAI } from "openai";
 import pdfExtractService from "../services/pdfextract.service.js";
+import PdfExtraction from "../schemes/pdfextract.scheme.js";
 
 const openai = new OpenAI({
   apiKey:
@@ -137,103 +138,106 @@ async function processExtractedContent(extractedFilePath) {
     // console.log(typeof structuredData);
 
     const structuredData = [
-        '```json\n' +
-          '{\n' +
-          '    "Title": "Networking: An Overview",\n' +
-          '    "Sections": [\n' +
-          '        {\n' +
-          '            "H1": "1. Introduction to Networking",\n' +
-          '            "Content": [\n' +
-          '                {\n' +
-          '                    "Paragraphs": "Networking is the practice of connecting computers and other devices to share resources and information. A computer network allows devices to communicate with each other, exchange data, and access the internet. The fundamental goal of networking is to enable communication between different systems."\n' +
-          '                }\n' +
-          '            ],\n' +
-          '            "SubSections": []\n' +
-          '        },\n' +
-          '        {\n' +
-          '            "H1": "2. Types of Networks",\n' +
-          '            "Content": [],\n' +
-          '            "SubSections": [\n' +
-          '                {\n' +
-          '                    "H2": "2.1 Local Area Network (LAN)",\n' +
-          '                    "Content": [\n' +
-          '                        {\n' +
-          '                            "Paragraphs": "A Local Area Network (LAN) is a network of computers and devices connected within a small geographical area, such as a single building or a campus. It allows for high-speed data transfer and resource sharing, such as file sharing and printing."\n' +
-          '                        }\n' +
-          '                    ]\n' +
-          '                },\n' +
-          '                {\n' +
-          '                    "H2": "2.2 Wide Area Network (WAN)",\n' +
-          '                    "Content": [\n' +
-          '                        {\n' +
-          '                            "Paragraphs": "A Wide Area Network (WAN) connects multiple LANs over a larger geographical area, such as between cities, countries, or continents. WANs use technologies like leased lines and satellite communication to transmit data over long distances."\n' +
-          '                        }\n' +
-          '                    ]\n' +
-          '                }\n' +
-          '            ]\n' +
-          '        },\n' +
-          '        {\n' +
-          '            "H1": "3. Network Protocols",\n' +
-          '            "Content": [],\n' +
-          '            "SubSections": [\n' +
-          '                {\n' +
-          '                    "H2": "3.1 Transmission Control Protocol/Internet Protocol (TCP/IP)",\n' +
-          '                    "Content": [\n' +
-          '                        {\n' +
-          '                            "Paragraphs": "TCP/IP is the fundamental protocol used for communication over the internet. It defines how data is transmitted between devices, ensuring reliable delivery of information through packet-switching."\n' +
-          '                        }\n' +
-          '                    ]\n' +
-          '                },\n' +
-          '                {\n' +
-          '                    "H2": "3.2 HyperText Transfer Protocol (HTTP)",\n' +
-          '                    "Content": [\n' +
-          '                        {\n' +
-          '                            "Paragraphs": "HTTP is a protocol used for transmitting hypertext (web pages) across the internet. It is the foundation of data exchange on the World Wide Web, allowing users to access websites through web browsers."\n' +
-          '                        }\n' +
-          '                    ]\n' +
-          '                }\n' +
-          '            ]\n' +
-          '        },\n' +
-          '        {\n' +
-          '            "H1": "4. Network Security",\n' +
-          '            "Content": [],\n' +
-          '            "SubSections": [\n' +
-          '                {\n' +
-          '                    "H2": "4.1 Firewalls",\n' +
-          '                    "Content": [\n' +
-          '                        {\n' +
-          '                            "Paragraphs": "A firewall is a security system designed to protect a network from unauthorized access and threats. It can be implemented in both hardware and software and monitors incoming and outgoing network traffic."\n' +
-          '                        }\n' +
-          '                    ]\n' +
-          '                },\n' +
-          '                {\n' +
-          '                    "H2": "4.2 Encryption",\n' +
-          '                    "Content": [\n' +
-          '                        {\n' +
-          '                            "Paragraphs": "Encryption is the process of converting data into a code to prevent unauthorized access. In networking, encryption ensures that data transmitted over networks remains confidential and secure."\n' +
-          '                        }\n' +
-          '                    ]\n' +
-          '                }\n' +
-          '            ]\n' +
-          '        }\n' +
-          '    ]\n' +
-          '}\n' +
-          '```'
-      ];
-      
-      // Access the first element of the array (which is a string) and remove unwanted characters
-      let structuredDataString = structuredData[0].replace(/```json\n|\n```/g, '');
-      
-      // Now parse the cleaned string into a JSON object
-      try {
-        const jsonData = JSON.parse(structuredDataString);
-        console.log(JSON.stringify(jsonData, null, 2)); 
-        saveContentToDatabase(jsonData)
-        return jsonData;
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-      }
-      
+      "```json\n" +
+        "{\n" +
+        '    "Title": "Networking: An Overview",\n' +
+        '    "Sections": [\n' +
+        "        {\n" +
+        '            "H1": "1. Introduction to Networking",\n' +
+        '            "Content": [\n' +
+        "                {\n" +
+        '                    "Paragraphs": "Networking is the practice of connecting computers and other devices to share resources and information. A computer network allows devices to communicate with each other, exchange data, and access the internet. The fundamental goal of networking is to enable communication between different systems."\n' +
+        "                }\n" +
+        "            ],\n" +
+        '            "SubSections": []\n' +
+        "        },\n" +
+        "        {\n" +
+        '            "H1": "2. Types of Networks",\n' +
+        '            "Content": [],\n' +
+        '            "SubSections": [\n' +
+        "                {\n" +
+        '                    "H2": "2.1 Local Area Network (LAN)",\n' +
+        '                    "Content": [\n' +
+        "                        {\n" +
+        '                            "Paragraphs": "A Local Area Network (LAN) is a network of computers and devices connected within a small geographical area, such as a single building or a campus. It allows for high-speed data transfer and resource sharing, such as file sharing and printing."\n' +
+        "                        }\n" +
+        "                    ]\n" +
+        "                },\n" +
+        "                {\n" +
+        '                    "H2": "2.2 Wide Area Network (WAN)",\n' +
+        '                    "Content": [\n' +
+        "                        {\n" +
+        '                            "Paragraphs": "A Wide Area Network (WAN) connects multiple LANs over a larger geographical area, such as between cities, countries, or continents. WANs use technologies like leased lines and satellite communication to transmit data over long distances."\n' +
+        "                        }\n" +
+        "                    ]\n" +
+        "                }\n" +
+        "            ]\n" +
+        "        },\n" +
+        "        {\n" +
+        '            "H1": "3. Network Protocols",\n' +
+        '            "Content": [],\n' +
+        '            "SubSections": [\n' +
+        "                {\n" +
+        '                    "H2": "3.1 Transmission Control Protocol/Internet Protocol (TCP/IP)",\n' +
+        '                    "Content": [\n' +
+        "                        {\n" +
+        '                            "Paragraphs": "TCP/IP is the fundamental protocol used for communication over the internet. It defines how data is transmitted between devices, ensuring reliable delivery of information through packet-switching."\n' +
+        "                        }\n" +
+        "                    ]\n" +
+        "                },\n" +
+        "                {\n" +
+        '                    "H2": "3.2 HyperText Transfer Protocol (HTTP)",\n' +
+        '                    "Content": [\n' +
+        "                        {\n" +
+        '                            "Paragraphs": "HTTP is a protocol used for transmitting hypertext (web pages) across the internet. It is the foundation of data exchange on the World Wide Web, allowing users to access websites through web browsers."\n' +
+        "                        }\n" +
+        "                    ]\n" +
+        "                }\n" +
+        "            ]\n" +
+        "        },\n" +
+        "        {\n" +
+        '            "H1": "4. Network Security",\n' +
+        '            "Content": [],\n' +
+        '            "SubSections": [\n' +
+        "                {\n" +
+        '                    "H2": "4.1 Firewalls",\n' +
+        '                    "Content": [\n' +
+        "                        {\n" +
+        '                            "Paragraphs": "A firewall is a security system designed to protect a network from unauthorized access and threats. It can be implemented in both hardware and software and monitors incoming and outgoing network traffic."\n' +
+        "                        }\n" +
+        "                    ]\n" +
+        "                },\n" +
+        "                {\n" +
+        '                    "H2": "4.2 Encryption",\n' +
+        '                    "Content": [\n' +
+        "                        {\n" +
+        '                            "Paragraphs": "Encryption is the process of converting data into a code to prevent unauthorized access. In networking, encryption ensures that data transmitted over networks remains confidential and secure."\n' +
+        "                        }\n" +
+        "                    ]\n" +
+        "                }\n" +
+        "            ]\n" +
+        "        }\n" +
+        "    ]\n" +
+        "}\n" +
+        "```",
+    ];
+
+    // Access the first element of the array (which is a string) and remove unwanted characters
+    let structuredDataString = structuredData[0].replace(
+      /```json\n|\n```/g,
+      ""
+    );
+
+    // Now parse the cleaned string into a JSON object
+    try {
+      const jsonData = JSON.parse(structuredDataString);
+      console.log(JSON.stringify(jsonData, null, 2));
+      saveContentToDatabase(jsonData);
+      return jsonData;
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+
     // console.log("Data successfully structured and saved to MongoDB.");
   } catch (error) {
     console.error("Error processing content:", error);
@@ -317,9 +321,8 @@ async function structureContentWithGPT(texts) {
 
         const responseData = response.choices[0].message.content.trim();
 
-          structuredContent.push(responseData);
-          console.error("Received response:", responseData);
-        
+        structuredContent.push(responseData);
+        console.error("Received response:", responseData);
       } catch (error) {
         console.error("Error structuring content with GPT:", error);
       }
@@ -330,45 +333,58 @@ async function structureContentWithGPT(texts) {
 }
 
 async function extractJsonObject(structuredData) {
-    try {
-        // Extract the JSON string part from the input
-        const jsonString = structuredData.match(/```json\n([\s\S]*?)\n```/)[1];
+  try {
+    // Extract the JSON string part from the input
+    const jsonString = structuredData.match(/```json\n([\s\S]*?)\n```/)[1];
 
-        // Parse the JSON string into a JavaScript object
-        const jsonObject = JSON.parse(jsonString);
+    // Parse the JSON string into a JavaScript object
+    const jsonObject = JSON.parse(jsonString);
 
-        return jsonObject;
-    } catch (error) {
-        console.error("Error extracting JSON object:", error);
-        throw new Error("Invalid JSON structure or format in the input data.");
-    }
+    return jsonObject;
+  } catch (error) {
+    console.error("Error extracting JSON object:", error);
+    throw new Error("Invalid JSON structure or format in the input data.");
+  }
 }
 
-
 async function saveContentToDatabase(contentData) {
-    try {
-      // Check if the contentData is a string, then parse it
-      let jsonData = contentData;
-  
-      // If it's a string, try parsing it
-      if (typeof contentData === 'string') {
-        jsonData = JSON.parse(contentData);  // Parse the string into an object
-      }
-  
-      console.log('Parsed JSON Data:', JSON.stringify(jsonData, null, 2));
-  
-      // Save the parsed data to the database
-      const savedData = await pdfExtractService.savePdfData(jsonData);  // Ensure savePdfData is called correctly
-  
-      // Optionally log the saved data or handle it further
-      console.log('Data saved:', savedData);
-  
-      return savedData;  // Returning saved data, or you could return a success message
-    } catch (error) {
-      console.error('Error saving content:', error);
-      throw error;  // Propagate the error if needed
-    }
-  }
-  
+  try {
+    // Check if the contentData is a string, then parse it
+    let jsonData = contentData;
 
-export { extractPdfContent, processExtractedContent };
+    // If it's a string, try parsing it
+    if (typeof contentData === "string") {
+      jsonData = JSON.parse(contentData); // Parse the string into an object
+    }
+
+    console.log("Parsed JSON Data:", JSON.stringify(jsonData, null, 2));
+
+    // Save the parsed data to the database
+    const savedData = await pdfExtractService.savePdfData(jsonData); // Ensure savePdfData is called correctly
+
+    // Optionally log the saved data or handle it further
+    console.log("Data saved:", savedData);
+
+    return savedData; // Returning saved data, or you could return a success message
+  } catch (error) {
+    console.error("Error saving content:", error);
+    throw error; // Propagate the error if needed
+  }
+}
+
+async function getMindMapController(req, res) {
+  try {
+    const id = req.params.id;
+    const mindMapData = await pdfExtractService.getMindMapData(id);
+
+    res.status(200).json(mindMapData);
+  } catch (error) {
+    console.error("Error in getMindMapController:", error);
+
+    res.status(500).json({
+      message: error.message || "Failed to fetch mind map data",
+    });
+  }
+}
+
+export { extractPdfContent, processExtractedContent, getMindMapController };
