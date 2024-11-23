@@ -25,6 +25,7 @@
     "crypto-js": "^4.2.0",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
+    "mermaid": "^11.4.0",
     "ng-zorro-antd": "^18.0.1",
     "ngx-papaparse": "^8.0.0",
     "ngx-webstorage": "^18.0.0",

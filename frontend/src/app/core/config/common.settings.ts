@@ -1,4 +1,4 @@
-import { environment } from '../../../environments/environment';
+import { environment, mindmap_environment } from '../../../environments/environment';
 
 export class SETTINGS {
   public static ACCESS_TOKEN = '%&^%^*@&*#';
@@ -10,6 +10,7 @@ export class SETTINGS {
 
   // public static BASE_API = '';
   public static BASE_API = environment.baseUrl; // do not change this
+  public static MINDMAP_BASE_URL = mindmap_environment.baseUrl // do not change this
 
   public static KEYS = {
     SECRET: 'iIUsWtNZcf',

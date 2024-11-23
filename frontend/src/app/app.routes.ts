@@ -5,6 +5,7 @@ import {UsersComponent} from "./components/users/users.component";
 import {AddUserComponent} from "./components/users/add-user/add-user.component";
 import { SingleUserComponent } from './components/users/single-user/single-user.component';
 import { MyAcountComponent } from './components/users/my-acount/my-acount.component';
+import { MindmapGeneratorComponent } from './components/mindmap-generator/mindmap-generator.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -42,6 +43,10 @@ export const routes: Routes = [
       {
         path: 'my-account/:id',
         component: MyAcountComponent,
+      },
+      {
+        path: 'mindmap-generator/:id',
+        component: MindmapGeneratorComponent,
       },
     ]
   }
