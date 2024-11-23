@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import express from "express";
 import multer from 'multer';
 import { connectDB } from "../configs/DBConnect.js";
-import { extractPdfContent,loadAndCategorizeContent } from "./controllers/pdfextract.controller.js";
+import { extractPdfContent,processExtractedContent } from "./controllers/pdfextract.controller.js";
 
 // Load environment variables
 config();
@@ -52,7 +52,24 @@ mindmapService.post("/lms/pdfExtract", upload.single('pdf'), async (req, res) =>
   }
 });
 
-mindmapService.post("/lms/pdfnodes", loadAndCategorizeContent);
+
+mindmapService.post("/lms/pdfcontentExtract", async (req, res) => {
+  const filePath = req.body.jsonFilePath;
+
+  if (!filePath) {
+      return res.status(400).send("JSON file path is required.");
+  }
+
+  try {
+      await processExtractedContent(filePath);
+      res.status(200).send("Data successfully processed and saved to MongoDB.");
+  } catch (error) {
+      console.error("Error processing content:", error);
+      res.status(500).send("Error processing content: " + error.message);
+  }
+});
+
+
 
 // Basic route to check server health
 mindmapService.get("/", (req, res) => {
