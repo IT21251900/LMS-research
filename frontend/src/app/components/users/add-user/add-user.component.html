@@ -1,0 +1,113 @@
+
+<app-custom-breadcrumb *ngIf="!(backLocation == 'my-account')" [crumbs]="breadcrumbs"></app-custom-breadcrumb>
+
+<p class="infinity-title">{{ userId ? 'Update User' : 'Add New User' }}</p>
+<form nz-form [formGroup]="userForm" (ngSubmit)="saveUser()" [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+    <!-- Form content -->
+    <div class="infinity-section">
+        <div class="col-span-2">
+            <p class="infinity-sec-title">User Information</p>
+            <p class="infinity-sect-desc">Provide the necessary personal details of the user.</p>
+        </div>
+        <div class="col-span-10">
+            <div class="flex flex-col">
+                <nz-form-item>
+                    <p class="infinity-lable">First Name <span>*</span></p>
+                    <nz-form-control
+                        [nzErrorTip]="getFirstNameErrorMessage()">
+                      <nz-input-group nzSize="large">
+                        <input formControlName="firstname" nz-input placeholder="Enter First Name" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                  
+                  <nz-form-item>
+                    <p class="infinity-lable">Last Name <span>*</span></p>
+                    <nz-form-control
+                        [nzErrorTip]="getLastNameErrorMessage()">
+                      <nz-input-group nzSize="large">
+                        <input formControlName="lastname" nz-input placeholder="Enter Last Name" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                  
+                <!-- <nz-form-item>
+                    <p class="infinity-label">Mobile Number <span>*</span></p>
+                    <nz-form-control [nzErrorTip]="getMobileNumberErrorMessage()">
+                      <nz-input-group nzSize="large">
+                        <input formControlName="mobilenumber" nz-input placeholder="Enter Mobile Number" />
+                      </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item> -->
+
+                <nz-form-item>
+                    <p class="infinity-lable">Mobile Number <span>*</span></p>
+                    <nz-form-control [nzErrorTip]="getMobileNumberErrorMessage()">
+                        <nz-input-group nzSize="large" class="flex gap-3">
+                            <div class="">
+                                <nz-select nzSize="large" class="min-w-[200px]" nzPlaceHolder="Select Country" formControlName="phoneNumberPrefix"
+                                    nzShowSearch nzAllowClear>
+                                    <nz-option *ngFor="let code of countryCodes"
+                                        [nzLabel]="code.name + ' (' + code.dialCode + ')'" [nzValue]="code.dialCode">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                            <input nz-input formControlName="mobilenumber" placeholder="Enter Mobile Number" maxlength="15" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <p class="infinity-lable">Email Address <span>*</span></p>
+                    <nz-form-control
+                        [nzErrorTip]="userForm.get('email')?.hasError('email') ? 'Please input a valid email!' : ''">
+                        <nz-input-group nzSize="large">
+                            <input nz-input formControlName="email" placeholder="Enter Email Address" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+
+    <div class="infinity-section">
+        <div class="col-span-2">
+            <p class="infinity-sec-title">User Role & Status</p>
+            <p class="infinity-sect-desc">Assign a role to the user and set their active status.</p>
+        </div>
+        <div class="col-span-10">
+            <div class="flex flex-col">
+                <nz-form-item>
+                    <p class="infinity-lable">Role <span>*</span></p>
+                    <nz-form-control
+                        [nzErrorTip]="userForm.get('role')?.hasError('required') ? 'Please select a role!' : ''">
+                        <nz-select formControlName="role" name="role" nzPlaceHolder="Select Role"  nzShowSearch nzAllowClear>
+                            <nz-option *ngFor="let role of roles" [nzLabel]="role.name" [nzValue]="role._id"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-control>
+                        <div class="flex flex-row gap-5 items-center w-full">
+                            <nz-switch formControlName="active"></nz-switch>
+                            <div class="flex flex-col">
+                                <span class="infinity-label">Status <span>*</span></span>
+                                <span class="infinity-desc my-0">Active status of the user</span>
+                            </div>
+                        </div>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-row gap-5 justify-end my-5">
+        <div *ngIf="isLoading" class="">
+            <nz-spin class="h-full my-auto" [nzSize]="'small'"></nz-spin>
+          </div>
+        <button class="w-fit rounded-md" nz-button nzType="primary" [disabled]="!userForm.valid || isLoading">
+            {{ userId ? 'Update User' : 'Save New User' }}
+        </button>
+    </div>
+</form>
