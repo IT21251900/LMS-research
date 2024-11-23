@@ -1,0 +1,92 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"
+    [ngClass]="{'ml-[15px]': !isCollapsed, '': isCollapsed}" class=" mb-[15px]">
+    <div class="flex h-[98dvh] flex-col justify-between">
+      <div class="">
+        <div class="logo" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
+          <h1>LMS-Reseach</h1>
+        </div>
+        <ul nz-menu nzMode="inline" class="sider-menu">
+          <li nz-submenu nzTitle="Users" nzIcon="user" [nzOpen]="openSubmenu === 1"
+            (nzOpenChange)="toggleSubmenu(1, $event)">
+            <ul>
+              <li nz-menu-item nzSelected (click)="routeLink('users')"
+                [nzSelected]="router.isActive('/admin/users', true)">View Users</li>
+              <li nz-menu-item (click)="routeLink('user-add')"
+                [nzSelected]="router.isActive('/admin/users/add-edit', true)">Add User</li>
+              <!-- <li nz-menu-item (click)="routeLink('roles')" [nzSelected]="router.isActive('/admin/roles', true)">View
+                Roles</li>
+              <li nz-menu-item (click)="routeLink('roles-add')"
+                [nzSelected]="router.isActive('/admin/roles/add-edit', true)">Add Role</li> -->
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="subnav 2" nzIcon="laptop" [nzOpen]="openSubmenu === 2"
+            (nzOpenChange)="toggleSubmenu(2, $event)">
+            <ul>
+              <li nz-menu-item>option5</li>
+              <li nz-menu-item>option6</li>
+              <li nz-menu-item>option7</li>
+              <li nz-menu-item>option8</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="subnav 3" nzIcon="notification" [nzOpen]="openSubmenu === 3"
+            (nzOpenChange)="toggleSubmenu(3, $event)">
+            <ul>
+              <li nz-menu-item>option9</li>
+              <li nz-menu-item>option10</li>
+              <li nz-menu-item>option11</li>
+              <li nz-menu-item>option12</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="w-full  rounded-md py-3 flex items-center "
+        [ngClass]="{'bg-[#F0F2F5]': !isCollapsed, 'justify-center': isCollapsed}">
+        <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed"></span>
+      </div>
+    </div>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="flex flex-row justify-between">
+        <div class="logo">
+          <div class="">
+            <!-- <div class="h-[40px]" [ngClass]="{'hidden': !isCollapsed, '': isCollapsed}">
+              <img src="../../../../assets/img/logo.svg" class="w-full h-full object-contain" alt="Logo">
+            </div> -->
+          </div>
+        </div>
+        <button class="" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter">
+          <div class="flex flex-row gap-3 m-5">
+            <div class="flex flex-col  justify-end">
+              <span class="text-[0.8rem] font-semibold">{{loggedInUserName}}</span>
+              <span class="text-[#919191] text-[0.7rem] mt-[3px] flex flex-row justify-end">{{loggedInUserRole}}</span>
+            </div>
+            <div class="">
+              <div class="dot-circle"></div>
+            </div>
+          </div>
+        </button>
+
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item nz-button (click)="viewMyAccount(loggedInUserID)">
+              My Account
+            </li>
+            <li nz-menu-item nz-button (click)="logout()" class="hover:bg-[#ffc5c5]">
+              Logout
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+
+
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+    <!-- <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer> -->
+  </nz-layout>
+</nz-layout>

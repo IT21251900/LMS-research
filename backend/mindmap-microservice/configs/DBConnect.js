@@ -8,12 +8,12 @@ export const connectDB = async () => {
     config();
     const uri = process.env.MINDMAP_MONGO_URI || '';
     if (!uri) {
-      reject(new Error('MongoDB URI is not defined in Course server'));
+      reject(new Error('MongoDB URI is not defined in Mindmap server'));
     }
     mongoose
       .connect(uri)
       .then(() => {
-        console.log('MongoDB connected in Course server');
+        console.log('MongoDB connected in Mindmap server');
         resolve();
       })
       .catch((error) => {
