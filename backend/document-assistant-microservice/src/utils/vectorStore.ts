@@ -46,3 +46,7 @@ export const getRelevantContext = async (query: string): Promise<string[]> => {
     const result = await vectorStore.similaritySearch(query, 3); // Retrieve top 3 relevant chunks
     return result.map(r => r.pageContent); // Return the most relevant document contents
 };
+
+export const cleanUpVectorStore = (): void => {
+        vectorStore = null;
+};
