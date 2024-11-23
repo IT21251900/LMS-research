@@ -5,7 +5,7 @@ import {AdminLayoutComponent} from "./layout/admin-layout/admin-layout.component
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AdminLayoutComponent, RouterOutlet],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
