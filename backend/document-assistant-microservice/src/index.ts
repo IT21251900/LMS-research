@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { queryLLM } from './utils/langchainHandler';
 import { extractTextFromPDF } from './utils/pdfParser';
-import { initializeVectorStore, getRelevantContext } from './utils/vectorStore';
+import { initializeVectorStore, getRelevantContext, cleanUpVectorStore } from './utils/vectorStore';
 
 const env = process.env.NODE_ENV || "local"; 
 dotenv.config({ path: `.env.${env}` });
@@ -55,10 +55,17 @@ app.post('/ask-question', async (req: Request, res: Response) => {
 
         // Retrieve relevant context from the vector store based on the user's question
         const relevantContext = await getRelevantContext(question);
+
         const combinedContext = relevantContext.join('\n');
 
         // Ask the LLM the question along with the retrieved context
-        const combinedInput = `Context: ${combinedContext}\n\nQuestion: ${question}`;
+        const combinedInput = `
+            Context:
+            ${combinedContext}
+
+            Question:
+            ${question}
+        `;
         const llmResponse = await queryLLM(combinedInput);
 
         // Add the LLM's response to the chat history
@@ -71,6 +78,13 @@ app.post('/ask-question', async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve context or query LLM' });
     }
+});
+
+// Clear the chat history and reset the vector store
+app.post('/clear-chat', (req: Request, res: Response) => {
+    chatHistory = [];
+    cleanUpVectorStore();
+    res.status(200).json({ message: 'Session has ended' });
 });
 
 app.listen(port, () => {

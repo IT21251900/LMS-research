@@ -10,10 +10,10 @@ const openAIModel = new OpenAI({
 
 export const queryLLM = async (text: string): Promise<string> => {
   const prompt = `
-    You are a university lecturer. Please respond to the following query in a detailed, educational, and structured manner. Use an academic tone and provide examples where necessary.
-
-    Query: ${text}
-`;
+      You are a study assistant helping with questions specifically related to the provided document. 
+      Answer queries only within the provided context. If the query is unrelated, state that the query is outside the document's scope politely.
+      ${text}
+  `;
 
   const response = await openAIModel.invoke(prompt);
   return response;
