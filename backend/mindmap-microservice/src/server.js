@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import express from "express";
 import multer from 'multer';
 import { connectDB } from "../configs/DBConnect.js";
-import { extractPdfContent,processExtractedContent } from "./controllers/pdfextract.controller.js";
+import { extractPdfContent,processExtractedContent,getMindMapController } from "./controllers/pdfextract.controller.js";
 
 // Load environment variables
 config();
@@ -69,7 +69,8 @@ mindmapService.post("/lms/pdfcontentExtract", async (req, res) => {
   }
 });
 
-
+// Example request to fetch mind map data by ID
+mindmapService.get('/lms/getPdfExtractedData/:id',getMindMapController)
 
 // Basic route to check server health
 mindmapService.get("/", (req, res) => {
