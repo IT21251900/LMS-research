@@ -1,5 +1,6 @@
 import { generateQuiz } from '../services/quizService.js'; 
 import axios from 'axios';
+import Quiz from '../schemes/Quiz.js';
 
 export async function createQuiz(req, res) {
     const { contentId } = req.body;
@@ -18,6 +19,11 @@ export async function createQuiz(req, res) {
             return res.status(400).json({ message: 'No valid content data found for the provided Content ID.' });
         }
 
+        console.log('Content Data:', contentData);
+
+         // Extract title from the response data
+         const contentTitle = contentData.title || `Content ${contentId}`;
+
         // Generate quiz questions using OpenAI model
         const questions = await generateQuiz(contentData); 
 
@@ -25,6 +31,16 @@ export async function createQuiz(req, res) {
         if (!questions || questions.length === 0) {
             return res.status(400).json({ message: 'No questions could be generated from the content.' });
         }
+
+        // Create a new Quiz document
+        const quiz = new Quiz({
+            title: `Quiz for ${contentTitle}`,
+            contentId,
+            questions,
+        });
+
+        // Save the quiz to the database
+        await quiz.save();
 
         // Return success response with the quiz
         res.status(201).json({ message: 'Quiz created successfully.', quiz: questions });
