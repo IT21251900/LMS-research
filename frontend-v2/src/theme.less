@@ -146,7 +146,7 @@
         background-color: #171717 !important;
         -webkit-box-shadow: 0 0 0px 1000px #171717 inset !important;
         box-shadow: 0 0 0px 1000px #171717 inset !important;
-        color: white !important; /* Changes the color of the password dots */
+        color: white !important;
     }
     
     input[type="password"]:-moz-autofill {
@@ -188,32 +188,31 @@
       width: 32.875rem;
       height: 37.75rem;
       flex-shrink: 0;
-      border-radius: 50%; /* Initial circular shape */
+      border-radius: 50%; 
       background: #4c1f49;
       filter: blur(150px);
       animation: glowAnimation 20s infinite alternate ease-in-out;
     }
 
-    /* Animation for glowing, changing shape, and cycling colors */
     @keyframes glowAnimation {
       0% {
-        background: #4c1f49; /* First color */
-        border-radius: 50%; /* Circle */
+        background: #4c1f49; 
+        border-radius: 50%; 
         transform: scale(1);
       }
       33% {
-        background: #6a1f59; /* Second color */
-        border-radius: 30%; /* Oval */
+        background: #6a1f59; 
+        border-radius: 30%; 
         transform: scale(1.1);
       }
       66% {
-        background: #8c2f69; /* Third color */
-        border-radius: 40%; /* Rounded square */
+        background: #8c2f69; 
+        border-radius: 40%; 
         transform: scale(0.9);
       }
       100% {
-        background: #4c1f49; /* Back to first color */
-        border-radius: 50%; /* Circle */
+        background: #4c1f49; 
+        border-radius: 50%; 
         transform: scale(1);
       }
     }
@@ -222,32 +221,31 @@
       width: 29.0625rem;
       height: 10.375rem;
       flex-shrink: 0;
-      border-radius: 24.53125rem; /* Initial shape */
-      background: #1f3d33; /* Initial color */
+      border-radius: 24.53125rem; 
+      background: #1f3d33;
       filter: blur(150px);
       animation: greenGlowAnimation 12s infinite alternate ease-in-out;
     }
 
-    /* Keyframes for animation */
     @keyframes greenGlowAnimation {
       0% {
-        background: #1f3d33; /* First color */
-        border-radius: 50%; /* Circle-like shape */
+        background: #1f3d33; 
+        border-radius: 50%;
         transform: scale(1);
       }
       33% {
-        background: #1f5d44; /* Second color */
-        border-radius: 30%; /* More oval shape */
+        background: #1f5d44;
+        border-radius: 30%;
         transform: scale(1.1);
       }
       66% {
-        background: #2f7d55; /* Third color */
-        border-radius: 40%; /* Smooth rectangular shape */
+        background: #2f7d55; 
+        border-radius: 40%; 
         transform: scale(0.9);
       }
       100% {
-        background: #1f3d33; /* Back to first color */
-        border-radius: 24.53125rem; /* Initial shape */
+        background: #1f3d33; 
+        border-radius: 24.53125rem; 
         transform: scale(1);
       }
     }
