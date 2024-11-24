@@ -1,0 +1,24 @@
+<div class="mindmap-generator-container">
+  <h1>Mind Map Generator</h1>
+  
+  <!-- Button to trigger the loading of the PDF extracted data -->
+  <button 
+    (click)="loadPdfExtractedData('6742f369c0649e50bc3a195f')" 
+    [disabled]="isLoading">
+    Load PDF Data
+  </button>
+
+  <!-- Content display -->
+  <div class="overflow-auto" *ngIf="!isLoading && extractedData">
+    <div class="mermaid"></div>
+    <!-- The div where the Mermaid mind map will be rendered -->
+    <div *ngIf="mermaidString" class="mermaid">
+      {{ mermaidString }}
+    </div>
+  </div>
+
+  <!-- Fallback message if no content is loaded -->
+  <div *ngIf="!isLoading && !extractedData">
+    <p>No content available. Click the button to load the content.</p>
+  </div>
+</div>

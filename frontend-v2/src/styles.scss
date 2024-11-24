@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./scss/global.scss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  font-family: $font-primary;
+  font-size: 16px;
+  color: #1A1D1F;
+}
+h1 {
+  font-family: $font-primary;
+  font-weight: 800;
+  font-size: 3.2rem;
+  line-height: 3.2rem;
+}
+h2 {
+  font-family: $font-primary;
+  font-weight: 500;
+  font-size: 2.5rem;
+}
+h3{
+  font-size: 1.95rem;
+  font-weight: 700;
+}
+h4{
+  font-size: 1.55rem;
+  font-weight: 700;
+}
+h5{
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+h6{
+  font-size: 1rem;
+  font-weight: 300;
+}
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-primary;
+}
+
+p {
+  font-family: $font-secondary;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6E6E6E;
+}
+a {
+  font-family: $font-secondary;
+  font-size: 1rem;
+}
+

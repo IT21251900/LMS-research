@@ -1,0 +1,92 @@
+<app-custom-breadcrumb [crumbs]="breadcrumbs"></app-custom-breadcrumb>
+<p class="infinity-title">User Profile</p>
+
+<div class="infinity-section">
+    <div class="col-span-2">
+        <p class="infinity-sec-title">User Information</p>
+        <p class="infinity-sect-desc">View your personal details.</p>
+    </div>
+    <div class="col-span-10">
+        <div class="flex flex-row justify-between items-center">
+            <p class="infinity-decs-title">{{user?.firstname}} {{user?.lastname}} | {{ user?.refNo }} {{ user?.archived
+                ? '- Archived' : '' }}</p>
+            <div>
+                <button class="outline-button more-dropdown mr-5" nz-button nz-dropdown [nzPlacement]="'bottomRight'"
+                    [nzDropdownMenu]="menu" nzPlacement="bottomCenter">
+                    <span nz-icon nzType="more" nzTheme="outline"></span>
+                </button>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="user.archived ? null : editUser(user._id)"
+                            [ngClass]="{ 'disabled-menu-item': user.archived }"
+                            [ngStyle]="{ cursor: user.archived ? 'not-allowed' : 'pointer' }">
+                            Edit
+                        </li>
+                        <a nz-popconfirm [nzOkText]="'Confirm'" [nzCancelText]="'Cancel'"
+                            [nzPopconfirmTitle]="'Are you sure you want to change the password for ' + user.email + '?'"
+                            nzPopconfirmPlacement="bottom" (nzOnConfirm)="resetUserPassword(user.email)">
+                            <li nz-menu-item nz-button>
+                                Reset Password
+                            </li>
+                        </a>
+                        <a nz-popconfirm [nzOkText]="'Confirm'" [nzCancelText]="'Cancel'"
+                            [nzPopconfirmTitle]="user?.active ? 'Are you sure deactivate this User?' : 'Are you sure activate this User?'"
+                            nzPopconfirmPlacement="bottom" (nzOnConfirm)="toggleActive()">
+                            <li nz-menu-item nz-button [ngClass]="{ 'nz-danger': user?.archived }">
+                                {{ user?.active ? 'Deactivate' : 'Activate' }}
+                            </li>
+                        </a>
+                        <a nz-popconfirm [nzOkText]="'Confirm'" [nzCancelText]="'Cancel'"
+                            [nzPopconfirmTitle]="user?.archived ? 'Are you sure unarchive this User?' : 'Are you sure archive this User?'"
+                            nzPopconfirmPlacement="bottom" (nzOnConfirm)="toggleArchive()">
+                            <li nz-menu-item nz-button>
+                                {{ user?.archived ? 'Unarchive' : 'Archive' }}
+                            </li>
+                        </a>
+                    </ul>
+                </nz-dropdown-menu>
+            </div>
+        </div>
+        <div class="flex flex-row items-center gap-2">
+            <div *ngIf="user?.active" class="w-[10px] h-[10px] bg-[#15BD4E] rounded-full"></div>
+            <div *ngIf="!user?.active" class="w-[10px] h-[10px] bg-[#ff4d4f] rounded-full"></div>
+            <p class="text-[0.875rem] text-[#BD1A43]">{{user?.roleName}} </p>
+        </div>
+
+        <div class="infinity-data-block">
+            <p class="infinity-single-view-lable">Email Address</p>
+            <p class="text-[1rem] text-[#BD1A43] underline">{{user?.email}}</p>
+        </div>
+
+        <div class="infinity-data-block">
+            <p class="infinity-single-view-lable">Mobile Number</p>
+            <p class="infinity-single-view-value">{{user?.phoneNumberPrefix}} {{user?.mobilenumber}}</p>
+        </div>
+
+        <p class="text-[0.75rem] text-[#A4A4A4] mt-4">Account Created on: {{user?.createdAt | date: 'dd/MM/yyyy'}}</p>
+    </div>
+</div>
+
+<div class="infinity-section">
+    <div class="col-span-2">
+        <p class="infinity-sec-title">Access Control</p>
+        <p class="infinity-sect-desc">Set your access controls.</p>
+    </div>
+    <div class="col-span-10">
+        <div class="flex flex-col">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Please input your email!">
+                    <div class="flex flex-row gap-5 items-center w-full">
+                        <nz-switch disabled="true" [ngModel]="user?.active"></nz-switch>
+                        <div class="flex flex-col">
+                            <span class="">Active Status</span>
+                            <span class="infinity-desc my-0">Set the users activity status.</span>
+                        </div>
+                    </div>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</div>
+
+
