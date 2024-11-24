@@ -8,7 +8,7 @@ const env = process.env.NODE_ENV || "local";
 dotenv.config({ path: `.env.${env}` });
 
 const embeddings = new OpenAIEmbeddings({
-    model: 'text-embedding-ada-002',
+    model: process.env.EMBEDDING_MODEL,
     openAIApiKey: process.env.OPENAI_API_KEY!,
 });
 
