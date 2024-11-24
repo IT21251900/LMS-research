@@ -19,10 +19,10 @@ export async function createQuiz(req, res) {
             return res.status(400).json({ message: 'No valid content data found for the provided Content ID.' });
         }
 
-        console.log('Content Data:', contentData);
-
          // Extract title from the response data
-         const contentTitle = contentData.title || `Content ${contentId}`;
+         const contentTitle = contentData.Title || "" ;
+
+         console.log('Content Title:', contentTitle);
 
         // Generate quiz questions using OpenAI model
         const questions = await generateQuiz(contentData); 
