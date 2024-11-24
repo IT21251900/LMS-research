@@ -1,0 +1,107 @@
+<app-custom-breadcrumb [crumbs]="breadcrumbs"></app-custom-breadcrumb>
+<p class="infinity-title">My Account</p>
+<div class="infinity-section">
+    <div class="col-span-2">
+        <p class="infinity-sec-title">User Information</p>
+        <p class="infinity-sect-desc">View your personal details.</p>
+    </div>
+    <div class="col-span-10">
+        <div class="flex flex-row justify-between items-center">
+            <p class="infinity-decs-title">{{user?.firstname}} {{user?.lastname}} | {{ user.refNo }}{{ user?.archived ?
+                '- Archived' : '' }}</p>
+            <div [ngClass]="{'disabled-section': user.email === 'admin@purple.lk'}">
+                <button class="outline-button more-dropdown mr-5" nz-button nz-dropdown [nzPlacement]="'bottomRight'"
+                    [nzDropdownMenu]="menu" nzPlacement="bottomCenter">
+                    <span nz-icon nzType="more" nzTheme="outline"></span>
+                </button>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="user.archived ? null : editUser(user._id)"
+                            [ngClass]="{ 'disabled-menu-item': user.archived }"
+                            [ngStyle]="{ cursor: user.archived ? 'not-allowed' : 'pointer' }">
+                            Edit
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+            </div>
+        </div>
+        <div class="flex flex-row items-center gap-2">
+            <div class="w-[10px] h-[10px] bg-[#15BD4E] rounded-full"></div>
+            <p class="text-[0.875rem] text-[#BD1A43]">{{user?.roleName}} </p>
+        </div>
+
+        <div class="infinity-data-block">
+            <p class="infinity-single-view-lable">Email Address</p>
+            <p class="text-[1rem] text-[#BD1A43] underline">{{user?.email}}</p>
+        </div>
+
+        <div class="infinity-data-block">
+            <p class="infinity-single-view-lable">Mobile Number</p>
+            <p class="infinity-single-view-value">{{user?.mobilenumber}}</p>
+        </div>
+
+        <p class="text-[0.75rem] text-[#A4A4A4] mt-4">Account Created on: {{user?.createdAt | date: 'dd/MM/yyyy'}}</p>
+    </div>
+</div>
+
+
+<form [ngClass]="{'disabled-section': user.email === 'admin@purple.lk'}" nz-form [formGroup]="changePasswordForm"
+    nzLayout="vertical" class="mt-6 mx-6 md:mx-0">
+    <div class="infinity-section end-section">
+        <div class="col-span-2">
+            <p class="infinity-sec-title">Change Password</p>
+            <p class="infinity-sect-desc">Change and update the your password.</p>
+        </div>
+        <div class="col-span-10">
+            <div class="flex flex-col">
+                <nz-form-item>
+                    <p class="infinity-lable">Old Password <span>*</span></p>
+                    <nz-form-control nzErrorTip="Please input your password!">
+                        <nz-input-group nzSize="large" [nzSuffix]="toggleIconTemplateOld">
+                            <input [type]="passwordVisibleOld ? 'text' : 'password'" formControlName="oldPassword" nz-input
+                                placeholder="Enter Old Password" />
+                        </nz-input-group>
+                        <ng-template #toggleIconTemplateOld>
+                            <i nz-icon [nzType]="passwordVisibleOld ? 'eye-invisible' : 'eye'" nzTheme="outline"
+                                (click)="togglePasswordVisibilityOld()"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <p class="infinity-lable">New Password <span>*</span></p>
+                    <nz-form-control
+                        nzErrorTip="Your password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character">
+                        <nz-input-group nzSize="large" [nzSuffix]="toggleIconTemplateNew">
+                            <input [type]="passwordVisibleNew ? 'text' : 'password'" formControlName="password" nz-input
+                                placeholder="Enter New Password" />
+                        </nz-input-group>
+                        <ng-template #toggleIconTemplateNew>
+                            <i nz-icon [nzType]="passwordVisibleNew ? 'eye-invisible' : 'eye'" nzTheme="outline"
+                                (click)="togglePasswordVisibilityNew()"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <p class="infinity-lable">Confirm Password <span>*</span></p>
+                    <nz-form-control nzErrorTip="Please confirm your new password!">
+                        <nz-input-group nzSize="large" [nzSuffix]="toggleIconTemplateConfirm">
+                            <input [type]="passwordVisibleConfirm ? 'text' : 'password'" formControlName="confirmPassword"
+                                nz-input placeholder="Confirm Password" />
+                        </nz-input-group>
+                        <ng-template #toggleIconTemplateConfirm>
+                            <i nz-icon [nzType]="passwordVisibleConfirm ? 'eye-invisible' : 'eye'" nzTheme="outline"
+                                (click)="togglePasswordVisibilityConfirm()"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <div class="flex flex-row justify-end my-5 w-full">
+                    <button class="w-fit rounded-md" nz-button nzType="primary" [disabled]="!changePasswordForm.valid" (click)="submitChangePassword()">Save
+                        New Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

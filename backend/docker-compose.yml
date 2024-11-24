@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./api-gateway/.env.docker
+
+  document-service:
+    build:
+      context: ./document-assistant-microservice
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./document-assistant-microservice/.env.docker

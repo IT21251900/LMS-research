@@ -1,0 +1,29 @@
+{
+  "server": {
+    "port": 3000,
+    "welcomeMessage": "LMS-USER API Server Listening on Development Mode"
+  },
+  "db":{
+    "path": "mongodb+srv://itpprojectdb:Pass123itp@itp.jet5d6f.mongodb.net/LMS-USER?retryWrites=true&w=majority"
+  },
+  "auth": {
+    "accessToken": {
+      "issuer": "Team Ark - SLIIT",
+      "expiresIn": "1h",
+      "passphrase": "teamark"
+    },
+    "refreshToken": {
+      "issuer": "Team Ark - SLIIT",
+      "expiresIn": "30d",
+      "secret": "7b44cccf4c67d31cf7ab852e8a06b529c3b1ec2ae431c158c0583e99a3361107",
+      "errorMessage": "jwt expired"
+    },
+    "passwordReset": {
+      "time": 10,
+      "unit": "minutes"
+    }
+  }, 
+
+  "frontEndUrl": "http://localhost:4200"
+}
+

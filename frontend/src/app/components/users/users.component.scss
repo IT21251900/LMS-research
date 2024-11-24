@@ -1,0 +1,18 @@
+.ant-btn {
+    border-radius: 6px;
+}
+
+.disabled-menu {
+    pointer-events: none;
+    opacity: 0.25;
+}
+
+.clickable-field:hover {
+    text-decoration: underline;
+    color: #BD1A4F;
+    cursor: pointer;
+}
+
+::ng-deep .ant-select-item-option-content {
+    font-size: 0.75rem !important;
+}
