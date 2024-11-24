@@ -15,7 +15,7 @@
                             <h5>Enter your email and password</h5>
                         </div>
                         <div class="flex flex-col h-full justify-between">
-                            <form nz-form [formGroup]="loginForm" [nzLayout]="'vertical'" class="mt-6 mx-6 md:mx-0">
+                            <form nz-form [formGroup]="loginForm" [nzLayout]="'vertical'" class=" mx-6 md:mx-0">
                                 <div class="flex flex-col">
                                     <p class="mb-1">Email</p>
                                     <nz-form-item>
@@ -24,7 +24,7 @@
                                                 <input formControlName="email" nz-input placeholder="Email Address" />
                                             </nz-input-group>
                                             <ng-template #userPrefixTemplate>
-                                                <i nz-icon nzType="mail"></i>
+                                                <!-- <i nz-icon nzType="mail"></i> -->
                                             </ng-template>
                                         </nz-form-control>
                                     </nz-form-item>
@@ -37,7 +37,7 @@
                                                     formControlName="password" nz-input placeholder="Password" />
                                             </nz-input-group>
                                             <ng-template #lockPrefixTemplate>
-                                                <i nz-icon nzType="lock"></i>
+                                                <!-- <i nz-icon nzType="lock"></i> -->
                                             </ng-template>
                                             <ng-template #toggleIconTemplate>
                                                 <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
@@ -49,7 +49,7 @@
                             </form>
                             <nz-alert *ngIf="actionMessage.display" class="mt-2 mx-6 md:mx-0"
                                 [nzType]="actionMessage.type" [nzMessage]="actionMessage.message" nzShowIcon></nz-alert>
-                            <div class="flex flex-row items-center justify-end gap-5">
+                            <div class="flex flex-row items-center justify-end gap-5 mt-5">
                                 <button class="w-fit" nz-button nzType="default" nzBlock>
                                    Create account
                                 </button>
@@ -69,22 +69,3 @@
         </div>
     </div>
 </div>
-
-<!-- <div class="bg-[#F9FBFF]">
-    <div class="min-h-screen w-full flex flex-col justify-between">
-        <div class="my-auto 2xl:mt-32 mb-0 h-[60px]">
-            <img src="../../../../assets/img/logo.svg" class="w-full h-full object-contain" alt="Logo">
-             LMS LMS-Reseach
-        </div>
-        <div class="w-[360px] mx-auto my-auto flex flex-col">
-            <h1 class="text-[1.5rem] mx-6 md:mx-0">LOG IN</h1>
-            
-        </div>
-        <div class="mb-8 mt-auto flex flex-col items-center justify-center">
-            <div class="h-[30px]">
-                <img src="../../../../assets/img/purple_logo.svg" class="w-full h-full object-contain" alt="Logo">
-            </div>
-            <div class="text-[#64748B] text-[0.6875rem] mt-2">Powered By <a href="https://purple.lk/?utm_source=igc-admin" target="_blank"><span class="text-[#6C066D] text-[0.75rem]">Purple Software </span></a></div>
-        </div>
-    </div>
-</div> -->
