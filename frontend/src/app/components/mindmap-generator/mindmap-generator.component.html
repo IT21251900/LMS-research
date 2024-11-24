@@ -3,13 +3,13 @@
   
   <!-- Button to trigger the loading of the PDF extracted data -->
   <button 
-    (click)="loadPdfExtractedData('6741a39f7c555b5d4c5f7e8b')" 
+    (click)="loadPdfExtractedData('6742f369c0649e50bc3a195f')" 
     [disabled]="isLoading">
     Load PDF Data
   </button>
 
   <!-- Content display -->
-  <div *ngIf="!isLoading && extractedData">
+  <div class="overflow-auto" *ngIf="!isLoading && extractedData">
     <div class="mermaid"></div>
     <!-- The div where the Mermaid mind map will be rendered -->
     <div *ngIf="mermaidString" class="mermaid">
