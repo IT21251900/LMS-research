@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotesViewComponent } from './simple-mindmap-generator';
+import { SimpleMindMapGeneratorComponent } from './simple-mindmap-generator';
 
-describe('NotesViewComponent', () => {
-  let component: NotesViewComponent;
-  let fixture: ComponentFixture<NotesViewComponent>;
+describe('SimpleMindMapGeneratorComponent', () => {
+  let component: SimpleMindMapGeneratorComponent;
+  let fixture: ComponentFixture<SimpleMindMapGeneratorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotesViewComponent]
+      imports: [SimpleMindMapGeneratorComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NotesViewComponent);
+    fixture = TestBed.createComponent(SimpleMindMapGeneratorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
