@@ -1,0 +1,55 @@
+<div *ngIf="errorMessage" class="error-message">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<div *ngIf="quiz" class="quiz-container">
+  <h1>{{ quiz.title }}</h1>
+
+  <div *ngFor="let question of quiz.questions; let i = index" class="question-container">
+    <p class="question-text">{{ i + 1 }}. {{ question.question }}</p>
+    <ul class="answer-list">
+      <li *ngFor="let answer of question.allAnswers" class="answer-item">
+        <label [class.disabled]="isSubmitted">
+          <input
+            type="radio"
+            name="question-{{ i }}"
+            [value]="answer"
+            [(ngModel)]="question.selectedAnswer"
+            [disabled]="isSubmitted"
+          />
+          {{ answer }}
+        </label>
+      </li>
+    </ul>
+
+    <div *ngIf="isSubmitted" class="feedback">
+      <p [class.correct]="question.isCorrect" [class.incorrect]="!question.isCorrect">
+        {{ question.isCorrect ? 'Correct!' : 'Incorrect. The correct answer is: ' + question.correctAnswer }}
+      </p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button (click)="submitQuiz()" [disabled]="isSubmitted" class="submit-btn">
+      {{ isSubmitted ? 'Quiz Submitted' : 'Submit Quiz' }}
+    </button>
+    <button (click)="resetQuiz()" *ngIf="isSubmitted" class="reset-btn">
+      Reset Quiz
+    </button>
+  </div>
+
+  <div *ngIf="isSubmitted" class="summary">
+    <h2>Quiz Summary</h2>
+    <p>
+      You answered 
+      <span class="correct">{{ getCorrectAnswersCount() }}</span> 
+      out of 
+      <span class="total">{{ quiz.questions.length }}</span> 
+      questions correctly.
+    </p>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="loading">Loading quiz...</div>
+</ng-template>
