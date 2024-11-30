@@ -21,7 +21,6 @@ import { AuthService } from '../../modules/auth/services/auth.service';
   imports: [
     RouterOutlet,
     NzButtonModule,
-    NzAvatarComponent,
     NzLayoutModule,
     NzBreadCrumbModule,
     NzIconModule,
