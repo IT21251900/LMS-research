@@ -55,7 +55,7 @@ export const routes: Routes = [
             component: MyAcountComponent,
           },
           {
-            path: 'mindmap-generator',
+            path: 'mindmap-generator/:id',
             component: MindmapGeneratorComponent,
           },
         ]

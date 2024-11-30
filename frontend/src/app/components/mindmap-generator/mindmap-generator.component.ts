@@ -116,7 +116,7 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
   //     model: "gpt-4o",
   //     messages: [{ role: "user", content: prompt }],
   //     max_tokens: 2000,
-  //     temperature: 1.0,
+  //     temperature: 0.1,
   //   };
 
   //   const headers = {
@@ -300,10 +300,8 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
   }
 
   getMindmapDataFromLocalStorage(): string | null {
-    // Get the cleaned response from localStorage
     const storedResponse = localStorage.getItem("mindmapData");
 
-    // Check if the response exists and log it
     if (storedResponse) {
       console.log(
         "Retrieved cleaned response from localStorage:",
@@ -312,7 +310,7 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
       return storedResponse;
     } else {
       console.log("No data found in localStorage.");
-      return null; // Return null if no data is found
+      return null; 
     }
   }
 }
