@@ -7,6 +7,7 @@ import { SingleUserComponent } from './components/users/single-user/single-user.
 import { MyAcountComponent } from './components/users/my-acount/my-acount.component';
 import { MindmapGeneratorComponent } from './components/mindmap-generator/mindmap-generator.component';
 import { MainDashboardComponent } from './layout/main-dashboard/main-dashboard.component';
+import { NotesViewComponent } from './components/notes-view/notes-view.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -34,6 +35,10 @@ export const routes: Routes = [
             pathMatch: 'full',
           },
           {
+            path: 'notes',
+            component: NotesViewComponent,
+          },
+          {
             path: 'users',
             component: UsersComponent,
           },
@@ -50,7 +55,7 @@ export const routes: Routes = [
             component: MyAcountComponent,
           },
           {
-            path: 'mindmap-generator/:id',
+            path: 'mindmap-generator',
             component: MindmapGeneratorComponent,
           },
         ]

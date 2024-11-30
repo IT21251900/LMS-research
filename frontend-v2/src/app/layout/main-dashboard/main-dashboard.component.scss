@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-height: 94vh;
   }
   
   .toggle-button {
@@ -20,24 +21,43 @@
   }
   
   .sidebar {
-    background-color: #f0f2f5;
     padding: 16px;
-    min-width: 200px; /* Sidebar minimum width */
-    max-width: 800px; /* Sidebar maximum width */
+    min-width: 400px; /* Sidebar minimum width */
+    max-width: 1800px; /* Sidebar maximum width */
+    overflow-y: auto; 
     // transition: width 0.2s ease;
   }
   
   .resizable-divider {
-    background-color: #ccc;
     cursor: ew-resize; /* Horizontal resize cursor */
-    width: 5px;
+    width: 10px;
     height: 100%;
+    margin-left: 5px;
   }
   
   .main-content {
-    background-color: #fff;
-    padding: 24px;
     flex-grow: 1;
-    overflow: auto; /* Scroll when content overflows */
+    max-width: 1800px;
+    min-width: 400px;
+    overflow-x: auto; /* Scroll when content overflows */
+  }
+
+
+
+  .tabs{
+    .ant-btn-primary {
+      color: #a2c3f5;
+      border-color: #a2c3f500;
+      background: #373737;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    }
+    .ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
+      color: black;
+      background: #a2c3f5;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: pointer;
+    }
   }
   
