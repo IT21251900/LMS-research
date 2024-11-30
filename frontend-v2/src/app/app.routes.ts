@@ -6,6 +6,7 @@ import {AddUserComponent} from "./components/users/add-user/add-user.component";
 import { SingleUserComponent } from './components/users/single-user/single-user.component';
 import { MyAcountComponent } from './components/users/my-acount/my-acount.component';
 import { MindmapGeneratorComponent } from './components/mindmap-generator/mindmap-generator.component';
+import { MainDashboardComponent } from './layout/main-dashboard/main-dashboard.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -19,35 +20,42 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'admin',
+    path: 'home',
     component: AdminLayoutComponent,
     // canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        redirectTo: '/admin/users',
-        pathMatch: 'full',
+        path: 'dashboard',
+        component: MainDashboardComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'home/dashboard/users',
+            pathMatch: 'full',
+          },
+          {
+            path: 'users',
+            component: UsersComponent,
+          },
+          {
+            path: 'users/add-edit',
+            component: AddUserComponent,
+          },
+          {
+            path: 'users/:id',
+            component: SingleUserComponent,
+          },
+          {
+            path: 'my-account/:id',
+            component: MyAcountComponent,
+          },
+          {
+            path: 'mindmap-generator/:id',
+            component: MindmapGeneratorComponent,
+          },
+        ]
       },
-      {
-        path: 'users',
-        component: UsersComponent,
-      },
-      {
-        path: 'users/add-edit',
-        component: AddUserComponent,
-      },
-      {
-        path: 'users/:id',
-        component: SingleUserComponent,
-      },
-      {
-        path: 'my-account/:id',
-        component: MyAcountComponent,
-      },
-      {
-        path: 'mindmap-generator/:id',
-        component: MindmapGeneratorComponent,
-      },
+     
     ]
   }
 ];

@@ -54,7 +54,7 @@ export class LoginComponent {
     private router: Router
   ) {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(["/admin"]);
+      this.router.navigate(["/home/dashboard"]);
     }
   }
 

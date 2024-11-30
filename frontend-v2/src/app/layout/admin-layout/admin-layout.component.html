@@ -4,7 +4,7 @@
     <div class="flex h-[98dvh] flex-col justify-between">
       <div class="">
         <div class="logo" [ngClass]="{'': !isCollapsed, 'hidden': isCollapsed}">
-          <h1>LMS-Reseach</h1>
+          <h6>LMS-Reseach</h6>
         </div>
         <ul nz-menu nzMode="inline" class="sider-menu">
           <li nz-submenu nzTitle="Users" nzIcon="user" [nzOpen]="openSubmenu === 1"
@@ -85,7 +85,9 @@
 
     </nz-header>
     <nz-content>
-      <router-outlet></router-outlet>
+      <router-outlet>
+        
+      </router-outlet>
     </nz-content>
     <!-- <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer> -->
   </nz-layout>
