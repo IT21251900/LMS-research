@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../services/auth.service";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import {
   FormControl,
   FormGroup,
@@ -30,6 +30,7 @@ import { CommonModule } from "@angular/common";
     NzAlertModule,
     NzIconModule,
     CommonModule,
+    RouterLink
   ],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
