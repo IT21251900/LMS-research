@@ -1,4 +1,51 @@
+<div class="dashboard-container">
+    <!-- Toggle Button to enable/disable split view -->
+    <div class="toggle-button">
+      <button (click)="toggleSplitView()">
+        {{ splitViewEnabled ? 'Disable Split View' : 'Enable Split View' }}
+      </button>
+    </div>
+  
+    <!-- Show/Hide Panel Controls (only show when split view is enabled) -->
+    <div *ngIf="splitViewEnabled" class="panel-controls">
+      <button (click)="togglePanelVisibility('first')">
+        {{ showFirstPanel ? 'Hide First Panel' : 'Show First Panel' }}
+      </button>
+      <button (click)="togglePanelVisibility('second')">
+        {{ showSecondPanel ? 'Hide Second Panel' : 'Show Second Panel' }}
+      </button>
+    </div>
+  
+    <!-- Split View Panels -->
+    <div *ngIf="splitViewEnabled" class="split-view">
+      <div
+        *ngIf="showFirstPanel"
+        class="sidebar"
+        [ngStyle]="{ width: sidebarWidth + 'px' }"
+      >
+        <nz-typography nzType="secondary" nzLevel="4">
+          First Panel
+        </nz-typography>
+      </div>
+        <!-- Resizable Splitter Divider -->
+        <div
+        class="resizable-divider"
+        (mousedown)="onMouseDown($event)"
+      ></div>
+      <div
+        *ngIf="showSecondPanel"
+        class="main-content"
+      >
+        <router-outlet></router-outlet>
+      </div>
+  
 
-<p>main-dashboard works!</p>
-<router-outlet>        
-</router-outlet>
+    </div>
+  
+    <!-- If split view is disabled, show only the main content -->
+    <div *ngIf="!splitViewEnabled" class="main-content">
+      first panel
+    </div>
+  </div>
+  
+  

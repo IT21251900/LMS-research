@@ -1,0 +1,43 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .toggle-button {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .panel-controls {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .split-view {
+    display: flex;
+    height: 100%;
+  }
+  
+  .sidebar {
+    background-color: #f0f2f5;
+    padding: 16px;
+    min-width: 200px; /* Sidebar minimum width */
+    max-width: 800px; /* Sidebar maximum width */
+    // transition: width 0.2s ease;
+  }
+  
+  .resizable-divider {
+    background-color: #ccc;
+    cursor: ew-resize; /* Horizontal resize cursor */
+    width: 5px;
+    height: 100%;
+  }
+  
+  .main-content {
+    background-color: #fff;
+    padding: 24px;
+    flex-grow: 1;
+    overflow: auto; /* Scroll when content overflows */
+  }
+  
