@@ -1,0 +1,78 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 20px;
+    max-width: 800px;
+}
+
+/* Mindmap display section */
+.result-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #121212;
+    border-radius: 8px;
+    background-color: #121212;
+    margin-bottom: 10px;
+}
+
+/* Input field and button container */
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto; /* Push to the bottom */
+}
+
+.gpt-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: white;
+    border: 1px solid #100f0f;
+    border-radius: 12px;
+    background-color: #100f0f;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    resize: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gpt-input:focus {
+    border-color: #515252;
+    box-shadow: 0 0 6px rgba(76, 76, 77, 0.5);
+    outline: none;
+}
+
+.gpt-button {
+    background-color: #454546;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.gpt-button:hover {
+    background-color: #43484d;
+    transform: translateY(-1px);
+}
+
+.gpt-button:disabled {
+    background-color: #d6d6d6;
+    cursor: not-allowed;
+}
+
+.send-icon {
+    width: 16px;
+    height: 16px;
+    fill: white;
+}
