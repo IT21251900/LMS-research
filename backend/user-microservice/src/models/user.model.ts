@@ -33,19 +33,19 @@ export const UserSchema = new Schema<IUser>(
             type: String,
             required: [true, "Last name is required"],
         },
-        phoneNumberPrefix: {
-            type: String,
-            required: [true, "Mobile number prefix is required"],
-        },
-        mobilenumber: {
-            type: String,
-            required: [true, "Mobile number is required"],
-        },
-        role: {
-            type: Schema.Types.ObjectId,
-            ref: "roles",
-            required: [true, "Role is required"],
-        },
+        // phoneNumberPrefix: {
+        //     type: String,
+        //     required: [true, "Mobile number prefix is required"],
+        // },
+        // mobilenumber: {
+        //     type: String,
+        //     required: [true, "Mobile number is required"],
+        // },
+        // role: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: "roles",
+        //     required: [true, "Role is required"],
+        // },
         email: {
             type: String,
             unique: true,

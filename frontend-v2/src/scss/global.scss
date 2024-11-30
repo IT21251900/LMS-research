@@ -1,14 +1,16 @@
 //Fonts
-@import "fonts";
+@use "fonts";
+
 $font-primary: 'Circular Std', sans-serif;
 $font-secondary: 'Circular Std', sans-serif;
 
-//Colors
+$color-white: #ffffff;
 
 .light {
-    .base-auth-configs{
-        .base-bg{
-            background-color: #ffffff;
-        }
+  .base-auth-configs {
+    .base-bg {
+      background-color: $color-white;
+      font-family: $font-primary; 
     }
+  }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import {SETTINGS} from "../../../core/config/common.settings";
 import {Observable, Subject, tap} from "rxjs";

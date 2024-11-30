@@ -71,7 +71,7 @@
         </td>
         
         
-        <td><nz-tag nzColor="processing" [nzBordered]="false">{{ item.role.name || '-'}}</nz-tag></td>
+        <td><nz-tag nzColor="processing" [nzBordered]="false">{{ item?.role?.name || '-'}}</nz-tag></td>
         <td>
           <nz-tag *ngIf="item.active" nzColor="success">Active</nz-tag>
           <nz-tag *ngIf="!item.active" nzColor="error">Inactive</nz-tag>

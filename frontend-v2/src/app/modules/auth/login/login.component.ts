@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../services/auth.service";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import {
   FormControl,
   FormGroup,
@@ -30,6 +30,7 @@ import { CommonModule } from "@angular/common";
     NzAlertModule,
     NzIconModule,
     CommonModule,
+    RouterLink
   ],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
@@ -53,7 +54,7 @@ export class LoginComponent {
     private router: Router
   ) {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(["/admin"]);
+      this.router.navigate(["/home/dashboard"]);
     }
   }
 
@@ -98,7 +99,7 @@ export class LoginComponent {
     try {
       console.log(this.loginForm.value);
       const userData = await this.authService.login(this.loginForm.value);
-      this.router.navigate(["/admin"]);
+      this.router.navigate(["/home/dashboard"]);
     } catch (e: any) {
       this.actionMessage = {
         display: true,
