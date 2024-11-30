@@ -1,0 +1,18 @@
+<div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+  
+  <div *ngIf="quizzes.length > 0">
+    <h1>All Quizzes</h1>
+    <ul class="quiz-list">
+      <li *ngFor="let quiz of quizzes">
+        <a [routerLink]="['/quiz', quiz._id]">{{ quiz.title }}</a>
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="!quizzes.length && !errorMessage" class="loading">
+    <p>Loading quizzes...</p>
+  </div>
+
+  
