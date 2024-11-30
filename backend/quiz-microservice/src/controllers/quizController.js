@@ -49,3 +49,34 @@ export async function createQuiz(req, res) {
         res.status(500).json({ message: 'Failed to create quiz.', error: error.message });
     }
 }
+
+export async function getAllQuizzes(req, res) {
+    try {
+        const quizzes = await Quiz.find();
+        res.status(200).json({ message: 'Quizzes retrieved successfully.', quizzes });
+    } catch (error) {
+        console.error('Error retrieving quizzes:', error.message);
+        res.status(500).json({ message: 'Failed to retrieve quizzes.', error: error.message });
+    }
+}
+
+export async function getQuizById(req, res) {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ message: 'Quiz ID is required.' });
+    }
+
+    try {
+        const quiz = await Quiz.findById(id);
+
+        if (!quiz) {
+            return res.status(404).json({ message: 'Quiz not found.' });
+        }
+
+        res.status(200).json({ message: 'Quiz retrieved successfully.', quiz });
+    } catch (error) {
+        console.error('Error retrieving quiz:', error.message);
+        res.status(500).json({ message: 'Failed to retrieve quiz.', error: error.message });
+    }
+}
