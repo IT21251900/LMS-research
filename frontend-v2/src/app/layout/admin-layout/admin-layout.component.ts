@@ -21,7 +21,6 @@ import { AuthService } from '../../modules/auth/services/auth.service';
   imports: [
     RouterOutlet,
     NzButtonModule,
-    NzAvatarComponent,
     NzLayoutModule,
     NzBreadCrumbModule,
     NzIconModule,
@@ -41,7 +40,8 @@ export class AdminLayoutComponent implements OnInit {
   loggedInUserName: string | null = null;
   loggedInUserRole: string | null = null;
   loggedInUserID: string | null = null;
-
+  loggedInUserEmail: string | null = null;
+  
   private encryption = new EncryptionService(); 
 
   ngOnInit(): void {
@@ -64,6 +64,7 @@ export class AdminLayoutComponent implements OnInit {
       const user = JSON.parse(userStr);
       this.loggedInUserName = user.firstname + ' ' + user.lastname;
       this.loggedInUserRole = user.role.name;
+      this.loggedInUserEmail = user.email;
       this.loggedInUserID = user.userId;
     }
   }

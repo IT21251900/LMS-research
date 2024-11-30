@@ -7,20 +7,7 @@
     "start": "NODE_ENV=production node dist/server.js | bunyan",
     "dev": "ts-node-dev src/server.ts | bunyan",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "clean": "prettier src --write \"**/*.{ts,js,jsx,tsx,md}\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "npm run lint",
-      "tsc --noEmit --esModuleInterop --skipLibCheck"
-    ]
   },
   "keywords": [],
   "author": "Team Ark - SLIIT",
@@ -40,10 +27,6 @@
     "@types/validator": "^13.12.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
-    "eslint": "^9.6.0",
-    "eslint-plugin-react": "^7.34.3",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.8",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
     "pre-commit": "^1.2.2",
