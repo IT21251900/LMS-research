@@ -1,4 +1,4 @@
-import {HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import {inject} from "@angular/core";
 import {AuthService} from "../../modules/auth/services/auth.service";
 import { catchError, switchMap, filter, take } from 'rxjs/operators';

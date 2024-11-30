@@ -99,7 +99,7 @@ export class LoginComponent {
     try {
       console.log(this.loginForm.value);
       const userData = await this.authService.login(this.loginForm.value);
-      this.router.navigate(["/admin"]);
+      this.router.navigate(["/home/dashboard"]);
     } catch (e: any) {
       this.actionMessage = {
         display: true,
