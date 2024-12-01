@@ -79,17 +79,11 @@ export class AdminLayoutComponent implements OnInit {
 
   routeLink(type: string) {
     switch (type) {
-      case 'users':
-        this.router.navigate(['/admin/users']);
+      case 'home':
+        this.router.navigate(['/home']);
         break;
-      case 'user-add':
-        this.router.navigate(['/admin/users/add-edit']);
-        break;
-      case 'roles':
-        this.router.navigate(['/admin/roles']);
-        break;
-      case 'roles-add':
-        this.router.navigate(['/admin/roles/add-edit']);
+      case 'sessions':
+        this.router.navigate(['/home/sessions']);
         break;
     }
   }

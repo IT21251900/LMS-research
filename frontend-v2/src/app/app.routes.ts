@@ -10,6 +10,7 @@ import { MainDashboardComponent } from './layout/main-dashboard/main-dashboard.c
 import { NotesViewComponent } from './components/notes-view/notes-view.component';
 import { SimpleMindMapGeneratorComponent } from './components/simple-mindmap-generator/simple-mindmap-generator';
 import { HomeComponent } from './components/home/home.component';
+import { SessionsComponent } from './components/sessions/sessions.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -30,6 +31,10 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
+      },
+      {
+        path: 'sessions',
+        component: SessionsComponent,
       },
       {
         path: 'dashboard',
