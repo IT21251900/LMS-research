@@ -32,7 +32,7 @@ app.post('/initialize-pdf', async (req: Request, res: Response) => {
         await initializeVectorStore(extractedText);
 
         chatHistory = [
-            { role: 'system', content: 'PDF has been processed. You can ask your questions now.' }
+            { role: 'assistant', content: 'PDF has been processed. You can ask your questions now.' }
         ];
 
         const newSession = new Session({
@@ -62,12 +62,15 @@ app.post('/ask-question', async (req: Request, res: Response) => {
         const combinedContext = relevantContext.join('\n');
 
         const combinedInput = `
-            Context:
-            ${combinedContext}
+        Chat History:
+        ${chatHistory.slice(-5).map(h => `${h.role}: ${h.content}`).join('\n')}
 
-            Question:
-            ${question}
-        `;
+        Context:
+        ${combinedContext}
+
+        Question:
+        ${question}
+    `;
         const llmResponse = await queryLLM(combinedInput);
 
         chatHistory.push({ role: 'assistant', content: llmResponse });
