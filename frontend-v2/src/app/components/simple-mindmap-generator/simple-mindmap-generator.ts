@@ -7,7 +7,7 @@ import mermaid from 'mermaid';
 import { OPENAI_API_KEY } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-notes-view',
+  selector: 'app-simple-mindmap-view',
   standalone: true,
   imports: [FormsModule,CommonModule],
   templateUrl: './simple-mindmap-generator.html',
