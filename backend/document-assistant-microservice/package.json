@@ -21,6 +21,7 @@
     "express": "^4.19.2",
     "langchain": "^0.2.18",
     "lms-research-document-assistant": "file:",
+    "mongoose": "^8.8.3",
     "nodemon": "^3.1.4",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",

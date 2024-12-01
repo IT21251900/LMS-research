@@ -1,0 +1,143 @@
+<app-custom-breadcrumb [crumbs]="breadcrumbs"></app-custom-breadcrumb>
+
+<div class="flex flex-row justify-between gap-3 mb-5">
+  <p class="infinity-title">Users</p>
+  <button nz-button nzType="primary" (click)="addUser()">Add New User</button>
+</div>
+
+<div class="flex flex-row justify-between gap-3 items-center">
+  <div class="flex flex-row justify-between gap-3">
+    <nz-input-group nzPrefixIcon="search" class="max-w-[300px]">
+      <input nz-input [(ngModel)]="filters.searchText" placeholder="Search" (keydown)="onEnter($event)" />
+    </nz-input-group>
+
+    <nz-select [(ngModel)]="filters.status" [nzPlaceHolder]="'Select Status'">
+      <nz-option [nzValue]="true" nzLabel="Active"></nz-option>
+      <nz-option [nzValue]="false" nzLabel="Inactive"></nz-option>
+    </nz-select>
+    <nz-select [(ngModel)]="filters.role" [nzPlaceHolder]="'Select Role'">
+      <nz-option *ngFor="let role of roles" [nzLabel]="role.name" [nzValue]="role._id"></nz-option>
+    </nz-select>
+    <button nz-button nzType="primary" (click)="loadUsers()">Search</button>
+    <button nz-button (click)="applyFilters({ searchText: '', status: null, role: null, archived:null })">Reset
+      Filters</button>
+  </div>
+
+  <nz-switch [(ngModel)]="filters.archived" (ngModelChange)="applyFilters({ archived: $event })"
+    nzCheckedChildren="Archived" nzUnCheckedChildren="Unarchived">
+  </nz-switch>
+</div>
+
+<div *ngIf="isLoading" class="h-[400px]">
+  <nz-spin class="h-full my-auto" [nzSize]="'large'" nzTip="Loading User Data..."></nz-spin>
+</div>
+
+<div *ngIf="!isLoading">
+  <nz-table *ngIf="listOfData && listOfData.length > 0" class="mt-8" [nzData]="listOfData" nzSize="middle"
+    [nzScroll]="{ x: '1180px' }" nzTableLayout="fixed" [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th class="infinity-thead">User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile Number</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>
+          <div class="flex justify-between w-full items-center pr-2">
+            <span>Created Date</span>
+            <span *ngIf="sortOrder === -1" class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-up"
+                nzTheme="outline"></span>
+            </span>
+            <span *ngIf="sortOrder === 1" class="cursor-pointer" (click)="sort()"><span nz-icon nzType="caret-down"
+                nzTheme="outline"></span>
+            </span>
+          </div>
+        </th>
+        <th nzWidth="200px">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of listOfData">
+        <td class="clickable-field" (click)="viewSingleUser(item._id)">{{ item.refNo || '-'}}</td>
+        <td>{{ item.firstname }} {{ item.lastname || '-'}}</td>
+        <td>
+          <a [href]="'mailto:' + item.email">{{ item.email || '-'}}</a>
+        </td>
+        <td>
+          <a [href]="'tel:' + (item.phoneNumberPrefix || '') + item.mobilenumber">
+            {{ item.phoneNumberPrefix || '' }} {{ item.mobilenumber || '-'}}
+          </a>
+        </td>
+        
+        
+        <td><nz-tag nzColor="processing" [nzBordered]="false">{{ item?.role?.name || '-'}}</nz-tag></td>
+        <td>
+          <nz-tag *ngIf="item.active" nzColor="success">Active</nz-tag>
+          <nz-tag *ngIf="!item.active" nzColor="error">Inactive</nz-tag>
+        </td>
+        <td>{{ item.createdAt | date: 'mediumDate' }}</td>
+        <td>
+          <button nz-button nzType="default" class="ml-2" (click)="editUser(item)"
+            [disabled]="item.archived || item.email === 'admin@purple.lk'">
+            Edit
+          </button>
+          <button class="outline-button more-dropdown ml-2" nz-button nz-dropdown [nzDropdownMenu]="menu"
+            nzPlacement="bottomCenter" [disabled]="item.email === 'admin@purple.lk'">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+          </button>
+
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item nz-button (click)="viewSingleUser(item._id)"
+                [ngClass]="{'disabled-menu': item.email === 'admin@purple.lk'}">View</li>
+              <a nz-popconfirm [ngClass]="{'disabled-menu': item.email === 'admin@purple.lk'}" [nzOkText]="'Confirm'"
+                [nzCancelText]="'Cancel'"
+                [nzPopconfirmTitle]="'Are you sure you want to change the password for ' + item.email + '?'"
+                nzPopconfirmPlacement="bottom" (nzOnConfirm)="resetUserPassword(item._id)">
+                <li nz-menu-item nz-button>
+                  Reset Password
+                </li>
+              </a>
+
+              <a nz-popconfirm [ngClass]="{'disabled-menu': item.email === 'admin@purple.lk'}" [nzOkText]="'Confirm'"
+                [nzCancelText]="'Cancel'"
+                [nzPopconfirmTitle]="item?.active ? 'Are you sure deactivate this User?' : 'Are you sure activate this User?'"
+                nzPopconfirmPlacement="bottom" (nzOnConfirm)="toggleActive(item._id)">
+                <li nz-menu-item nz-button [ngClass]="{ 'nz-danger': item?.archived }">
+                  {{ item?.active ? 'Deactivate' : 'Activate' }}
+                </li>
+              </a>
+              <a nz-popconfirm [ngClass]="{'disabled-menu': item.email === 'admin@purple.lk'}" [nzOkText]="'Confirm'"
+                [nzCancelText]="'Cancel'"
+                [nzPopconfirmTitle]="item?.archived ? 'Are you sure unarchive this User?' : 'Are you sure archive this User?'"
+                nzPopconfirmPlacement="bottom" (nzOnConfirm)="toggleArchive(item._id)">
+                <li nz-menu-item nz-button>
+                  {{ item?.archived ? 'Unarchive' : 'Archive' }}
+                </li>
+              </a>
+
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+    </tbody>
+
+  </nz-table>
+  <div *ngIf="listOfData.length === 0" class="text-center my-5">
+    <div class="py-64 bg-[#FFF7F7] rounded-md border-[0.5px] border-[#BD1A43]">
+      <p class="text-[#BD1A43]">No Results Available</p>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-row justify-between items-center">
+  <nz-radio-group [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+    <label nz-radio-button nzValue="20" [class.nz-radio-button-wrapper-active]="pageSize == 20">20</label>
+    <label nz-radio-button nzValue="50" [class.nz-radio-button-wrapper-active]="pageSize == 50">50</label>
+    <label nz-radio-button nzValue="100" [class.nz-radio-button-wrapper-active]="pageSize == 100">100</label>
+  </nz-radio-group>
+  <nz-pagination class="mt-4 flex items-end justify-end" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+    [nzTotal]="total" (nzPageIndexChange)="onPageChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+  </nz-pagination>
+</div>

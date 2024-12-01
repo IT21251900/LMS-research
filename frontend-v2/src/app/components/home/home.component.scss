@@ -1,0 +1,84 @@
+.card-overlay{
+    background: linear-gradient(180deg, rgba(45, 46, 49, 0.00) 50%, #2D2E31 86.52%);
+}
+
+.ant-input-affix-wrapper,
+    .ant-input-affix-wrapper-status-success,
+    .ant-input-affix-wrapper-status-error,
+    .ant-input-affix-wrapper-lg {
+      border-radius: 100px ;
+      padding-left: 10px ;
+      padding-right: 15px ;
+      background-color: #171717 ;
+      background: #171717 ;
+      color: white ;
+      border: 0px ;
+      min-height: 40px ;
+    }
+
+    .ant-input {
+      background: #171717 !important;
+      color: white !important;
+    }
+
+    .ant-input-prefix {
+      margin-right: 8px;
+    }
+
+    .ant-form-item-explain-error {
+      color: #e28b90;
+    }
+
+    .ant-input-affix-wrapper-status-error {
+      color: #e28b90 !important;
+    }
+
+    input:-webkit-autofill {
+      background-color: #171717 !important;
+      color: white !important;
+      -webkit-box-shadow: 0 0 0px 1000px #171717 inset !important;
+      box-shadow: 0 0 0px 1000px #171717 inset !important;
+    }
+
+    input:-webkit-autofill::first-line {
+      color: white !important;
+    }
+
+    input:-moz-autofill {
+      background-color: #171717 !important;
+      color: white !important;
+      box-shadow: 0 0 0px 1000px #171717 inset !important;
+    }
+
+    input:-moz-autofill::first-line {
+      color: white !important;
+    }
+
+    input:-ms-input-autofill {
+      background-color: #171717 !important;
+      color: white !important;
+      box-shadow: 0 0 0px 1000px #171717 inset !important;
+    }
+
+    input[type="password"]:-webkit-autofill {
+      background-color: #171717 !important;
+      -webkit-box-shadow: 0 0 0px 1000px #171717 inset !important;
+      box-shadow: 0 0 0px 1000px #171717 inset !important;
+      color: white !important;
+    }
+
+    input[type="password"]:-moz-autofill {
+      background-color: #171717 !important;
+      box-shadow: 0 0 0px 1000px #171717 inset !important;
+      color: white !important;
+    }
+
+    input[type="password"]:-ms-input-autofill {
+      background-color: #171717 !important;
+      box-shadow: 0 0 0px 1000px #171717 inset !important;
+      color: white !important;
+    }
+
+    input[type="password"]:-webkit-autofill::first-line {
+      color: white !important;
+    }

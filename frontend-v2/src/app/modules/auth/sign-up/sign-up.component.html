@@ -1,0 +1,101 @@
+<div class="dark">
+    <div class="base-auth-configs">
+        <div class="base-bg w-sreen h-screen flex items-center justify-center">
+            <div class="m w-full">
+                <div class="flex flex-col gap-3 text-center mb-28 relative z-20">
+                    <div class="h-[50px]">
+                        <img src="../../../../assets/img/logo-lite.svg" class="w-full h-full object-contain" alt="Logo">
+                    </div>
+                    <h5>"Your Personalized Study Pal: Stay Organized, Learn Smarter!"</h5>
+                </div>
+                <div class="relative y-auto mx-auto w-6/12">
+                    <div class=" mi-card-bg p-8 rounded-2xl grid grid-cols-2 min-h-[350px] mb-28 relative z-[10]">
+                        <div class="flex flex-col gap-3">
+                            <h2 class="mi-spacing">Sign in</h2>
+                            <h5>Enter your email and password</h5>
+                        </div>
+                        <div class="flex flex-col h-full justify-between">
+                            <form nz-form [formGroup]="userForm" [nzLayout]="'vertical'" class=" mx-6 md:mx-0">
+                                <div class="flex flex-col">
+                                    <p class="mb-1">First Name</p>
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="Please input your email!">
+                                            <nz-input-group nzSize="large" [nzPrefix]="userPrefixTemplate">
+                                                <input formControlName="firstname" nz-input placeholder="Email Address" />
+                                            </nz-input-group>
+                                            <ng-template #userPrefixTemplate>
+                                            </ng-template>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <p class="mb-1">Last Name</p>
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="Please input your email!">
+                                            <nz-input-group nzSize="large" [nzPrefix]="userPrefixTemplate">
+                                                <input formControlName="lastname" nz-input placeholder="Email Address" />
+                                            </nz-input-group>
+                                            <ng-template #userPrefixTemplate>
+                                            </ng-template>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <p class="mb-1">Email</p>
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="Please input your email!">
+                                            <nz-input-group nzSize="large" [nzPrefix]="userPrefixTemplate">
+                                                <input formControlName="email" nz-input placeholder="Email Address" />
+                                            </nz-input-group>
+                                            <ng-template #userPrefixTemplate>
+                                            </ng-template>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <p class="mb-1">Password</p>
+                                    <nz-form-item class="mb-0">
+                                        <nz-form-control nzErrorTip="Please input your password!">
+                                            <nz-input-group nzSize="large" [nzPrefix]="lockPrefixTemplate"
+                                                [nzSuffix]="toggleIconTemplate">
+                                                <input [type]="passwordVisible ? 'text' : 'password'"
+                                                    formControlName="password" nz-input placeholder="Password" />
+                                            </nz-input-group>
+                                            <ng-template #lockPrefixTemplate>
+                                            </ng-template>
+                                            <ng-template #toggleIconTemplate>
+                                                <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                                                    nzTheme="outline" (click)="togglePasswordVisibility()"></i>
+                                            </ng-template>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <nz-form-item class="mb-0">
+                                        <nz-form-control nzErrorTip="Please input your password!">
+                                            <nz-input-group nzSize="large" [nzPrefix]="lockPrefixTemplate"
+                                                [nzSuffix]="toggleIconTemplate">
+                                                <input [type]="passwordVisible ? 'text' : 'password'"
+                                                    formControlName="confirmPassword" nz-input placeholder="Password" />
+                                            </nz-input-group>
+                                            <ng-template #lockPrefixTemplate>
+                                            </ng-template>
+                                            <ng-template #toggleIconTemplate>
+                                                <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                                                    nzTheme="outline" (click)="togglePasswordVisibility()"></i>
+                                            </ng-template>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </form>
+                            <div class="flex flex-row items-center justify-end gap-5 mt-5">
+                                <button class="w-fit" nz-button nzType="default" nzBlock>
+                                   Create account
+                                </button>
+                                <button class="w-fit" nz-button nzType="primary" nzBlock [disabled]="userForm.invalid" [nzLoading]="isLoading"
+                                    (click)="saveUser()">
+                                    Sign in
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glow-purple absolute top-[-150px] left-[-150px] z-[1]"></div>
+                    <div class="glow-green absolute bottom-0 right-[-200px] z-[1]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
