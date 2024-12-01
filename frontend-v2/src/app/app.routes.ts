@@ -11,6 +11,8 @@ import { NotesViewComponent } from './components/notes-view/notes-view.component
 import { SimpleMindMapGeneratorComponent } from './components/simple-mindmap-generator/simple-mindmap-generator';
 import { HomeComponent } from './components/home/home.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
+import { ChapterViewComponent } from './components/chapter-view/chapter-view.component';
+import { QuizGeneratorComponent } from './components/quiz-generator/quiz-generator.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -72,6 +74,14 @@ export const routes: Routes = [
           {
             path: 'simple-auto-mindmap-generator',
             component: SimpleMindMapGeneratorComponent ,
+          },
+          {
+            path: 'chapters',
+            component: ChapterViewComponent ,
+          },
+          {
+            path: 'quizzes',
+            component: QuizGeneratorComponent ,
           },
         ]
       },

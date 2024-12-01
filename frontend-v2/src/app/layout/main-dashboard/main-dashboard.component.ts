@@ -84,6 +84,12 @@ export class MainDashboardComponent {
       case "simple-auto-mindmap-generator":
         this.router.navigate(["/home/dashboard/simple-auto-mindmap-generator"]);
         break;
+      case "chapters":
+        this.router.navigate(["/home/dashboard/chapters"]);
+        break;
+      case "quizzes":
+        this.router.navigate(["/home/dashboard/quizzes"]);
+        break;
       case "roles":
         this.router.navigate(["/admin/roles"]);
         break;

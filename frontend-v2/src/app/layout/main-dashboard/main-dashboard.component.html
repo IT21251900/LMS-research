@@ -14,7 +14,8 @@
                 <button nz-button nzType="primary" [disabled]="router.isActive('/home/dashboard/notes', true)" (click)="routeLink('notes')">Notes</button>
                 <button nz-button nzType="primary" [disabled]="router.isActive('/home/dashboard/mindmap-generator', true)" (click)="routeLink('mindmap-generator')">Mind Map Generator</button>
                 <button nz-button nzType="primary" [disabled]="router.isActive('/home/dashboard/simple-auto-mindmap-generator', true)" (click)="routeLink('simple-auto-mindmap-generator')">Mind Map</button>
-                <button nz-button nzType="primary" >Chapters</button>
+                <button nz-button nzType="primary" [disabled]="router.isActive('/home/dashboard/chapters', true)" (click)="routeLink('chapters')">Chapters</button>
+                <button nz-button nzType="primary" [disabled]="router.isActive('/home/dashboard/quizzes', true)" (click)="routeLink('quizzes')">Quizzes</button>
             </div>
             <div class="p-4">
                 <router-outlet></router-outlet>

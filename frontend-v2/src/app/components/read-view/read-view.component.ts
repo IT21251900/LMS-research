@@ -45,6 +45,7 @@ export class ReadViewComponent {
     };
 
     traverse(json);
+    localStorage.setItem("extractedPdfContent", JSON.stringify(json));
     return result;
   }
 
