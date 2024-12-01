@@ -91,21 +91,24 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
 
     Bellow I'll proivde a template how to break the things into nodes.Use this template to generate the ermaid js input format.Don't add any of your thoughts to this.
     return the template only.Don't add any text or any special characters to it.Just give me the output like below format.
-    The format is below.
+    The format is below.Use the correct icons based on the texts.for icons only you have to use the brackets like in below format.
 
     mindmap
-  root
+  root("Artificial Intelligence")
     What is AI?
-      Artificial Intelligence refers to the simulation of human intelligence.
-      AI is programmed to think like humans and mimic their actions.
-      The goal of AI is to enable machines to perform tasks.
-      Tasks include visual perception, speech recognition, decision-making, and language translation.
+      ::icon(fa fa-users)
+      ("Artificial Intelligence refers to the simulation of human intelligence.")
+      ("AI is programmed to think like humans and mimic their actions.")
+      ("The goal of AI is to enable machines to perform tasks.")
+      ("Tasks include visual perception, speech recognition, decision-making, and language translation.")
     Applications of AI
-      AI is widely used in various industries.
-      In healthcare, AI helps diagnose diseases and predict patient outcomes.
-      It also helps develop personalized treatment plans.
-      In finance, AI is used for fraud detection.
-      AI also supports algorithmic trading and customer service automation.`;
+      ::icon(fa fa-play)
+      ("AI is widely used in various industries.")
+      ("In healthcare, AI helps diagnose diseases and predict patient outcomes.")
+      ("It also helps develop personalized treatment plans.")
+      ("In finance, AI is used for fraud detection.")
+      ("AI also supports algorithmic trading and customer service automation.")
+Only one root, use free FontAwesome icons, and follow node types "[", "(". No need to use "mermaid", "\`\`\`", or "graph TD". Respond only with code and syntax.`;
 
     // Define payload for API request
     const payload = {
@@ -275,7 +278,7 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
         .replace(/```mermaid\s*/g, "") // Remove the opening ```mermaid
         .replace(/```/g, "")
         .replace(/`/g, "") 
-        .replace(/[\[\]{}()]/g, "") // Remove the closing `
+        .replace(/[\[\]{}]/g, "") // Remove the closing `
         .trim();
 
       console.log(cleanedResponse);
