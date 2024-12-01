@@ -795,7 +795,7 @@ async function structureContentWithGPT(texts) {
     I have the following extracted content from a PDF. Each element contains a text field, path, and a page number.
     Group the content into a hierarchical JSON structure with H1, H2, H3, H4, H5, H6 headings, and paragraphs.
     Keep related text under the appropriate headings based on semantic context.
-    For each section, use the following format:
+    For each section, use the following format.you have to replace the title with mapping title with our chunks:
     {
   "Title": "Extracted PDF Content",
   "Sections": [

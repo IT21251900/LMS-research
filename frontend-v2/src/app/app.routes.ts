@@ -8,6 +8,7 @@ import { MyAcountComponent } from './components/users/my-acount/my-acount.compon
 import { MindmapGeneratorComponent } from './components/mindmap-generator/mindmap-generator.component';
 import { MainDashboardComponent } from './layout/main-dashboard/main-dashboard.component';
 import { NotesViewComponent } from './components/notes-view/notes-view.component';
+import { SimpleMindMapGeneratorComponent } from './components/simple-mindmap-generator/simple-mindmap-generator';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -55,8 +56,12 @@ export const routes: Routes = [
             component: MyAcountComponent,
           },
           {
-            path: 'mindmap-generator',
+            path: 'mindmap-generator/:id',
             component: MindmapGeneratorComponent,
+          },
+          {
+            path: 'simple-auto-mindmap-generator',
+            component: SimpleMindMapGeneratorComponent ,
           },
         ]
       },
