@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import Quill from 'quill';
 
 @Component({
   selector: 'app-notes-view',
-  imports: [],
   standalone: true,
   templateUrl: './notes-view.component.html',
-  styleUrl: './notes-view.component.scss'
+  styleUrls: ['./notes-view.component.scss'] // Use 'styleUrls' (plural) for styles
 })
-export class NotesViewComponent {
+export class NotesViewComponent implements OnInit {
+  private quill!: Quill; // Using definite assignment assertion
 
+  constructor() {}
+
+  ngOnInit(): void {
+    // Initialize the Quill editor when the component is initialized
+    this.quill = new Quill('#editor', {
+      theme: 'snow'
+    });
+  }
 }

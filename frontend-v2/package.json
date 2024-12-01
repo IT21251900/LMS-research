@@ -35,6 +35,7 @@
     "ngx-webstorage": "^18.0.0",
     "npm": "^10.8.3",
     "papaparse": "^5.4.1",
+    "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

@@ -34,8 +34,8 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["src/theme.less", "src/styles.scss"],
-            "scripts": []
+            "styles": ["src/theme.less", "src/styles.scss","https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"],
+            "scripts": [ "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"]
           },
           "configurations": {
             "production": {
@@ -93,9 +93,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
             ],
-            "scripts": []
+            "scripts": [ "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"]
           }
         }
       }
