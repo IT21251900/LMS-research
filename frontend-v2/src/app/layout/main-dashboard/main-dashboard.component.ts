@@ -21,13 +21,14 @@ export class MainDashboardComponent {
   showSecondPanel = true; // Track visibility of the second panel
   isDragging = false; // Track if the user is dragging
   initialMouseX = 0; // Store the initial mouse position during drag
-
+  title = 'miStudy';
   constructor(
     public router: Router,
   ){}
   // Toggle the split view on/off
   toggleSplitView(): void {
     this.splitViewEnabled = !this.splitViewEnabled;
+    this.routeLink('notes');
   }
 
   // Toggle the visibility of either the first or second panel
