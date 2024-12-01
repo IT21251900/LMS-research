@@ -54,7 +54,7 @@ export class LoginComponent {
     private router: Router
   ) {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(["/home/dashboard"]);
+      this.router.navigate(["/home"]);
     }
   }
 
@@ -99,7 +99,7 @@ export class LoginComponent {
     try {
       console.log(this.loginForm.value);
       const userData = await this.authService.login(this.loginForm.value);
-      this.router.navigate(["/home/dashboard"]);
+      this.router.navigate(["/home"]);
     } catch (e: any) {
       this.actionMessage = {
         display: true,

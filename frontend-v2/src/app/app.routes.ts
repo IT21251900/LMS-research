@@ -9,6 +9,7 @@ import { MindmapGeneratorComponent } from './components/mindmap-generator/mindma
 import { MainDashboardComponent } from './layout/main-dashboard/main-dashboard.component';
 import { NotesViewComponent } from './components/notes-view/notes-view.component';
 import { SimpleMindMapGeneratorComponent } from './components/simple-mindmap-generator/simple-mindmap-generator';
+import { HomeComponent } from './components/home/home.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -26,6 +27,10 @@ export const routes: Routes = [
     component: AdminLayoutComponent,
     // canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        component: HomeComponent,
+      },
       {
         path: 'dashboard',
         component: MainDashboardComponent,
