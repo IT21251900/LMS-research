@@ -5,6 +5,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent {
 
   documents: { title: string; url: string; date: string; readTime: string; content: string[] }[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     // Initialize with a sample document if needed
     this.documents.push({
       title: 'The Ultimate Guide to Study Techniques.pdf',
@@ -49,5 +50,9 @@ export class HomeComponent {
     };
 
     this.documents.push(newDocument);
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['home/dashboard']);
   }
 }
