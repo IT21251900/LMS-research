@@ -1,11 +1,15 @@
 <!-- read-view.component.html -->
-<div>
-    <h1>{{ jsonData?.title }}</h1>
-    <h2>{{ jsonData?.mode }}</h2>
-    <ul>
-      <li *ngFor="let item of listData">{{ item }}</li>
-    </ul>
+<div *ngIf="isLoading">Loading data...</div>
+
+<div *ngIf="!isLoading && extractedData">
+  <div *ngFor="let text of extractedData">
+    <p>{{ text.trim() }}</p> 
   </div>
+</div>
+
+<div *ngIf="!isLoading && !extractedData">
+  No data available.
+</div>
 
 
 
