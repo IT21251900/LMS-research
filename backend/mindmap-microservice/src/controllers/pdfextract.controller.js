@@ -382,7 +382,6 @@ async function processExtractedContent(extractedFilePath) {
 
     // Combine the cleaned strings into a single JSON object
     let combinedDataString = `{
-  "Title": "Combined Extracted PDF Content",
   "Sections": [
     ${structuredDataString.join(",")}
   ]
@@ -458,9 +457,8 @@ async function structureContentWithGPT(texts) {
     I have the following extracted content from a PDF. Each element contains a text field, path, and a page number.
     Group the content into a hierarchical JSON structure with H1, H2, H3, H4, H5, H6 headings, and paragraphs.
     Keep related text under the appropriate headings based on semantic context.
-    For each section, use the following format.you have to replace the title with mapping title with our chunks:
+    For each section, use the following format:
     {
-  "Title": "Extracted PDF Content",
   "Sections": [
     {
       "H1": "Chapter 1",
