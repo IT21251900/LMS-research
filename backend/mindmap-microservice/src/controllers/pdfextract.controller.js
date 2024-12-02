@@ -280,6 +280,7 @@ async function getExtractedElements(filePathJson) {
               text: element.Text.trim(), 
               font: {
                   family: element.Font.family_name, 
+                  isH1: element.Path.endsWith("/H1"),
                   altFamily: element.Font.alt_family_name, 
                   type: element.Font.font_type, 
                   size: element.TextSize, 
