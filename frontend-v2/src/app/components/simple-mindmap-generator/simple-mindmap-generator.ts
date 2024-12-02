@@ -22,6 +22,15 @@ export class SimpleMindMapGeneratorComponent implements OnInit{
   maxTokens: number = 2000;
   mermaidString: string | null = null;
   temperature: number = 0.7;
+  zoomLevel: number = 1;
+
+  zoomIn() {
+    this.zoomLevel += 0.1; 
+  }
+
+  zoomOut() {
+    this.zoomLevel = Math.max(0.1, this.zoomLevel - 0.1); 
+  }
   promptTemplate: string =`Create a mermaid mindmap based on user input like these examples:
 brainstorming mindmap
 mindmap
