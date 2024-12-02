@@ -11,7 +11,7 @@ const client = weaviate.client({
   },
 });
 
-console.log('Weaviate API Key:', process.env.WEAVIATE_API_KEY);
+// console.log('Weaviate API Key:', process.env.WEAVIATE_API_KEY);
 
 // Check if Weaviate is ready
 const checkWeaviateStatus = async () => {
