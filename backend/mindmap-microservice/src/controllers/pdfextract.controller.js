@@ -274,7 +274,24 @@ async function getExtractedElements(filePathJson) {
   const extractedContent = JSON.parse(rawData);
   
   if (extractedContent.elements) {
-      return extractedContent.elements.map(element => element.Text).filter(text => text);
+      // Map the elements to include both text and font details
+      return extractedContent.elements.map(element => {
+          return {
+              text: element.Text.trim(), 
+              font: {
+                  family: element.Font.family_name, 
+                  altFamily: element.Font.alt_family_name, 
+                  type: element.Font.font_type, 
+                  size: element.TextSize, 
+                  weight: element.Font.weight, 
+                  italic: element.Font.italic, 
+                  monospaced: element.Font.monospaced, 
+                  embedded: element.Font.embedded, 
+                  encoding: element.Font.encoding, 
+                  color: element.Font.color || 'white', 
+              }
+          };
+      }).filter(item => item.text); // Ensure text exists
   } else {
       throw new Error("No elements found in the extracted content.");
   }

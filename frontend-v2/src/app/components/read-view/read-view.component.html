@@ -1,15 +1,16 @@
 <!-- read-view.component.html -->
 <div *ngIf="isLoading">Loading data...</div>
 
-<div *ngIf="!isLoading && extractedData">
-  <div *ngFor="let text of extractedData">
-    <p>{{ text.trim() }}</p> 
+<div *ngIf="!isLoading && extractedData.length > 0">
+  <div *ngFor="let element of extractedData">
+    <p [ngStyle]="getDynamicStyles(element.font)">{{ element.text.trim() }}</p>
   </div>
 </div>
 
-<div *ngIf="!isLoading && !extractedData">
+<div *ngIf="!isLoading && extractedData.length === 0">
   No data available.
 </div>
+
 
 
 

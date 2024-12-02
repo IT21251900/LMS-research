@@ -27,14 +27,25 @@ export class ReadViewComponent {
   async loadPdfExtractedData(): Promise<void> {
     this.isLoading = true; 
     try {
-        const response = await this.textExtractService.getpdfcontentExtractElements();
-        
-        this.extractedData = response; 
-        console.log("Extracted Data:", this.extractedData);
+      const response = await this.textExtractService.getpdfcontentExtractElements();
+      this.extractedData = response; 
+      console.log("Extracted Data:", this.extractedData);
     } catch (error) {
-        console.error("Error loading data:", error);
+      console.error("Error loading data:", error);
     } finally {
-        this.isLoading = false; 
+      this.isLoading = false; 
     }
   }
+
+  getDynamicStyles(font: any): any {
+    return {
+        'font-size': `${font.size}`,
+        'font-weight': font.weight === 700 ? 'bold' : 'normal',
+        'font-family': font.family,
+        'font-style': font.italic ? 'italic' : 'normal', 
+        'color': font.color,
+        'margin-bottom': '10px' 
+    };
+}
+
 }
