@@ -1,6 +1,7 @@
 import { generateShortQuiz } from '../services/shortQuizService.js';
 import { storeQuizInWeaviate } from '../services/storeQuizInWeaviate.js';
 import axios from 'axios';
+import client from '../../configs/weaviateConfig.js';
 
 // Create Quiz: Generate quiz questions based on provided content
 export const createSAQuiz = async (req, res) => {
@@ -53,4 +54,49 @@ export const createSAQuiz = async (req, res) => {
   }
 
 
+};
+
+// Get a single quiz by ID
+export const getSAQuizById = async (req, res) => {
+  const { id } = req.params;  
+
+  try {
+    const response = await client.graphql
+      .get()
+      .withClassName('Quiz')
+      .withFields('title contentId difficultyLevel question correctAnswer')
+      .withWhere({
+        path: ['id'],
+        operator: 'Equal',
+        valueString: id, 
+      })
+      .do();
+
+    if (!response || !response.data || response.data.Get.Quiz.length === 0) {
+      return res.status(404).json({ message: 'Quiz not found.' });
+    }
+
+    res.status(200).json({ quiz: response.data.Get.Quiz[0] });
+  } catch (error) {
+    console.error('Error fetching quiz:', error.message);
+    res.status(500).json({ message: 'Failed to fetch quiz.', error: error.message });
+  }
+};
+
+// Get all quizzes
+export const getAllSAQuizzes = async (req, res) => {
+  try {
+    const response = await client.data.getter()
+      .withClassName('Quiz')
+      .do();
+
+    if (!response || response.error) {
+      return res.status(404).json({ message: 'No quizzes found.' });
+    }
+
+    res.status(200).json({ quizzes: response });
+  } catch (error) {
+    console.error('Error fetching quizzes:', error.message);
+    res.status(500).json({ message: 'Failed to fetch quizzes.', error: error.message });
+  }
 };
