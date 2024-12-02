@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TextExtractService } from '../../core/services/textextract.service';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-chapter-view',
@@ -12,10 +13,9 @@ import { TextExtractService } from '../../core/services/textextract.service';
 export class ChapterViewComponent {
   isLoading: boolean = false;
   extractedData: any[] = []; // Assuming the response is an array
-  filteredData: any[] = [];
-  h1Topics : any;
+  h1Topics : any[] = []; // Assuming h1Topics is an array
 
-  constructor(private textExtractService: TextExtractService) {}
+  constructor(private textExtractService: TextExtractService, private router: Router) {}
 
   ngOnInit() {
     this.loadPdfExtractedData();
@@ -26,12 +26,16 @@ export class ChapterViewComponent {
     try {
       const response = await this.textExtractService.getpdfcontentExtractElements();
       this.extractedData = response;
-  
-      // Extract H1 topics
+
+      // Extract H1 topics with page numbers
       this.h1Topics = this.extractedData
         .filter(element => element.font.isH1)
-        .map(element => element.text.trim());
-  
+        .map(element => ({
+          text: element.text.trim(),
+          page: element.page, 
+          id: `section-${element.page}` 
+        }));
+
       console.log("H1 Topics:", this.h1Topics);
     } catch (error) {
       console.error("Error loading data:", error);
@@ -39,17 +43,8 @@ export class ChapterViewComponent {
       this.isLoading = false;
     }
   }
-  
-  
 
-  getDynamicStyles(font: any): any {
-    return {
-      'font-size': `${font.size}`,
-      'font-weight': font.weight === 700 ? 'bold' : 'normal',
-      'font-family': font.family,
-      'font-style': font.italic ? 'italic' : 'normal',
-      'color': font.color,
-      'margin-bottom': '10px'
-    };
+  highlightSection(page: number): void {
+    this.router.navigate(['home/dashboard/reader-view'], { queryParams: { page: page } }); // Navigate to the read view with page number
   }
 }

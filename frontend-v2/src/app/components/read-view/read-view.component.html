@@ -1,15 +1,22 @@
 <!-- read-view.component.html -->
-<div *ngIf="isLoading">Loading data...</div>
+<div *ngIf="isLoading" class="text-center text-gray-500">Loading data...</div>
 
 <div *ngIf="!isLoading && extractedData.length > 0">
   <div *ngFor="let element of extractedData">
-    <p [ngStyle]="getDynamicStyles(element.font)">{{ element.text.trim() }}</p>
+    <p 
+      [ngStyle]="getDynamicStyles(element.font)" 
+      [ngClass]="{ 'bg-blue-300 border border-blue-400 p-1 rounded': element.text.trim() === highlightedText }"
+    >
+      {{ element.text.trim() }}
+    </p>
   </div>
 </div>
 
-<div *ngIf="!isLoading && extractedData.length === 0">
+<div *ngIf="!isLoading && extractedData.length === 0" class="text-center text-gray-500">
   No data available.
 </div>
+
+
 
 
 

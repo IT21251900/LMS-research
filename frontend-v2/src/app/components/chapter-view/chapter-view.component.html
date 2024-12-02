@@ -2,7 +2,9 @@
 
 <div *ngIf="!isLoading && h1Topics.length > 0">
   <ul>
-    <li *ngFor="let topic of h1Topics">{{ topic }}</li>
+    <li *ngFor="let topic of h1Topics">
+      <a (click)="highlightSection(topic.page)">{{ topic.text }}</a> <!-- Link to section -->
+    </li>
   </ul>
 </div>
 

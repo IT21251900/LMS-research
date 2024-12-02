@@ -278,6 +278,7 @@ async function getExtractedElements(filePathJson) {
       return extractedContent.elements.map(element => {
           return {
               text: element.Text.trim(), 
+              page: element.Page,
               font: {
                   family: element.Font.family_name, 
                   isH1: element.Path.endsWith("/H1"),
