@@ -269,6 +269,17 @@ async function getLatestExtractedFolder() {
   return null; 
 }
 
+async function getExtractedElements(filePathJson) {
+  const rawData = fs.readFileSync(filePathJson, "utf8");
+  const extractedContent = JSON.parse(rawData);
+  
+  if (extractedContent.elements) {
+      return extractedContent.elements.map(element => element.Text).filter(text => text);
+  } else {
+      throw new Error("No elements found in the extracted content.");
+  }
+}
+
 async function processExtractedContent(extractedFilePath) {
   try {
     const rawData = fs.readFileSync(extractedFilePath, "utf8");
@@ -585,4 +596,4 @@ async function getMindMapController(id) {
   }
 }
 
-export { extractPdfContent, processExtractedContent, getMindMapController, getLatestExtractedFolder };
+export { extractPdfContent, processExtractedContent, getMindMapController, getLatestExtractedFolder,getExtractedElements };
