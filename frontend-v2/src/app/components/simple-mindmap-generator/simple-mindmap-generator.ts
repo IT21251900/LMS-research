@@ -184,7 +184,7 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
   async downloadMindMap() {
     const mindMapElement = document.querySelector(".mermaid") as HTMLElement;
     if (mindMapElement) {
-      const canvas = await html2canvas(mindMapElement);
+      const canvas = await html2canvas(mindMapElement, { useCORS: true });
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
       link.download = "mindmap.png";

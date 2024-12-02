@@ -22,6 +22,7 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
   extractedData: any = null; // Variable to store the extracted data
   mermaidString: string | null = null; // Variable to store the Mermaid string
   private apiUrl = "https://api.openai.com/v1/chat/completions";
+  zoomLevel: number = 1;
 
   constructor(
     private mindmapservice: MindMapService,
@@ -41,6 +42,13 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
     // });
   }
 
+  zoomIn() {
+    this.zoomLevel += 0.1; 
+  }
+
+  zoomOut() {
+    this.zoomLevel = Math.max(0.1, this.zoomLevel - 0.1); 
+  }
   ngAfterViewChecked() {
     if (this.mermaidString) {
       try {
@@ -260,6 +268,9 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
                     Reduced Disruption during expansion.
                     Future-Proofing for dynamic environments.`
       ];
+
+    
+  
       // Log response to understand its structure
       console.log("Response received:", response);
 
@@ -315,7 +326,7 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
   async downloadMindMap() {
     const mindMapElement = document.querySelector(".mermaid") as HTMLElement;
     if (mindMapElement) {
-      const canvas = await html2canvas(mindMapElement);
+      const canvas = await html2canvas(mindMapElement, { useCORS: true });
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
       link.download = "mindmap.png";
