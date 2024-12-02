@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ElementRef,ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { Router } from '@angular/router';
+import { FileUploadService } from '../../core/services/fileupload.service';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +16,11 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
 
   documents: { title: string; url: string; date: string; readTime: string; content: string[] }[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router,private fileUploadService: FileUploadService) {
     // Initialize with a sample document if needed
     this.documents.push({
       title: 'The Ultimate Guide to Study Techniques.pdf',
@@ -36,20 +38,59 @@ export class HomeComponent {
     });
   }
 
-  addDocument() {
+  triggerFileUpload() {
+    this.fileInput.nativeElement.click();
+  }
 
-    const newDocument = {
-      title: 'New Document Title.pdf', 
-      url: 'newurl.example.com', 
-      date: new Date().toLocaleDateString(),
-      readTime: '2hr Read',        
-      content: [
-        '1. New Content Item 1',
-        '2. New Content Item 2',
-      ]
-    };
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
 
-    this.documents.push(newDocument);
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.addDocument(file);
+    } else {
+      console.error('No file selected.');
+    }
+  }
+
+  // addDocument() {
+
+  //   const newDocument = {
+  //     title: 'New Document Title.pdf', 
+  //     url: 'newurl.example.com', 
+  //     date: new Date().toLocaleDateString(),
+  //     readTime: '2hr Read',        
+  //     content: [
+  //       '1. New Content Item 1',
+  //       '2. New Content Item 2',
+  //     ]
+  //   };
+
+  //   this.documents.push(newDocument);
+  // }
+
+  addDocument(file: File) {
+    this.fileUploadService.uploadPdf(file)
+      .then((response) => {
+        console.log('Upload successful:', response);
+        // Add additional logic to process and add the document
+      })
+      .catch((error) => {
+        console.error('Error uploading PDF:', error);
+      });
+
+      const newDocument = {
+        title: 'New Document Title.pdf', 
+        url: 'newurl.example.com', 
+        date: new Date().toLocaleDateString(),
+        readTime: '2hr Read',        
+        content: [
+          '1. New Content Item 1',
+          '2. New Content Item 2',
+        ]
+      };
+  
+      this.documents.push(newDocument);
   }
 
   navigateToDashboard() {
