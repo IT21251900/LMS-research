@@ -10,13 +10,13 @@ const openai = new OpenAI({
 });
 
 // Function to generate quiz questions based on content
-export const generateQuiz = async (content) => {
+export const generateQuiz = async (content, difficultyLevel) => {
     const prompt = `
         You are a professional quiz generator. Based on the following content, create 10 multiple-choice quiz questions. 
         Each question should have one correct answer and 3 incorrect options. Provide the questions in valid JSON format:
 
         {
-            "difficulty_level": 50,
+            "difficultyLevel": ${difficultyLevel},
             "quiz_questions": [
                 {
                     "Question": "Your question here",
@@ -26,8 +26,10 @@ export const generateQuiz = async (content) => {
             ]
         }
 
-        The quiz should be set to a difficulty level of 50 (on a scale from 0 to 100), meaning it should be moderately challenging.
-
+        The difficulty level MUST be exactly ${difficultyLevel}. 
+        - If the difficulty level is closer to 0, the questions should be easier and more straightforward.
+        - If the difficulty level is closer to 100, the questions should be more complex, requiring deeper knowledge and critical thinking.
+    
         Content:
         ${JSON.stringify(content)}
     `;

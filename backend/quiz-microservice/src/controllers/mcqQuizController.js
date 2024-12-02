@@ -1,12 +1,24 @@
-import { generateQuiz } from '../services/quizService.js'; 
+import { generateQuiz } from '../services/mcqQuizService.js'; 
 import axios from 'axios';
-import Quiz from '../schemes/Quiz.js';
+import Quiz from '../schemes/mcqQuizSchema.js';
 
 export async function createQuiz(req, res) {
-    const { contentId } = req.body;
+    const { contentId, userID, difficultyLevel } = req.body;
 
+    // Validate required fields
     if (!contentId) {
         return res.status(400).json({ message: 'Content ID is required.' });
+    }
+    if (!userID) {
+        return res.status(400).json({ message: 'User ID is required.' });
+    }
+    if (difficultyLevel === undefined || difficultyLevel === null) {
+        return res.status(400).json({ message: 'Difficulty Level is required.' });
+    }
+
+    // Ensure difficultyLevel is a number between 0 and 100
+    if (difficultyLevel < 0 || difficultyLevel > 100) {
+        return res.status(400).json({ message: 'Difficulty Level must be between 0 and 100.' });
     }
 
     try {
@@ -25,7 +37,7 @@ export async function createQuiz(req, res) {
          console.log('Content Title:', contentTitle);
 
         // Generate quiz questions using OpenAI model
-        const questions = await generateQuiz(contentData); 
+        const questions = await generateQuiz(contentData, difficultyLevel); 
 
         // Ensure questions are generated
         if (!questions || questions.length === 0) {
@@ -36,6 +48,8 @@ export async function createQuiz(req, res) {
         const quiz = new Quiz({
             title: `Quiz for ${contentTitle}`,
             contentId,
+            userID,                
+            difficultyLevel,
             questions,
         });
 
