@@ -8,6 +8,11 @@
     <span class="button-label">Generate</span>
   </button>
 
+  <button class="icon-button-v2" (click)="downloadMindMap()">
+    <i class="fas fa-download"></i>
+  </button>
+  
+
   <div class="overflow-auto" *ngIf="!isLoading && extractedData">
     <div class="mermaid"></div>
     <div *ngIf="mermaidString" class="mermaid">

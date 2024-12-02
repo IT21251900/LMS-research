@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import mermaid from 'mermaid';
+import html2canvas from "html2canvas";
 import { OPENAI_API_KEY } from '../../../environments/environment';
 
 @Component({
@@ -179,4 +180,17 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
       }
     }
   }
+
+  async downloadMindMap() {
+    const mindMapElement = document.querySelector(".mermaid") as HTMLElement;
+    if (mindMapElement) {
+      const canvas = await html2canvas(mindMapElement);
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "mindmap.png";
+      link.click();
+    } else {
+      console.error("Mind map element not found for download.");
+    }
+}
 }

@@ -35,6 +35,27 @@
   font-weight: bold;
 }
 
+.icon-button-v2 {
+  bottom: 10px; /* Position it 10 pixels from the bottom */
+  right: 100px; /* Keep it 10 pixels from the right */
+  width: auto;
+  height: 50px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, green, rgb(241, 53, 191), yellow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
 .icon-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;

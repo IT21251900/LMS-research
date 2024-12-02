@@ -5,6 +5,7 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import mermaid from "mermaid";
+import html2canvas from "html2canvas";
 import { HttpClient } from "@angular/common/http";
 import { environment, OPENAI_API_KEY } from "../../../environments/environment";
 
@@ -310,4 +311,18 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
       return null; 
     }
   }
+
+  async downloadMindMap() {
+    const mindMapElement = document.querySelector(".mermaid") as HTMLElement;
+    if (mindMapElement) {
+      const canvas = await html2canvas(mindMapElement);
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "mindmap.png";
+      link.click();
+    } else {
+      console.error("Mind map element not found for download.");
+    }
+}
+
 }

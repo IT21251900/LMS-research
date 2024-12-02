@@ -76,3 +76,24 @@
     height: 16px;
     fill: white;
 }
+
+.icon-button-v2 {
+  position: absolute;
+  top: 800px;
+  right: 10px;
+  width: auto;
+  height: 50px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, green, rgb(241, 53, 191), yellow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  }
