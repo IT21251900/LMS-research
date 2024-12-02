@@ -10,5 +10,5 @@ import {AdminLayoutComponent} from "./layout/admin-layout/admin-layout.component
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'admin-web';
+  title = 'miStudy';
 }

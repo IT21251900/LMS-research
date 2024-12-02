@@ -10,29 +10,30 @@
           </div>
           </div>
           <ul nz-menu nzMode="inline" class="sider-menu">
-            <li nz-submenu nzTitle="Users" nzIcon="user" [nzOpen]="openSubmenu === 1"
+            <li nz-submenu nzTitle="Home" nzIcon="home" [nzOpen]="openSubmenu === 1"
               (nzOpenChange)="toggleSubmenu(1, $event)">
               <ul>
-                <li nz-menu-item nzSelected (click)="routeLink('users')"
-                  [nzSelected]="router.isActive('home/dashboard/users', true)">View Users</li>
-                <li nz-menu-item (click)="routeLink('user-add')"
-                  [nzSelected]="router.isActive('/admin/users/add-edit', true)">Add User</li>
+                <li nz-menu-item nzSelected (click)="routeLink('home')"
+                  [nzSelected]="router.isActive('home', true)">Files</li>
+                <!-- <li nz-menu-item (click)="routeLink('user-add')"
+                  [nzSelected]="router.isActive('/admin/users/add-edit', true)">Add User</li> -->
                 <!-- <li nz-menu-item (click)="routeLink('roles')" [nzSelected]="router.isActive('/admin/roles', true)">View
                   Roles</li>
                 <li nz-menu-item (click)="routeLink('roles-add')"
                   [nzSelected]="router.isActive('/admin/roles/add-edit', true)">Add Role</li> -->
               </ul>
             </li>
-            <li nz-submenu nzTitle="subnav 2" nzIcon="laptop" [nzOpen]="openSubmenu === 2"
+            <li nz-submenu nzTitle="Sessions" nzIcon="book" [nzOpen]="openSubmenu === 2"
               (nzOpenChange)="toggleSubmenu(2, $event)">
               <ul>
-                <li nz-menu-item>option5</li>
-                <li nz-menu-item>option6</li>
+                <li nz-menu-item nzSelected (click)="routeLink('sessions')"
+                [nzSelected]="router.isActive('/home/sessions', true)">History</li>
+                <!-- <li nz-menu-item>option6</li>
                 <li nz-menu-item>option7</li>
-                <li nz-menu-item>option8</li>
+                <li nz-menu-item>option8</li> -->
               </ul>
             </li>
-            <li nz-submenu nzTitle="subnav 3" nzIcon="notification" [nzOpen]="openSubmenu === 3"
+            <!-- <li nz-submenu nzTitle="subnav 3" nzIcon="notification" [nzOpen]="openSubmenu === 3"
               (nzOpenChange)="toggleSubmenu(3, $event)">
               <ul>
                 <li nz-menu-item>option9</li>
@@ -40,7 +41,7 @@
                 <li nz-menu-item>option11</li>
                 <li nz-menu-item>option12</li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="w-full rounded-md py-3 pr-3 flex items-center ">

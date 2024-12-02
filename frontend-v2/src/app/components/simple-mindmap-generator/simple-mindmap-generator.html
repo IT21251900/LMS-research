@@ -1,0 +1,77 @@
+<div class="container">
+  <div *ngIf="activeTab === 'Mindmapping'" class="mindmap-container">
+    <!-- Display Generated Mindmap -->
+    <div *ngIf="result" class="result-container">
+      <div class="mermaid" [innerHTML]="result"></div>
+    </div>
+
+    <!-- Input field at the bottom -->
+    <div class="input-container">
+      <textarea
+        id="prompt"
+        [(ngModel)]="prompt"
+        class="form-control gpt-input"
+        placeholder="Type your prompt here..."
+      ></textarea>
+      <button
+        class="btn btn-primary gpt-button"
+        (click)="callOpenAi()"
+        [disabled]="!prompt"
+        title="Send"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          class="send-icon"
+        >
+          <path
+            d="M15.854.146a.5.5 0 0 0-.569-.093l-15 7a.5.5 0 0 0 0 .894l15 7a.5.5 0 0 0 .724-.561L13.5 8 15.98.707a.5.5 0 0 0-.126-.56ZM6.349 7.554 2.5 8l3.849.446 5.086 4.573L6.349 7.554ZM2.5 8 6.349 6.446l5.086 4.573L6.349 6.446 2.5 8Z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Settings Tab -->
+  <div *ngIf="activeTab === 'Settings'">
+    <div class="form-group">
+      <label for="model">Model:</label>
+      <select id="model" [(ngModel)]="model" class="form-control">
+        <option value="gpt-4">GPT-4</option>
+        <option value="gpt-3.5">GPT-3.5</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="maxTokens">Max Tokens:</label>
+      <input
+        id="maxTokens"
+        [(ngModel)]="maxTokens"
+        type="number"
+        class="form-control"
+        min="1"
+      />
+    </div>
+    <div class="form-group">
+      <label for="temperature">Temperature:</label>
+      <input
+        id="temperature"
+        [(ngModel)]="temperature"
+        type="number"
+        class="form-control"
+        step="0.1"
+        min="0"
+        max="1"
+      />
+    </div>
+    <div class="form-group">
+      <label for="promptTemplate">Prompt Template:</label>
+      <textarea
+        id="promptTemplate"
+        [(ngModel)]="promptTemplate"
+        class="form-control"
+        rows="4"
+      ></textarea>
+    </div>
+  </div>
+</div>

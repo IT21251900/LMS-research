@@ -9,6 +9,8 @@ import { MindmapGeneratorComponent } from './components/mindmap-generator/mindma
 import { QuizDetailComponent } from './components/quiz-detail/quiz-detail.component';
 import { AllQuizzesComponent } from './components/quiz-detail/all-quizzes.component';
 
+import { MainAutoMindmapGeneratorComponent } from './components/main-auto-mindmap-generator/main-auto-mindmap-generator.component';
+
 export const routes: Routes = [
   {
     path: 'auth',
@@ -58,6 +60,10 @@ export const routes: Routes = [
       { 
         path: 'quiz-generator/:id', 
         component: QuizDetailComponent 
+      },
+      {
+        path: 'auto-mindmap-generator',
+        component: MainAutoMindmapGeneratorComponent,
       },
     ]
   }

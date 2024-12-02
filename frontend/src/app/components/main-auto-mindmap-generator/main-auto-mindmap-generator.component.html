@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="tabs">
+      <div 
+        class="tab" 
+        [class.active]="activeTab === 'Mindmapping'" 
+        (click)="activeTab = 'Mindmapping'"
+      >
+        Mindmapping
+      </div>
+      <div 
+        class="tab" 
+        [class.active]="activeTab === 'Settings'" 
+        (click)="activeTab = 'Settings'"
+      >
+        Settings
+      </div>
+    </div>
+  
+    <!-- Mindmapping Tab -->
+    <div *ngIf="activeTab === 'Mindmapping'">
+      <div class="form-group">
+        <label for="prompt">Enter Prompt:</label>
+        <textarea 
+          id="prompt" 
+          [(ngModel)]="prompt" 
+          class="form-control" 
+          rows="4"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <button 
+          class="btn btn-primary" 
+          (click)="callOpenAi()"
+        >
+          Generate Mindmap
+        </button>
+      </div>
+  
+      <div *ngIf="result" class="result-container">
+        <div class="result-header">
+          <h4>Generated Mindmap</h4>
+        </div>
+        <!-- Use innerHTML for rendering Mermaid syntax -->
+        <div class="mermaid" [innerHTML]="result"></div>
+      </div>   
+    </div>
+      
+  
+    <!-- Settings Tab -->
+    <div *ngIf="activeTab === 'Settings'">
+      <div class="form-group">
+        <label for="model">Model:</label>
+        <select 
+          id="model" 
+          [(ngModel)]="model" 
+          class="form-control"
+        >
+          <option value="gpt-4">GPT-4</option>
+          <option value="gpt-3.5">GPT-3.5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="maxTokens">Max Tokens:</label>
+        <input 
+          id="maxTokens" 
+          [(ngModel)]="maxTokens" 
+          type="number" 
+          class="form-control" 
+          min="1"
+        />
+      </div>
+      <div class="form-group">
+        <label for="temperature">Temperature:</label>
+        <input 
+          id="temperature" 
+          [(ngModel)]="temperature" 
+          type="number" 
+          class="form-control" 
+          step="0.1" 
+          min="0" 
+          max="1"
+        />
+      </div>
+      <div class="form-group">
+        <label for="promptTemplate">Prompt Template:</label>
+        <textarea 
+          id="promptTemplate" 
+          [(ngModel)]="promptTemplate" 
+          class="form-control" 
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  

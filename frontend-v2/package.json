@@ -21,6 +21,9 @@
     "@angular/platform-browser-dynamic": "^19.0.1",
     "@angular/router": "^19.0.1",
     "@ant-design/icons-angular": "^18.0.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.1",
+    "@fortawesome/free-regular-svg-icons": "^6.7.1",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "antd": "^5.22.2",
     "country-calling-code": "^0.0.3",
     "crypto-js": "^4.2.0",
@@ -32,6 +35,7 @@
     "ngx-webstorage": "^18.0.0",
     "npm": "^10.8.3",
     "papaparse": "^5.4.1",
+    "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

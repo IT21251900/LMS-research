@@ -39,10 +39,8 @@
     flex-grow: 1;
     max-width: 1800px;
     min-width: 400px;
-    overflow-x: auto; /* Scroll when content overflows */
+    overflow: auto; /* Scroll when content overflows */
   }
-
-
 
   .tabs{
     .ant-btn-primary {

@@ -1,9 +1,17 @@
-<div class="w-full overflow-x-auto">
-    <div class="bg-[#3D3F44] rounded-t-xl p-4 ">
-        <p class="text-white">Mind Maps</p>
-    </div>
-    <div class="p-4 bg-[#2D2E31] min-h-screen">
+<div class="mindmap-generator-container" style="position: relative;">
 
+  <button 
+    class="icon-button" 
+    (click)="loadPdfExtractedData()" 
+    [disabled]="isLoading">
+    <span class="icon"></span>
+    <span class="button-label">Generate</span>
+  </button>
+
+  <div class="overflow-auto" *ngIf="!isLoading && extractedData">
+    <div class="mermaid"></div>
+    <div *ngIf="mermaidString" class="mermaid">
+      {{ mermaidString }}
     </div>
-    
+  </div>
 </div>
