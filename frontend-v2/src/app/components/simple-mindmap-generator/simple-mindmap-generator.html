@@ -1,93 +1,63 @@
-<div class="container">
-  <div *ngIf="activeTab === 'Mindmapping'" class="mindmap-container">
-    <!-- Display Generated Mindmap -->
-    <div *ngIf="result" class="result-container">
-      <div class="mermaid" [innerHTML]="result"></div>
+<div class="">
+  <div class="w-full overflow-x-auto">
+    <div class="bg-[#3D3F44] rounded-t-xl p-4 ">
+      <div class="flex flex-row justify-between">
+        <p class="text-white">Prompt Minds</p>
+        <div class="flex flex-row gap-2 zoom-controls">
+          <button (click)="zoomIn()" class="zoom-button flex flex-row gap-2 items-center hover:text-[#96baf1]" aria-label="Zoom In">
+            <i class="fas fa-search-plus"></i> 
+            <span class="tooltip">Zoom In</span>
+          </button>
+          <button (click)="zoomOut()" class="zoom-button flex flex-row gap-2 items-center hover:text-[#96baf1] " aria-label="Zoom Out">
+            <i class="fas fa-search-minus"></i> 
+            <span class="tooltip">Zoom Out</span>
+          </button>
+        </div>
+      </div>
+
     </div>
+    <div class=" bg-[#2D2E31] p-4 min-h-[72vh] rounded-b-xl relative">
 
-    <button class="icon-button-v2" (click)="downloadMindMap()">
-      <i class="fas fa-download"></i>
-    </button>
-
-     <!-- Zoom In and Zoom Out buttons -->
-  <div class="zoom-controls">
-    <button (click)="zoomIn()" class="zoom-button" aria-label="Zoom In">
-      <i class="fas fa-search-plus"></i> <!-- Zoom In Icon -->
-      <span class="tooltip">Zoom In</span>
-    </button>
-    <button (click)="zoomOut()" class="zoom-button" aria-label="Zoom Out">
-      <i class="fas fa-search-minus"></i> <!-- Zoom Out Icon -->
-      <span class="tooltip">Zoom Out</span>
-    </button>
-  </div>
-
-    <!-- Input field at the bottom -->
-    <div class="input-container">
-      <textarea
-        id="prompt"
-        [(ngModel)]="prompt"
-        class="form-control gpt-input"
-        placeholder="Type your prompt here..."
-      ></textarea>
-      <button
-        class="btn btn-primary gpt-button"
-        (click)="callOpenAi()"
-        [disabled]="!prompt"
-        title="Send"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-          class="send-icon"
-        >
-          <path
-            d="M15.854.146a.5.5 0 0 0-.569-.093l-15 7a.5.5 0 0 0 0 .894l15 7a.5.5 0 0 0 .724-.561L13.5 8 15.98.707a.5.5 0 0 0-.126-.56ZM6.349 7.554 2.5 8l3.849.446 5.086 4.573L6.349 7.554ZM2.5 8 6.349 6.446l5.086 4.573L6.349 6.446 2.5 8Z"
-          />
-        </svg>
+      <button class="absolute bottom-3 right-3  bg-[#A2C3F5] hover:bg-[#96baf1] hover:scale-110 rounded-full min-h-10 min-w-10 text-black" (click)="downloadMindMap()">
+        <i class="fas fa-download"></i>
       </button>
+
+      <div *ngIf="activeTab === 'Mindmapping'" class="mindmap-container">
+        <div *ngIf="result" class="result-container">
+          <div class="mermaid" [innerHTML]="result"></div>
+        </div>
+
+        <div class="input-container">
+          <textarea id="prompt" [(ngModel)]="prompt" class="form-control gpt-input" placeholder="Type your prompt here..."></textarea>
+          <button class="btn btn-primary gpt-button bg-[#A2C3F5] hover:bg-[#96baf1] hover:scale-110" (click)="callOpenAi()" [disabled]="!prompt" title="Send">
+            <i nz-icon [nzType]="'send'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div *ngIf="activeTab === 'Settings'">
+        <div class="form-group">
+          <label for="model">Model:</label>
+          <select id="model" [(ngModel)]="model" class="form-control">
+            <option value="gpt-4">GPT-4</option>
+            <option value="gpt-3.5">GPT-3.5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="maxTokens">Max Tokens:</label>
+          <input id="maxTokens" [(ngModel)]="maxTokens" type="number" class="form-control" min="1" />
+        </div>
+        <div class="form-group">
+          <label for="temperature">Temperature:</label>
+          <input id="temperature" [(ngModel)]="temperature" type="number" class="form-control" step="0.1" min="0" max="1" />
+        </div>
+        <div class="form-group">
+          <label for="promptTemplate">Prompt Template:</label>
+          <textarea id="promptTemplate" [(ngModel)]="promptTemplate" class="form-control" rows="4"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Settings Tab -->
-  <div *ngIf="activeTab === 'Settings'">
-    <div class="form-group">
-      <label for="model">Model:</label>
-      <select id="model" [(ngModel)]="model" class="form-control">
-        <option value="gpt-4">GPT-4</option>
-        <option value="gpt-3.5">GPT-3.5</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="maxTokens">Max Tokens:</label>
-      <input
-        id="maxTokens"
-        [(ngModel)]="maxTokens"
-        type="number"
-        class="form-control"
-        min="1"
-      />
-    </div>
-    <div class="form-group">
-      <label for="temperature">Temperature:</label>
-      <input
-        id="temperature"
-        [(ngModel)]="temperature"
-        type="number"
-        class="form-control"
-        step="0.1"
-        min="0"
-        max="1"
-      />
-    </div>
-    <div class="form-group">
-      <label for="promptTemplate">Prompt Template:</label>
-      <textarea
-        id="promptTemplate"
-        [(ngModel)]="promptTemplate"
-        class="form-control"
-        rows="4"
-      ></textarea>
-    </div>
-  </div>
 </div>

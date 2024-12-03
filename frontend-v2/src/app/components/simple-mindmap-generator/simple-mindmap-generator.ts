@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import mermaid from 'mermaid';
 import html2canvas from "html2canvas";
 import { OPENAI_API_KEY } from '../../../environments/environment';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-simple-mindmap-view',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule, NzIconModule],
   templateUrl: './simple-mindmap-generator.html',
   styleUrl: './simple-mindmap-generator.scss'
 })
