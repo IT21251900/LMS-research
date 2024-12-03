@@ -101,23 +101,30 @@ export class ReadViewComponent implements OnInit {
       element => element.page === Number(page)
     );
     console.log('Target Element:', targetElement);
-
+  
     if (targetElement) {
       this.highlightedText = targetElement.text.trim();
       const targetText = targetElement.text.trim().toLowerCase();
       console.log('Target Text:', targetText);
-
-      const paragraphs = document.querySelectorAll('p');
-
-      Array.from(paragraphs).forEach(paragraph => {
-        if (paragraph.textContent?.trim().toLowerCase() === targetText) {
-          paragraph.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      });
+  
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        const paragraphs = mainContent.querySelectorAll('span');
+  
+        Array.from(paragraphs).forEach(paragraph => {
+          // Check if the paragraph contains the exact matching text
+          if (paragraph.textContent?.trim().toLowerCase() === targetText) {
+            // Scroll the element into view within .main-content
+            paragraph.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      }
     } else {
       console.error(`No element found for page: ${page}`);
     }
   }
+  
+  
 
   getHierarchyLevel(text: string, font: any): number {
     const match = text.match(/^(\d+(\.\d+)*)/);
