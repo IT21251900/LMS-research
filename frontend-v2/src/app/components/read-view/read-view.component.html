@@ -1,16 +1,26 @@
 <!-- read-view.component.html -->
 <div *ngIf="isLoading" class="text-center text-gray-500">Loading data...</div>
 
-<div *ngIf="!isLoading && extractedData.length > 0">
+<div class="extracted-content-style" *ngIf="!isLoading && extractedData.length > 0">
   <div *ngFor="let element of extractedData">
-    <p 
-      [ngStyle]="getDynamicStyles(element.font)" 
-      [ngClass]="{ 'bg-blue-300 border border-blue-400 p-1 rounded': element.text.trim() === highlightedText }"
-    >
-      {{ element.text.trim() }}
-    </p>
+    <!-- Skip bullet points -->
+    <div *ngIf="element.text.trim() !== '•'" 
+         [ngClass]="'hierarchy-level-' + getHierarchyLevel(element.text, element.font)">
+      <span
+        [ngClass]="{
+          'bg-blue-300 border border-blue-400 p-1 rounded':
+            element.text.trim() === highlightedText
+        }"
+      >
+        {{ element.text.trim() }}
+      </span>
+    </div>
   </div>
 </div>
+
+
+
+
 
 <div *ngIf="!isLoading && extractedData.length === 0" class="text-center text-gray-500">
   No data available.
@@ -20,8 +30,8 @@
 
 
 
-
-  <!-- <div class="">
+<!-- 
+  <div class="">
     <div class="flex flex-row flex-wrap gap-3 items-end">
         <h5 class="font-semibold text-white">The Ultimate Guide to Study Techniques.pdf</h5>
         <p class="text-[#44BD6D] text-[14px]">Read Mode</p>
@@ -39,5 +49,5 @@
         <h5 class="font-semibold text-white mt-3 text-[18px] ml-4">1.2.1 Visual Learners</h5>
         <p class=" text-white font-thin ml-8 mt-3">Everyone processes and retains information differently. By identifying your learning style, you can tailor your study techniques to align with how your brain naturally absorbs knowledge. This understanding allows you to study more effectively, improve focus, and achieve better results with less effort. For instance, a visual learner might struggle with purely auditory resources, while a kinesthetic learner might find sitting through lectures without active engagement challenging. Recognizing and leveraging your learning style makes studying more engaging and productive.</p>
     </div>
-</div -->
-  
+</div
+   -->

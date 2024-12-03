@@ -50,12 +50,10 @@
 
 // }
 
-
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TextExtractService } from '../../core/services/textextract.service';
-import { ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-read-view',
@@ -65,71 +63,86 @@ import { ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
   styleUrls: ['./read-view.component.scss'],
 })
 export class ReadViewComponent implements OnInit {
-  isLoading: boolean = false; 
+  isLoading: boolean = false;
   extractedData: any[] = [];
   highlightedText: string | null = null;
 
   constructor(
     private textExtractService: TextExtractService,
-    private route: ActivatedRoute // Inject ActivatedRoute
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.loadPdfExtractedData();
     this.route.queryParams.subscribe(params => {
-      const page = params['page']; 
-      if (page) {
-        this.highlightSectionByPage(page); 
-      }
+      const page = params['page'];
+      this.loadPdfExtractedData(page); // Pass the page parameter to highlight section on load
     });
   }
 
-  async loadPdfExtractedData(): Promise<void> {
-    this.isLoading = true; 
+  async loadPdfExtractedData(highlightPage?: string): Promise<void> {
+    this.isLoading = true;
     try {
       const response = await this.textExtractService.getpdfcontentExtractElements();
-      this.extractedData = response; 
-      console.log("Extracted Data:", this.extractedData);
+      this.extractedData = response;
+      console.log('Extracted Data:', this.extractedData);
+
+      if (highlightPage) {
+        this.highlightSectionByPage(highlightPage);
+      }
     } catch (error) {
-      console.error("Error loading data:", error);
+      console.error('Error loading data:', error);
     } finally {
-      this.isLoading = false; 
+      this.isLoading = false;
     }
   }
 
-  async highlightSectionByPage(page: string): Promise<void> {
-    await this.loadPdfExtractedData();
-    const targetElement = this.extractedData.find(element => element.page === Number(page));
-    console.log("Target Element:", targetElement); 
-  
+  highlightSectionByPage(page: string): void {
+    const targetElement = this.extractedData.find(
+      element => element.page === Number(page)
+    );
+    console.log('Target Element:', targetElement);
+
     if (targetElement) {
       this.highlightedText = targetElement.text.trim();
-      const targetText = targetElement.text.trim().toLowerCase(); 
-      console.log("Target Text:", targetText);
-  
-      const paragraphs = document.querySelectorAll('p'); 
+      const targetText = targetElement.text.trim().toLowerCase();
+      console.log('Target Text:', targetText);
 
-      const paragraphsArray = Array.from(paragraphs);
-  
-      for (const paragraph of paragraphsArray) {
+      const paragraphs = document.querySelectorAll('p');
+
+      Array.from(paragraphs).forEach(paragraph => {
         if (paragraph.textContent?.trim().toLowerCase() === targetText) {
           paragraph.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          break; 
         }
-      }
+      });
     } else {
       console.error(`No element found for page: ${page}`);
     }
   }
+
+  getHierarchyLevel(text: string, font: any): number {
+    const match = text.match(/^(\d+(\.\d+)*)/);
+    if (match) {
+      return match[0].split('.').length; 
+    }
+    if (font.weight >= 700) {
+      if (font.size >= 15) return 1; 
+      if (font.size >= 13) return 2; 
+      if (font.size >= 12) return 3; 
+    } else {
+      if (font.size >= 11) return 4; 
+    }
+    return 5;
+  }
+
   
   getDynamicStyles(font: any): any {
     return {
-      'font-size': font.size,
+      'font-size': `${font.size}px`,
       'font-weight': font.weight === 700 ? 'bold' : 'normal',
       'font-family': font.family,
-      'font-style': font.italic ? 'italic' : 'normal', 
+      'font-style': font.italic ? 'italic' : 'normal',
       'color': font.color,
-      'margin-bottom': '5px' 
+      'margin-bottom': '5px',
     };
   }
 }
