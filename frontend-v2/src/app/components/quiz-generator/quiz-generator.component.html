@@ -1,105 +1,98 @@
-<!-- Error Message -->
-<div *ngIf="errorMessage" class="error-message">
-  <p>{{ errorMessage }}</p>
-</div>
-
-<!-- Buttons to Generate Quizzes -->
-<div class="quiz-selection">
-  <button (click)="generateMCQQuiz()" [disabled]="isLoading" class="generate-btn">
-    Generate MCQ Quiz
-  </button>
-  <button (click)="generateSAQuiz()" [disabled]="isLoading" class="generate-btn">
-    Generate Short Answer Quiz
-  </button>
-</div>
-
-<!-- Quiz Display -->
-<div *ngIf="quiz" class="quiz-container">
-  <h3>{{ quiz.title }}</h3>
-
-  <!-- Questions -->
-  <div *ngFor="let question of quiz.questions; let i = index" class="question-container">
-    <p class="question-text">{{ i + 1 }}. {{ question.question }}</p>
-
-    <!-- MCQ Options -->
-    <div *ngIf="question.allAnswers">
-      <ul class="answer-list">
-        <li
-          *ngFor="let answer of question.allAnswers"
-          class="answer-item"
-          [class.correct-answer]="isSubmitted && answer === question.correctAnswer"
-          [class.incorrect-answer]="isSubmitted && question.selectedAnswer === answer && answer !== question.correctAnswer"
-        >
-          <label>
-            <input
-              type="radio"
-              name="question-{{ i }}"
-              [value]="answer"
-              [(ngModel)]="question.selectedAnswer"
-              [disabled]="isSubmitted"
-            />
-            {{ answer }}
-          </label>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Short Answer Input -->
-    <div *ngIf="!question.allAnswers">
-      <input
-        type="text"
-        [(ngModel)]="question.selectedAnswer"
-        [disabled]="isSubmitted"
-        class="short-answer-input"
-        [class.correct-answer]="isSubmitted && question.isCorrect"
-        [class.incorrect-answer]="isSubmitted && !question.isCorrect"
-      />
-    </div>
-
-    <!-- Feedback -->
-    <div *ngIf="isSubmitted" class="feedback">
-      <p [class.correct]="question.isCorrect" [class.incorrect]="!question.isCorrect">
-        {{ question.isCorrect ? 'Correct!' : 'Incorrect.' }}
-      </p>
-      <p *ngIf="question.showCorrectAnswer" class="correct-answer">
-        Correct answer: {{ question.correctAnswer }}
-      </p>
+<div class="w-full overflow-x-auto">
+  <div class="bg-[#3D3F44] rounded-t-xl p-4 ">
+    <div class="flex flex-row justify-between items-center">
+      <p class="text-white">Quizzes</p>
+      <div class="flex flex-row gap-3">
+        <button [disabled]="isLoading" class="flex flex-row gap-1 py-2 px-4 text-white hover:text-[#96baf1] hover:cursor-pointer hover:scale-110 duration-500 transition rounded-full genrate-bg" (click)="generateMCQQuiz()" [disabled]="isLoading">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 9L14 21L15.8 15.8L21 14L9 9Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.2002 2.19995L8.0002 5.09995" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.1002 7.99995L2.2002 7.19995" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 4.1001L12 6.0001" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.99961 12L4.09961 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="button-label">Generate MCQ Quiz</span>
+        </button>
+        <button [disabled]="isLoading" class="flex flex-row gap-1 py-2 px-4 text-white hover:text-[#96baf1] hover:cursor-pointer hover:scale-110 duration-500 transition rounded-full genrate-bg" (click)="generateSAQuiz()" [disabled]="isLoading">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 9L14 21L15.8 15.8L21 14L9 9Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.2002 2.19995L8.0002 5.09995" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.1002 7.99995L2.2002 7.19995" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 4.1001L12 6.0001" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.99961 12L4.09961 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="button-label">Generate Short Answer Quiz</span>
+        </button>
+      </div>
+      
     </div>
   </div>
+  <div class=" bg-[#2D2E31] min-h-[72vh]">
 
-  <!-- Submit Buttons -->
-  <div class="submit-buttons">
-    <button
-      *ngIf="quiz.questions[0]?.allAnswers"
-      (click)="submitMCQQuiz()"
-      [disabled]="isSubmitted"
-      class="submit-btn"
-    >
-      Submit MCQ Quiz
-    </button>
-    <button
-      *ngIf="!quiz.questions[0]?.allAnswers"
-      (click)="submitSAQuiz()"
-      [disabled]="isSubmitted"
-      class="submit-btn"
-    >
-      Submit Short Answer Quiz
-    </button>
-  </div>
-</div>
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
 
-<!-- Summary after quiz submission -->
-<div *ngIf="isSubmitted" class="summary">
-  <h3>Quiz Summary</h3>
-  <p>
-    You answered 
-    <span class="correct">{{ getCorrectAnswersCount() }}</span> 
-    out of 
-    <span class="total">{{ quiz?.questions?.length }}</span> 
-    questions correctly.
-  </p>
+    <!-- Quiz Display -->
+    <div *ngIf="quiz" class="quiz-container">
+      <h3>{{ quiz.title }}</h3>
 
-  <!-- Display correct answers for all questions
+      <!-- Questions -->
+      <div *ngFor="let question of quiz.questions; let i = index" class="question-container">
+        <p class="question-text">{{ i + 1 }}. {{ question.question }}</p>
+
+        <!-- MCQ Options -->
+        <div *ngIf="question.allAnswers">
+          <ul class="answer-list">
+            <li *ngFor="let answer of question.allAnswers" class="answer-item" [class.correct-answer]="isSubmitted && answer === question.correctAnswer" [class.incorrect-answer]="isSubmitted && question.selectedAnswer === answer && answer !== question.correctAnswer">
+              <label>
+                <input type="radio" name="question-{{ i }}" [value]="answer" [(ngModel)]="question.selectedAnswer" [disabled]="isSubmitted" />
+                {{ answer }}
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Short Answer Input -->
+        <div *ngIf="!question.allAnswers">
+          <input type="text" [(ngModel)]="question.selectedAnswer" [disabled]="isSubmitted" class="short-answer-input" [class.correct-answer]="isSubmitted && question.isCorrect" [class.incorrect-answer]="isSubmitted && !question.isCorrect" />
+        </div>
+
+        <!-- Feedback -->
+        <div *ngIf="isSubmitted" class="feedback">
+          <p [class.correct]="question.isCorrect" [class.incorrect]="!question.isCorrect">
+            {{ question.isCorrect ? 'Correct!' : 'Incorrect.' }}
+          </p>
+          <p *ngIf="question.showCorrectAnswer" class="correct-answer">
+            Correct answer: {{ question.correctAnswer }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="submit-buttons">
+        <button *ngIf="quiz.questions[0]?.allAnswers" (click)="submitMCQQuiz()" [disabled]="isSubmitted" class="submit-btn">
+          Submit MCQ Quiz
+        </button>
+        <button *ngIf="!quiz.questions[0]?.allAnswers" (click)="submitSAQuiz()" [disabled]="isSubmitted" class="submit-btn">
+          Submit Short Answer Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary after quiz submission -->
+    <div *ngIf="isSubmitted" class="summary">
+      <h3>Quiz Summary</h3>
+      <p>
+        You answered
+        <span class="correct">{{ getCorrectAnswersCount() }}</span>
+        out of
+        <span class="total">{{ quiz?.questions?.length }}</span>
+        questions correctly.
+      </p>
+
+      <!-- Display correct answers for all questions
   <div *ngFor="let question of quiz?.questions" class="summary-question">
     <p class="question-text">
       <strong>Question:</strong> {{ question.question }}
@@ -113,11 +106,15 @@
     </p>
   </div> -->
 
-  <!-- Reset Quiz Button -->
-  <button (click)="resetQuiz()" class="reset-btn">Reset Quiz</button>
-</div>
+      <!-- Reset Quiz Button -->
+      <button (click)="resetQuiz()" class="reset-btn">Reset Quiz</button>
+    </div>
 
-<!-- Loading -->
-<div *ngIf="isLoading" class="loading">
-  <p>Loading...</p>
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading">
+      <p>Loading...</p>
+    </div>
+
+  </div>
+
 </div>
