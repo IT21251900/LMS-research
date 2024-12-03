@@ -14,6 +14,7 @@ interface Question {
 }
 
 interface Quiz {
+  id: string;
   title: string;
   questions: Question[];
 }
@@ -39,39 +40,53 @@ export class QuizGeneratorComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
   
-    this.http.get<{ quiz: { title: string; question: string[]; correctAnswer: string[] } }>(
-      'http://localhost:8001/quizzes/short-answers/9ea24c8d-7467-4851-bff8-86b017b6bbfe'
-    ).subscribe({
-      next: (response) => {
-        const fetchedQuiz = response.quiz;
+    this.http
+      .get<{
+        quiz: {
+          title: string;
+          question: string[];
+          correctAnswer: string[];
+          // _additional: { id: string };
+        };
+      }>('http://localhost:8001/quizzes/short-answers/bf02e446-b5e8-4dff-b52e-90ff11a15c2a')
+      .subscribe({
+        next: (response) => {
+          const fetchedQuiz = response.quiz;
+          console.log(fetchedQuiz);
   
-        if (fetchedQuiz && fetchedQuiz.question.length > 0 && fetchedQuiz.correctAnswer.length > 0) {
-          this.quiz = {
-            title: fetchedQuiz.title,
-            questions: fetchedQuiz.question.map((q, index) => ({
-              question: q,
-              correctAnswer: fetchedQuiz.correctAnswer[index],
-              otherAnswers: [],
-              allAnswers: undefined,
-              selectedAnswer: '',
-              isCorrect: undefined,
-              showCorrectAnswer: false
-            }))
-          };
-          this.isSubmitted = false;
+          if (
+            fetchedQuiz &&
+            fetchedQuiz.question.length > 0 &&
+            fetchedQuiz.correctAnswer.length > 0 
+            // && fetchedQuiz._additional?.id
+          ) {
+            this.quiz = {
+              id: "bf02e446-b5e8-4dff-b52e-90ff11a15c2a" , 
+              title: fetchedQuiz.title,
+              questions: fetchedQuiz.question.map((q, index) => ({
+                question: q,
+                correctAnswer: fetchedQuiz.correctAnswer[index],
+                otherAnswers: [],
+                allAnswers: undefined,
+                selectedAnswer: '',
+                isCorrect: undefined,
+                showCorrectAnswer: false,
+              })),
+            };
+            this.isSubmitted = false;
+            this.isLoading = false;
+          } else {
+            this.errorMessage = 'No questions found in the quiz.';
+            this.isLoading = false;
+          }
+        },
+        error: (err) => {
+          this.errorMessage = 'Failed to generate short answer quiz.';
+          console.error(err);
           this.isLoading = false;
-        } else {
-          this.errorMessage = 'No questions found in the quiz.';
-          this.isLoading = false;
-        }
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to generate short answer quiz.';
-        console.error(err);
-        this.isLoading = false;
-      }
-    });
-  }
+        },
+      });
+  }  
 
   generateMCQQuiz(): void {
     this.isLoading = true;
@@ -103,15 +118,60 @@ export class QuizGeneratorComponent implements OnInit {
       });
   }
 
-  submitQuiz(): void {
+  submitMCQQuiz(): void {
     if (!this.quiz) return;
 
     this.quiz.questions.forEach((question) => {
       question.isCorrect = question.selectedAnswer === question.correctAnswer;
-      question.showCorrectAnswer = true; // Display the correct answer after submission
     });
 
     this.isSubmitted = true;
+  }
+
+  submitSAQuiz(): void {
+    if (!this.quiz) return;
+  
+    const answers = this.quiz.questions.map((q) => ({
+      question: q.question,
+      answer: q.selectedAnswer || '',
+    }));
+
+    // Check if all answers are empty
+    const emptyAnswers = answers.filter((a) => a.answer.trim() === '').length;
+
+    if (emptyAnswers === answers.length) {
+      this.errorMessage = 'Please provide answers to all questions before submitting.';
+      return;
+    }
+
+    console.log('Request Payload:', {
+      quizId: this.quiz.id, 
+      answers: answers,      
+    });
+  
+    this.http.post<{ results: any[] }>('http://localhost:8001/quizzes/short-answers/validate', {
+      quizId: this.quiz.id, 
+      answers,
+    }).subscribe({
+      next: (response) => {
+        response.results.forEach((result, index) => {
+          const question = this.quiz?.questions[index];
+          if (question) {
+            question.isCorrect = result.isCorrect;
+            question.showCorrectAnswer = true;
+            question.correctAnswer = result.feedback.includes(': ')
+              ? result.feedback.split(': ')[1] 
+              : question.correctAnswer; 
+          }
+        });
+  
+        this.isSubmitted = true;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to validate short-answer quiz answers.';
+        console.error(err);
+      },
+    });
   }
 
   resetQuiz(): void {
@@ -120,7 +180,7 @@ export class QuizGeneratorComponent implements OnInit {
     this.quiz.questions.forEach((question) => {
       question.selectedAnswer = undefined;
       question.isCorrect = undefined;
-      question.showCorrectAnswer = false; // Hide correct answers on reset
+      question.showCorrectAnswer = false; 
     });
 
     this.isSubmitted = false;
