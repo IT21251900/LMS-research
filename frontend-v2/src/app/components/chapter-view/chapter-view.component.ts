@@ -45,6 +45,6 @@ export class ChapterViewComponent {
   }
 
   highlightSection(page: number): void {
-    this.router.navigate(['home/dashboard/reader-view'], { queryParams: { page: page } }); // Navigate to the read view with page number
+    this.router.navigate(['home/dashboard/chapters'], { queryParams: { page: page } }); 
   }
 }
