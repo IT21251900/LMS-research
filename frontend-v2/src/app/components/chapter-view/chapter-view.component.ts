@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TextExtractService } from '../../core/services/textextract.service';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-chapter-view',
@@ -9,67 +11,40 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./chapter-view.component.scss']
 })
 export class ChapterViewComponent {
-  jsonData: any = null; // Placeholder for the JSON data
+  isLoading: boolean = false;
+  extractedData: any[] = []; // Assuming the response is an array
+  h1Topics : any[] = []; // Assuming h1Topics is an array
+
+  constructor(private textExtractService: TextExtractService, private router: Router) {}
 
   ngOnInit() {
-    this.jsonData = this.getJsonDataFromLocalStorage();
-    console.log("Json data", this.jsonData);
+    this.loadPdfExtractedData();
   }
 
-  // Function to extract all h1 tags from the JSON
-  getH1TagsFromJson(json: any): string[] {
-    const result: string[] = [];
+  async loadPdfExtractedData(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const response = await this.textExtractService.getpdfcontentExtractElements();
+      this.extractedData = response;
 
-    const traverse = (data: any) => {
-        if (typeof data === 'object' && data !== null) {
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    const value = data[key];
+      // Extract H1 topics with page numbers
+      this.h1Topics = this.extractedData
+        .filter(element => element.font.isH1)
+        .map(element => ({
+          text: element.text.trim(),
+          page: element.page, 
+          id: `section-${element.page}` 
+        }));
 
-                    // Check if the key is 'H1' and add its value to the result
-                    if (key === 'H1' && typeof value === 'string') {
-                        result.push(value);
-                    }
-
-                    // If it's an array, process each item
-                    if (Array.isArray(value)) {
-                        value.forEach(item => traverse(item));
-                    } else if (typeof value === 'object') {
-                        // If it's an object, traverse it
-                        traverse(value);
-                    }
-                }
-            }
-        }
-    };
-
-    traverse(json);
-    console.log("H1 tags found:", result); // Log the found H1 tags
-    return result;
-}
-
-
-  get h1Tags(): string[] {
-    return this.getH1TagsFromJson(this.jsonData);
-  }
-
-  getJsonDataFromLocalStorage(): any | null {
-    const storedResponse = localStorage.getItem("extractedPdfContent");
-
-    if (storedResponse) {
-      // Log the raw string from localStorage for debugging
-      console.log("Retrieved cleaned response from localStorage:", storedResponse);
-
-      try {
-        // Parse the JSON string back into an object
-        return JSON.parse(storedResponse);
-      } catch (error) {
-        console.error("Failed to parse JSON from localStorage:", error);
-        return null; // Return null if parsing fails
-      }
-    } else {
-      console.log("No data found in localStorage.");
-      return null; 
+      console.log("H1 Topics:", this.h1Topics);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      this.isLoading = false;
     }
+  }
+
+  highlightSection(page: number): void {
+    this.router.navigate(['home/dashboard/reader-view'], { queryParams: { page: page } }); // Navigate to the read view with page number
   }
 }

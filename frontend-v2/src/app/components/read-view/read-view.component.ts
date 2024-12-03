@@ -1,5 +1,61 @@
-import { Component } from '@angular/core';
+// import { Component } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { MindMapService } from '../../core/services/mindmap.service';
+// import { TextExtractService } from '../../core/services/textextract.service';
+
+// @Component({
+//   selector: 'app-read-view',
+//   imports: [CommonModule],
+//   standalone: true,
+//   templateUrl: './read-view.component.html',
+//   styleUrls: ['./read-view.component.scss'],
+// })
+// export class ReadViewComponent {
+//   isLoading: boolean = false; 
+//   extractedData: any = null;
+
+//   constructor(
+//     private textExtractService: TextExtractService,
+//   ) {}
+
+  
+//   ngOnInit() {
+//    this.loadPdfExtractedData();
+//   }
+
+
+//   async loadPdfExtractedData(): Promise<void> {
+//     this.isLoading = true; 
+//     try {
+//       const response = await this.textExtractService.getpdfcontentExtractElements();
+//       this.extractedData = response; 
+//       console.log("Extracted Data:", this.extractedData);
+//     } catch (error) {
+//       console.error("Error loading data:", error);
+//     } finally {
+//       this.isLoading = false; 
+//     }
+//   }
+
+//   getDynamicStyles(font: any): any {
+//     return {
+//         'font-size': `${font.size}`,
+//         'font-weight': font.weight === 700 ? 'bold' : 'normal',
+//         'font-family': font.family,
+//         'font-style': font.italic ? 'italic' : 'normal', 
+//         'color': font.color,
+//         'margin-bottom': '10px' 
+//     };
+// }
+
+// }
+
+
+
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TextExtractService } from '../../core/services/textextract.service';
+import { ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
 
 @Component({
   selector: 'app-read-view',
@@ -8,64 +64,72 @@ import { CommonModule } from '@angular/common';
   templateUrl: './read-view.component.html',
   styleUrls: ['./read-view.component.scss'],
 })
-export class ReadViewComponent {
-  jsonData: any = null; // Placeholder for the JSON data
+export class ReadViewComponent implements OnInit {
+  isLoading: boolean = false; 
+  extractedData: any[] = [];
+  highlightedText: string | null = null;
+
+  constructor(
+    private textExtractService: TextExtractService,
+    private route: ActivatedRoute // Inject ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.jsonData = this.getJsonDataFromLocalStorage();
-    console.log("Json data",this.jsonData)
-  }
-
-  convertJsonToList(json: any): string[] {
-    const result: string[] = [];
-
-    const traverse = (data: any, prefix: string = '') => {
-      if (typeof data === 'object' && data !== null) {
-        for (const key in data) {
-          if (data.hasOwnProperty(key)) {
-            const value = data[key];
-            const newPrefix = prefix ? `${prefix} > ${key}` : key;
-
-            // If it's an array, process each item
-            if (Array.isArray(value)) {
-              value.forEach((item) => traverse(item, newPrefix));
-            } else if (typeof value === 'object') {
-              // If it's an object, traverse it
-              traverse(value, newPrefix);
-            } else {
-              // If it's a string or a number, add to result
-              result.push(`${newPrefix}: ${value}`);
-            }
-          }
-        }
-      } else {
-        // If data is not an object or array, add it directly
-        result.push(`${prefix}: ${data}`);
+    this.loadPdfExtractedData();
+    this.route.queryParams.subscribe(params => {
+      const page = params['page']; 
+      if (page) {
+        this.highlightSectionByPage(page); 
       }
-    };
-
-    traverse(json);
-    localStorage.setItem("extractedPdfContent", JSON.stringify(json));
-    return result;
+    });
   }
 
-  get listData(): string[] {
-    return this.convertJsonToList(this.jsonData);
-  }
-
-  getJsonDataFromLocalStorage(): any | null {
-    const storedResponse = localStorage.getItem("jsonData");
-
-    if (storedResponse) {
-      console.log(
-        "Retrieved cleaned response from localStorage:",
-        storedResponse
-      );
-      // Parse the JSON string back into an object
-      return JSON.parse(storedResponse);
-    } else {
-      console.log("No data found in localStorage.");
-      return null; 
+  async loadPdfExtractedData(): Promise<void> {
+    this.isLoading = true; 
+    try {
+      const response = await this.textExtractService.getpdfcontentExtractElements();
+      this.extractedData = response; 
+      console.log("Extracted Data:", this.extractedData);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      this.isLoading = false; 
     }
+  }
+
+  async highlightSectionByPage(page: string): Promise<void> {
+    await this.loadPdfExtractedData();
+    const targetElement = this.extractedData.find(element => element.page === Number(page));
+    console.log("Target Element:", targetElement); 
+  
+    if (targetElement) {
+      this.highlightedText = targetElement.text.trim();
+      const targetText = targetElement.text.trim().toLowerCase(); 
+      console.log("Target Text:", targetText);
+  
+      const paragraphs = document.querySelectorAll('p'); 
+
+      const paragraphsArray = Array.from(paragraphs);
+  
+      for (const paragraph of paragraphsArray) {
+        if (paragraph.textContent?.trim().toLowerCase() === targetText) {
+          paragraph.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          break; 
+        }
+      }
+    } else {
+      console.error(`No element found for page: ${page}`);
+    }
+  }
+  
+  getDynamicStyles(font: any): any {
+    return {
+      'font-size': font.size,
+      'font-weight': font.weight === 700 ? 'bold' : 'normal',
+      'font-family': font.family,
+      'font-style': font.italic ? 'italic' : 'normal', 
+      'color': font.color,
+      'margin-bottom': '5px' 
+    };
   }
 }

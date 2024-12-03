@@ -1,6 +1,13 @@
-<div class="bg-gray-200 text-white p-4 mb-4" *ngFor="let h1 of h1Tags">
-    <h4>{{ h1 }}</h4>
+<div *ngIf="isLoading">Loading data...</div>
+
+<div *ngIf="!isLoading && h1Topics.length > 0">
+  <ul>
+    <li *ngFor="let topic of h1Topics">
+      <a (click)="highlightSection(topic.page)">{{ topic.text }}</a> <!-- Link to section -->
+    </li>
+  </ul>
 </div>
 
-
-  
+<div *ngIf="!isLoading && h1Topics.length === 0">
+  No topics available.
+</div>

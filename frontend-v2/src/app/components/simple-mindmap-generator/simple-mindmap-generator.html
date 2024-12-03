@@ -5,6 +5,22 @@
       <div class="mermaid" [innerHTML]="result"></div>
     </div>
 
+    <button class="icon-button-v2" (click)="downloadMindMap()">
+      <i class="fas fa-download"></i>
+    </button>
+
+     <!-- Zoom In and Zoom Out buttons -->
+  <div class="zoom-controls">
+    <button (click)="zoomIn()" class="zoom-button" aria-label="Zoom In">
+      <i class="fas fa-search-plus"></i> <!-- Zoom In Icon -->
+      <span class="tooltip">Zoom In</span>
+    </button>
+    <button (click)="zoomOut()" class="zoom-button" aria-label="Zoom Out">
+      <i class="fas fa-search-minus"></i> <!-- Zoom Out Icon -->
+      <span class="tooltip">Zoom Out</span>
+    </button>
+  </div>
+
     <!-- Input field at the bottom -->
     <div class="input-container">
       <textarea

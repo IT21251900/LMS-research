@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import mermaid from 'mermaid';
+import html2canvas from "html2canvas";
 import { OPENAI_API_KEY } from '../../../environments/environment';
 
 @Component({
@@ -21,6 +22,15 @@ export class SimpleMindMapGeneratorComponent implements OnInit{
   maxTokens: number = 2000;
   mermaidString: string | null = null;
   temperature: number = 0.7;
+  zoomLevel: number = 1;
+
+  zoomIn() {
+    this.zoomLevel += 0.1; 
+  }
+
+  zoomOut() {
+    this.zoomLevel = Math.max(0.1, this.zoomLevel - 0.1); 
+  }
   promptTemplate: string =`Create a mermaid mindmap based on user input like these examples:
 brainstorming mindmap
 mindmap
@@ -179,4 +189,17 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
       }
     }
   }
+
+  async downloadMindMap() {
+    const mindMapElement = document.querySelector(".mermaid") as HTMLElement;
+    if (mindMapElement) {
+      const canvas = await html2canvas(mindMapElement, { useCORS: true });
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "mindmap.png";
+      link.click();
+    } else {
+      console.error("Mind map element not found for download.");
+    }
+}
 }

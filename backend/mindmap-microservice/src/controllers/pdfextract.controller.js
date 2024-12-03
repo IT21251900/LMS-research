@@ -269,6 +269,36 @@ async function getLatestExtractedFolder() {
   return null; 
 }
 
+async function getExtractedElements(filePathJson) {
+  const rawData = fs.readFileSync(filePathJson, "utf8");
+  const extractedContent = JSON.parse(rawData);
+  
+  if (extractedContent.elements) {
+      // Map the elements to include both text and font details
+      return extractedContent.elements.map(element => {
+          return {
+              text: element.Text.trim(), 
+              page: element.Page,
+              font: {
+                  family: element.Font.family_name, 
+                  isH1: element.Path.endsWith("/H1"),
+                  altFamily: element.Font.alt_family_name, 
+                  type: element.Font.font_type, 
+                  size: element.TextSize, 
+                  weight: element.Font.weight, 
+                  italic: element.Font.italic, 
+                  monospaced: element.Font.monospaced, 
+                  embedded: element.Font.embedded, 
+                  encoding: element.Font.encoding, 
+                  color: element.Font.color || 'white', 
+              }
+          };
+      }).filter(item => item.text); // Ensure text exists
+  } else {
+      throw new Error("No elements found in the extracted content.");
+  }
+}
+
 async function processExtractedContent(extractedFilePath) {
   try {
     const rawData = fs.readFileSync(extractedFilePath, "utf8");
@@ -354,7 +384,6 @@ async function processExtractedContent(extractedFilePath) {
 
     // Combine the cleaned strings into a single JSON object
     let combinedDataString = `{
-  "Title": "Combined Extracted PDF Content",
   "Sections": [
     ${structuredDataString.join(",")}
   ]
@@ -430,9 +459,8 @@ async function structureContentWithGPT(texts) {
     I have the following extracted content from a PDF. Each element contains a text field, path, and a page number.
     Group the content into a hierarchical JSON structure with H1, H2, H3, H4, H5, H6 headings, and paragraphs.
     Keep related text under the appropriate headings based on semantic context.
-    For each section, use the following format.you have to replace the title with mapping title with our chunks:
+    For each section, use the following format:
     {
-  "Title": "Extracted PDF Content",
   "Sections": [
     {
       "H1": "Chapter 1",
@@ -585,4 +613,4 @@ async function getMindMapController(id) {
   }
 }
 
-export { extractPdfContent, processExtractedContent, getMindMapController, getLatestExtractedFolder };
+export { extractPdfContent, processExtractedContent, getMindMapController, getLatestExtractedFolder,getExtractedElements };

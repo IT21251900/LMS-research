@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import express from "express";
 import multer from 'multer';
 import { connectDB } from "../configs/DBConnect.js";
-import { extractPdfContent,processExtractedContent,getMindMapController,getLatestExtractedFolder } from "./controllers/pdfextract.controller.js";
+import { extractPdfContent,processExtractedContent,getMindMapController,getLatestExtractedFolder,getExtractedElements } from "./controllers/pdfextract.controller.js";
 
 // Load environment variables
 config();
@@ -60,6 +60,21 @@ mindmapService.post("/lms/pdfcontentExtract", async (req, res) => {
           return res.status(404).send("No structured data file found.");
       }
       const response = await processExtractedContent(structuredDataPath);
+      res.status(200).send(response);
+  } catch (error) {
+      console.error("Error processing content:", error);
+      res.status(500).send("Error processing content: " + error.message);
+  }
+});
+
+mindmapService.get("/lms/pdfcontentExtractElements", async (req, res) => {
+  try {
+      const structuredDataPath = await getLatestExtractedFolder();
+
+      if (!structuredDataPath) {
+          return res.status(404).send("No structured data file found.");
+      }
+      const response = await getExtractedElements(structuredDataPath);
       res.status(200).send(response);
   } catch (error) {
       console.error("Error processing content:", error);

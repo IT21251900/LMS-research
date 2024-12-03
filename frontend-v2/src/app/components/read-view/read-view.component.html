@@ -1,11 +1,23 @@
 <!-- read-view.component.html -->
-<div>
-    <h1>{{ jsonData?.title }}</h1>
-    <h2>{{ jsonData?.mode }}</h2>
-    <ul>
-      <li *ngFor="let item of listData">{{ item }}</li>
-    </ul>
+<div *ngIf="isLoading" class="text-center text-gray-500">Loading data...</div>
+
+<div *ngIf="!isLoading && extractedData.length > 0">
+  <div *ngFor="let element of extractedData">
+    <p 
+      [ngStyle]="getDynamicStyles(element.font)" 
+      [ngClass]="{ 'bg-blue-300 border border-blue-400 p-1 rounded': element.text.trim() === highlightedText }"
+    >
+      {{ element.text.trim() }}
+    </p>
   </div>
+</div>
+
+<div *ngIf="!isLoading && extractedData.length === 0" class="text-center text-gray-500">
+  No data available.
+</div>
+
+
+
 
 
 

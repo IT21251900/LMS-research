@@ -35,6 +35,27 @@
   font-weight: bold;
 }
 
+.icon-button-v2 {
+  bottom: 10px; /* Position it 10 pixels from the bottom */
+  right: 100px; /* Keep it 10 pixels from the right */
+  width: auto;
+  height: 50px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, green, rgb(241, 53, 191), yellow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
 .icon-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -58,4 +79,51 @@
 
 .button-label {
   color: white;
+}
+
+
+.zoom-controls {
+  position: absolute;
+  top: 10px; 
+  right: 150px; 
+  display: flex;
+  gap: 10px; 
+}
+
+.zoom-button {
+  position: relative; 
+  padding: 10px;
+  border: none;
+  background: transparent; 
+  cursor: pointer;
+  outline: none;
+}
+
+.zoom-button i {
+  font-size: 20px;
+  color: inherit; 
+  transition: color 0.3s; 
+}
+.zoom-button .tooltip {
+  display: none; 
+  position: absolute;
+  bottom: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333; 
+  color: white; 
+  padding: 5px;
+  border-radius: 4px;
+  white-space: nowrap; 
+  font-size: 12px;
+  z-index: 10;
+}
+
+.zoom-button:hover .tooltip {
+  display: block; 
+}
+
+.zoom-button:hover i {
+  color: #4CAF50;
+  transition: color 0.3s; 
 }

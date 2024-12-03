@@ -5,6 +5,7 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import mermaid from "mermaid";
+import html2canvas from "html2canvas";
 import { HttpClient } from "@angular/common/http";
 import { environment, OPENAI_API_KEY } from "../../../environments/environment";
 
@@ -21,6 +22,7 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
   extractedData: any = null; // Variable to store the extracted data
   mermaidString: string | null = null; // Variable to store the Mermaid string
   private apiUrl = "https://api.openai.com/v1/chat/completions";
+  zoomLevel: number = 1;
 
   constructor(
     private mindmapservice: MindMapService,
@@ -40,6 +42,13 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
     // });
   }
 
+  zoomIn() {
+    this.zoomLevel += 0.1; 
+  }
+
+  zoomOut() {
+    this.zoomLevel = Math.max(0.1, this.zoomLevel - 0.1); 
+  }
   ngAfterViewChecked() {
     if (this.mermaidString) {
       try {
@@ -80,49 +89,49 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
 
   async convertToMermaidFormat(jsonData: any): Promise<string> {
     // Constructing the prompt with the JSON data
-//     const prompt = ` You are a mind map generator. Convert the following JSON into Mermaid.js mind map input format. 
-//     For each object or array, create corresponding nodes and sub-nodes. 
+    const prompt = ` You are a mind map generator. Convert the following JSON into Mermaid.js mind map input format. 
+    For each object or array, create corresponding nodes and sub-nodes. 
     
-//     1. If there are long paragraphs inside the "paragraph" tags, split them into simple sentences for better readability.
-//     2. Remove any unwanted characters like special symbols or redundant information.
-//     3. For each paragraph, ensure that it's concise and doesn't exceed a few sentences, keeping it readable.
-//     4. Maintain the hierarchical structure from the JSON as nodes and sub-nodes in the mind map.
+    1. If there are long paragraphs inside the "paragraph" tags, split them into simple sentences for better readability.
+    2. Remove any unwanted characters like special symbols or redundant information.
+    3. For each paragraph, ensure that it's concise and doesn't exceed a few sentences, keeping it readable.
+    4. Maintain the hierarchical structure from the JSON as nodes and sub-nodes in the mind map.
 
-//     This is the JSON data you need to convert to mermaid below format.:     JSON: ${JSON.stringify(jsonData)}
+    This is the JSON data you need to convert to mermaid below format.:     JSON: ${JSON.stringify(jsonData)}
 
-//     Bellow I'll proivde a template how to break the things into nodes.Use this template to generate the ermaid js input format.Don't add any of your thoughts to this.
-//     return the template only.Don't add any text or any special characters to it.Just give me the output like below format.
-//     The format is below.Use the correct icons based on the texts.for icons only you have to use the brackets like in below format.
+    Bellow I'll proivde a template how to break the things into nodes.Use this template to generate the ermaid js input format.Don't add any of your thoughts to this.
+    return the template only.Don't add any text or any special characters to it.Just give me the output like below format.
+    The format is below.Use the correct icons based on the texts.for icons only you have to use the brackets like in below format.
 
-//     mindmap
-//   root("Artificial Intelligence")
-//     What is AI?
-//       ::icon(fa fa-users)
-//       ("Artificial Intelligence refers to the simulation of human intelligence.")
-//       ("AI is programmed to think like humans and mimic their actions.")
-//       ("The goal of AI is to enable machines to perform tasks.")
-//       ("Tasks include visual perception, speech recognition, decision-making, and language translation.")
-//     Applications of AI
-//       ::icon(fa fa-play)
-//       ("AI is widely used in various industries.")
-//       ("In healthcare, AI helps diagnose diseases and predict patient outcomes.")
-//       ("It also helps develop personalized treatment plans.")
-//       ("In finance, AI is used for fraud detection.")
-//       ("AI also supports algorithmic trading and customer service automation.")
-// Only one root, use free FontAwesome icons, and follow node types "[", "(". No need to use "mermaid", "\`\`\`", or "graph TD". Respond only with code and syntax.`;
+    mindmap
+  root("Artificial Intelligence")
+    What is AI?
+      ::icon(fa fa-users)
+      ("Artificial Intelligence refers to the simulation of human intelligence.")
+      ("AI is programmed to think like humans and mimic their actions.")
+      ("The goal of AI is to enable machines to perform tasks.")
+      ("Tasks include visual perception, speech recognition, decision-making, and language translation.")
+    Applications of AI
+      ::icon(fa fa-play)
+      ("AI is widely used in various industries.")
+      ("In healthcare, AI helps diagnose diseases and predict patient outcomes.")
+      ("It also helps develop personalized treatment plans.")
+      ("In finance, AI is used for fraud detection.")
+      ("AI also supports algorithmic trading and customer service automation.")
+Only one root, use free FontAwesome icons, and follow node types "[", "(". No need to use "mermaid", "\`\`\`", or "graph TD". Respond only with code and syntax.`;
 
-//     // Define payload for API request
-//     const payload = {
-//       model: "gpt-4o-mini",
-//       messages: [{ role: "user", content: prompt }],
-//       max_tokens: 2000,
-//       temperature: 0.1,
-//     };
+    // Define payload for API request
+    const payload = {
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 2000,
+      temperature: 0.1,
+    };
 
-//     const headers = {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${OPENAI_API_KEY}`,
-//     };
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    };
 
     try {
       // Making the API request
@@ -259,6 +268,9 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
                     Reduced Disruption during expansion.
                     Future-Proofing for dynamic environments.`
       ];
+
+    
+  
       // Log response to understand its structure
       console.log("Response received:", response);
 
@@ -310,4 +322,18 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
       return null; 
     }
   }
+
+  async downloadMindMap() {
+    const mindMapElement = document.querySelector(".mermaid") as HTMLElement;
+    if (mindMapElement) {
+      const canvas = await html2canvas(mindMapElement, { useCORS: true });
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "mindmap.png";
+      link.click();
+    } else {
+      console.error("Mind map element not found for download.");
+    }
+}
+
 }

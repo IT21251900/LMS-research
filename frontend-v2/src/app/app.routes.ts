@@ -13,6 +13,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { ChapterViewComponent } from './components/chapter-view/chapter-view.component';
 import { QuizGeneratorComponent } from './components/quiz-generator/quiz-generator.component';
+import { ReadViewComponent } from './components/read-view/read-view.component';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -50,6 +51,10 @@ export const routes: Routes = [
           {
             path: 'notes',
             component: NotesViewComponent,
+          },
+          {
+            path: 'reader-view',
+            component:ReadViewComponent ,
           },
           {
             path: 'users',
