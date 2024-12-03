@@ -1,22 +1,33 @@
-<div *ngIf="isLoading" class="text-center text-gray-500">Loading data...</div>
+<div class="">
+  <div class="flex flex-row flex-wrap gap-3 items-end">
+      <h5 class="font-semibold text-white">The Ultimate Guide to Study Techniques.pdf</h5>
+      <p class="text-[#44BD6D] text-[14px]">Read Mode</p>
+  </div>
 
-<div class="extracted-content-style" *ngIf="!isLoading && extractedData.length > 0">
-  <div *ngFor="let element of extractedData">
-    <div *ngIf="element.text.trim() !== '•'" 
-         [ngClass]="'hierarchy-level-' + getHierarchyLevel(element.text, element.font)">
-      <span
-        [ngClass]="{
-          'bg-blue-300 border border-blue-400 p-1 rounded':
-            element.text.trim() === highlightedText
-        }"
-        [id]="element.text.trim()"
-      >
-        {{ element.text.trim() }}
-      </span>
+  <div class="mt-4 rounded-xl w-full h-full bg-[#2D2E31] p-4">
+    <div *ngIf="isLoading" class="text-center text-gray-500">Loading data...</div>
+
+    <div class="extracted-content-style" *ngIf="!isLoading && extractedData.length > 0">
+      <div *ngFor="let element of extractedData">
+        <div *ngIf="element.text.trim() !== '•'" 
+             [ngClass]="'hierarchy-level-' + getHierarchyLevel(element.text, element.font)">
+          <span
+            [ngClass]="{
+              'bg-blue-300 border border-blue-400 p-1 rounded':
+                element.text.trim() === highlightedText
+            }"
+            [id]="element.text.trim()"
+          >
+            {{ element.text.trim() }}
+          </span>
+        </div>
+      </div>
     </div>
+    
+    <div *ngIf="!isLoading && extractedData.length === 0" class="text-center text-gray-500">
+      No data available.
+    </div>
+    
   </div>
 </div>
 
-<div *ngIf="!isLoading && extractedData.length === 0" class="text-center text-gray-500">
-  No data available.
-</div>
