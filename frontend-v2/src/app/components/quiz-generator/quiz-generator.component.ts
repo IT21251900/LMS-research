@@ -38,20 +38,39 @@ export class QuizGeneratorComponent implements OnInit {
   generateSAQuiz(): void {
     this.isLoading = true;
     this.errorMessage = null;
-
-    this.http.get<Quiz>('http://localhost:8001/quizzes/short-answers/9ea24c8d-7467-4851-bff8-86b017b6bbfe')
-      .subscribe({
-        next: (quiz) => {
-          this.quiz = quiz;
+  
+    this.http.get<{ quiz: { title: string; question: string[]; correctAnswer: string[] } }>(
+      'http://localhost:8001/quizzes/short-answers/9ea24c8d-7467-4851-bff8-86b017b6bbfe'
+    ).subscribe({
+      next: (response) => {
+        const fetchedQuiz = response.quiz;
+  
+        if (fetchedQuiz && fetchedQuiz.question.length > 0 && fetchedQuiz.correctAnswer.length > 0) {
+          this.quiz = {
+            title: fetchedQuiz.title,
+            questions: fetchedQuiz.question.map((q, index) => ({
+              question: q,
+              correctAnswer: fetchedQuiz.correctAnswer[index],
+              otherAnswers: [],
+              allAnswers: undefined,
+              selectedAnswer: '',
+              isCorrect: undefined,
+              showCorrectAnswer: false
+            }))
+          };
           this.isSubmitted = false;
           this.isLoading = false;
-        },
-        error: (err) => {
-          this.errorMessage = 'Failed to generate short answer quiz.';
-          console.error(err);
+        } else {
+          this.errorMessage = 'No questions found in the quiz.';
           this.isLoading = false;
         }
-      });
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to generate short answer quiz.';
+        console.error(err);
+        this.isLoading = false;
+      }
+    });
   }
 
   generateMCQQuiz(): void {
