@@ -1,6 +1,6 @@
 import express from 'express';
 import { createQuiz, getQuizById, getAllQuizzes } from '../controllers/mcqQuizController.js';
-import { createSAQuiz, getAllSAQuizzes, getSAQuizById } from '../controllers/shortQuizController.js';
+import { createSAQuiz, getAllSAQuizzes, getSAQuizById, validateSAQuizAnswers } from '../controllers/shortQuizController.js';
 
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.get('/mcq', getAllQuizzes);
 router.post('/short-answers/create', createSAQuiz);  
 router.get('/short-answers', getAllSAQuizzes);    
 router.get('/short-answers/:id', getSAQuizById);
+router.post('/short-answers/validate', validateSAQuizAnswers);
 
 export default router;

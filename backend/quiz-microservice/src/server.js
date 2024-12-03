@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 import  client  from '../configs/weaviateConfig.js'; 
 import { connectDB } from '../configs/mongoConfig.js';
 import quizRoutes from './routes/quizRoutes.js';
+import { createQuizSchema } from './schemes/shortQuizSchema.js';
 
 // Load environment variables
 config();
@@ -28,6 +29,21 @@ connectDB()
   .catch((error) => {
     console.log(error.message);
   });
+
+// connectDB()
+//   .then(() => {
+//     // Create Weaviate schema after MongoDB connection
+//     createQuizSchema().then(() => {
+//       quizService.listen(port, () => {
+//         console.log(`Server running on ${port}`);
+//       });
+//     }).catch((error) => {
+//       console.error('Error creating Weaviate schema:', error.message);
+//     });
+//   })
+//   .catch((error) => {
+//     console.log(error.message);
+//   });
 
 // Routes
 quizService.use('/quizzes', quizRoutes);

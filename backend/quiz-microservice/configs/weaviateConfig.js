@@ -3,32 +3,27 @@ import { config } from 'dotenv';
 
 config();
 
+const openaiApiKey = process.env.OPENAI_API_KEY;  
+
 const client = weaviate.client({
   scheme: 'https',
-  host: 'pjldwytlwvsamlwfoqfq.c0.asia-southeast1.gcp.weaviate.cloud', 
+  host: 'pjldwytlwvsamlwfoqfq.c0.asia-southeast1.gcp.weaviate.cloud',
   headers: {
-    Authorization: `Bearer ${process.env.WEAVIATE_API_KEY}`, 
+    Authorization: `Bearer ${process.env.WEAVIATE_API_KEY}`,
+    'X-OpenAI-Api-Key': openaiApiKey,  
   },
 });
 
-// console.log('Weaviate API Key:', process.env.WEAVIATE_API_KEY);
-
-// Check if Weaviate is ready
+// Check Weaviate status
 const checkWeaviateStatus = async () => {
-    try {
-      const response = await client.misc
-        .readyChecker()
-        .do();
-      console.log(response);
-    } catch (error) {
-      console.error('Error checking Weaviate status:', error);
-    }
-  };
-  
-  // Call the function to check Weaviate status
-  checkWeaviateStatus();
+  try {
+    const response = await client.misc.readyChecker().do();
+    console.log(response);
+  } catch (error) {
+    console.error('Error checking Weaviate status:', error);
+  }
+};
+
+checkWeaviateStatus();
 
 export default client;
-
-
-
