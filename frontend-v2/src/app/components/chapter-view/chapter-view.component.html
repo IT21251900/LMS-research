@@ -1,13 +1,23 @@
-<div *ngIf="isLoading">Loading data...</div>
+<div class="w-full overflow-x-auto">
+  <div class="bg-[#3D3F44] rounded-t-xl p-4 ">
+      <p class="text-white">Chapters</p>
+  </div>
+  <div class="p-4 bg-[#2D2E31] min-h-screen">
+    <div *ngIf="isLoading">Loading data...</div>
 
-<div *ngIf="!isLoading && h1Topics.length > 0">
-  <ul>
-    <li *ngFor="let topic of h1Topics">
-      <a (click)="highlightSection(topic.page)">{{ topic.text }}</a> <!-- Link to section -->
-    </li>
-  </ul>
+    <div *ngIf="!isLoading && h1Topics.length > 0">
+      <ul>
+        <li class="p-4 bg-[#393939] group hover:bg-[#141414] rounded-md mb-5" *ngFor="let topic of h1Topics">
+          <a class="group-hover:text-[#40a9ff]" (click)="highlightSection(topic.page)">{{ topic.text }}</a> <!-- Link to section -->
+        </li>
+      </ul>
+    </div>
+    
+    <div *ngIf="!isLoading && h1Topics.length === 0">
+      No topics available.
+    </div>
+  </div>
+  
 </div>
 
-<div *ngIf="!isLoading && h1Topics.length === 0">
-  No topics available.
-</div>
+
