@@ -74,20 +74,79 @@ a {
 
 /* For Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 10px;  /* Width of the scrollbar */
+  width: 10px; /* Width of the scrollbar */
   height: 12px; /* Height of the horizontal scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-  background: #141414;  /* Track color */
+  background: #141414; /* Track color */
   // border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1d1d1d;  /* Scrollbar thumb color */
+  background: #1d1d1d; /* Scrollbar thumb color */
   // border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;  /* Hover color for the thumb */
+  background: #555; /* Hover color for the thumb */
+}
+
+.ql-snow {
+  border: none !important;
+}
+
+.ql-toolbar {
+  .ql-snow {
+    border: none !important;
+  }
+  background: #141414;
+}
+
+.ql-snow {
+  .ql-picker {
+    color: #e5e5e5;
+    .ql-expanded {
+      .ql-picker-label {
+        border: none !important;
+      }
+      .ql-picker-options {
+        border: none !important;
+      }
+    }
+  }
+  .ql-picker-options {
+    background-color: #3d3f44;
+  }
+}
+
+.ql-editor {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p,
+  li {
+    color: white;
+  }
+  .ql-picker-item {
+    color: #e5e5e5 !important;
+  }
+
+  /* Default (non-hover, non-active, non-selected) state for toolbar buttons */
+  .ql-snow .ql-toolbar button {
+    color: #333; /* Change this to your desired color */
+    fill: #333; /* Change the color of the SVG icons */
+  }
+
+  /* Default (non-hover, non-active, non-selected) state for picker labels and items */
+  .ql-snow .ql-toolbar .ql-picker-label {
+    color: #333; /* Change this to your desired color */
+  }
+
+  .ql-snow .ql-toolbar .ql-picker-item {
+    color: #333; /* Change this to your desired color */
+    fill: #333; /* Change the color of any SVG icons inside picker items */
+  }
 }
