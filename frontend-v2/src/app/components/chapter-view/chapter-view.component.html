@@ -2,13 +2,13 @@
   <div class="bg-[#3D3F44] rounded-t-xl p-4 ">
       <p class="text-white">Chapters</p>
   </div>
-  <div class="p-4 bg-[#2D2E31] min-h-screen">
+  <div class="p-4 bg-[#2D2E31] min-h-[72vh]">
     <div *ngIf="isLoading">Loading data...</div>
 
     <div *ngIf="!isLoading && h1Topics.length > 0">
       <ul>
-        <li class="p-4 bg-[#393939] group hover:bg-[#141414] rounded-md mb-5" *ngFor="let topic of h1Topics">
-          <a class="group-hover:text-[#40a9ff]" (click)="highlightSection(topic.page)">{{ topic.text }}</a> <!-- Link to section -->
+        <li class="p-4 bg-[#393939] group hover:bg-[#141414] rounded-md mb-5 cursor-pointer" (click)="highlightSection(topic.page)" *ngFor="let topic of h1Topics">
+          <a class="group-hover:text-[#40a9ff]" >{{ topic.text }}</a> <!-- Link to section -->
         </li>
       </ul>
     </div>
