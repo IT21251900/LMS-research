@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
-import { connectQuizDB } from '../configs/db.util.js';
+import  client  from '../configs/weaviateConfig.js'; 
+import { connectDB } from '../configs/mongoConfig.js';
 import quizRoutes from './routes/quizRoutes.js';
+import { createQuizSchema } from './schemes/shortQuizSchema.js';
 
 // Load environment variables
 config();
@@ -18,20 +20,41 @@ quizService.use(express.json());
 // Start server after DB connection
 const port = process.env.QUIZ_PORT;
 
-connectQuizDB()
+connectDB()
   .then(() => {
     quizService.listen(port, () => {
-      console.log(`Quiz service running on http://localhost:${port}`);
+      console.log(`Learner server running on http://localhost:${port}`);
     });
   })
-  .catch((err) => {
-    console.error('Failed to start Quiz service:', err.message);
+  .catch((error) => {
+    console.log(error.message);
   });
 
-// Routes
-quizService.use('/api/quiz', quizRoutes);
+// connectDB()
+//   .then(() => {
+//     // Create Weaviate schema after MongoDB connection
+//     createQuizSchema().then(() => {
+//       quizService.listen(port, () => {
+//         console.log(`Server running on ${port}`);
+//       });
+//     }).catch((error) => {
+//       console.error('Error creating Weaviate schema:', error.message);
+//     });
+//   })
+//   .catch((error) => {
+//     console.log(error.message);
+//   });
 
-// Health check
-quizService.get('/', (req, res) => {
-  res.status(200).send('Quiz microservice is up and running!');
+// Routes
+quizService.use('/quizzes', quizRoutes);
+
+// Health check route to test Weaviate connection
+quizService.get('/test-connection', async (req, res) => {
+  try {
+    // Check Weaviate connection
+    const result = await client.misc.readyChecker().do();
+    res.status(200).json({ message: 'Weaviate connection successful', result });
+  } catch (error) {
+    res.status(500).json({ message: 'Weaviate connection failed', error: error.message });
+  }
 });

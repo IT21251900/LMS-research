@@ -1,15 +1,18 @@
 import express from 'express';
-import { createQuiz} from '../controllers/quizController.js';
+import { createQuiz, getQuizById, getAllQuizzes } from '../controllers/mcqQuizController.js';
+import { createSAQuiz, getAllSAQuizzes, getSAQuizById, validateSAQuizAnswers } from '../controllers/shortQuizController.js';
 
 const router = express.Router();
 
-// Endpoint to generate a quiz
-router.post('/generate', createQuiz);
+//MCQ
+router.post('/mcq/generate', createQuiz);
+router.get('/mcq/:id', getQuizById);
+router.get('/mcq', getAllQuizzes);
 
-// // Endpoint to fetch a quiz by ID
-// router.get('/:id', getQuizById);
-
-// // Endpoint to fetch all quizzes
-// router.get('/', getAllQuizzes);
+// Short Answer
+router.post('/short-answers/create', createSAQuiz);  
+router.get('/short-answers', getAllSAQuizzes);    
+router.get('/short-answers/:id', getSAQuizById);
+router.post('/short-answers/validate', validateSAQuizAnswers);
 
 export default router;

@@ -13,6 +13,8 @@ const quizSchema = new mongoose.Schema({
     ref: 'PdfExtraction', 
     required: true
   },
+  userID: { type: String, required: true }, 
+  difficultyLevel: { type: Number, required: true },
   questions: [questionSchema],
 });
 

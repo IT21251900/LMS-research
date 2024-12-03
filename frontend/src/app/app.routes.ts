@@ -6,6 +6,9 @@ import {AddUserComponent} from "./components/users/add-user/add-user.component";
 import { SingleUserComponent } from './components/users/single-user/single-user.component';
 import { MyAcountComponent } from './components/users/my-acount/my-acount.component';
 import { MindmapGeneratorComponent } from './components/mindmap-generator/mindmap-generator.component';
+import { QuizDetailComponent } from './components/quiz-detail/quiz-detail.component';
+import { AllQuizzesComponent } from './components/quiz-detail/all-quizzes.component';
+
 import { MainAutoMindmapGeneratorComponent } from './components/main-auto-mindmap-generator/main-auto-mindmap-generator.component';
 
 export const routes: Routes = [
@@ -49,6 +52,14 @@ export const routes: Routes = [
       {
         path: 'mindmap-generator/:id',
         component: MindmapGeneratorComponent,
+      },
+      {
+        path: 'quiz-generator',
+        component: AllQuizzesComponent,
+      },
+      { 
+        path: 'quiz-generator/:id', 
+        component: QuizDetailComponent 
       },
       {
         path: 'auto-mindmap-generator',
