@@ -12,11 +12,15 @@ const openai = new OpenAI({
 // Function to generate quiz questions based on content
 export const generateShortQuiz = async (content, difficultyLevel) => {
     const prompt = `
-        You are a professional quiz generator. Based on the following content, create 10 short-answer quiz questions in valid JSON format. 
+        You are a professional quiz generator. Based on the following content, do the following:
+        
+        1. Provide a relevant title for the quiz based on the content.
+        2. Create 10 short-answer quiz questions in valid JSON format.
         Each question must have one correct answer.
 
         The JSON format should look like this:
         {
+            "title": "Quiz Title Here",   // Add a relevant title here
             "difficultyLevel": ${difficultyLevel},
             "quiz_questions": [
                 {
@@ -47,8 +51,12 @@ export const generateShortQuiz = async (content, difficultyLevel) => {
         const quizText = response.choices[0].message.content.trim();
         console.log("Raw Quiz Data from OpenAI:", quizText);
 
+        // Manually clean the response if necessary
+        let cleanQuizText = quizText.replace(/}\s*{/g, '}, {');
+        console.log('Cleaned Response from OpenAI:', cleanQuizText);
+
         // Validate and parse JSON
-        const quizData = JSON.parse(quizText);
+        const quizData = JSON.parse(cleanQuizText);
         console.log('Parsed OpenAI JSON:', JSON.stringify(quizData, null, 2));
 
         const transformedQuestions = quizData.quiz_questions.map((q) => ({
@@ -56,9 +64,12 @@ export const generateShortQuiz = async (content, difficultyLevel) => {
             correctAnswer: q.correctAnswer,
         }));
            
-        console.log('Transformed Questions:', transformedQuestions);     
+        console.log('Transformed Questions:', transformedQuestions); 
+        
+        // Extract the title
+        const title = quizData.title || 'Untitled Quiz';
 
-        return transformedQuestions;
+        return { title, questions: transformedQuestions };
     } catch (error) {
         console.error('Error generating quiz:', error.message);
         throw error;
