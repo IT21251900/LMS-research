@@ -74,6 +74,7 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
         const response = await this.mindmapservice.processPdfContentExtract();
         
         this.extractedData = response; 
+        this.extractedData = this.removeBrackets(response);
         console.log("Extracted Data:", this.extractedData);
         localStorage.setItem("jsonData", JSON.stringify(this.extractedData));
         this.mermaidString = await this.convertToMermaidFormat(this.extractedData);
@@ -83,6 +84,28 @@ export class MindmapGeneratorComponent implements AfterViewChecked {
     } finally {
         this.isLoading = false; 
     }
+}
+
+/**
+ * Recursively removes only `()` and `[]` brackets from all string values in an object or array.
+ * @param data The JSON object or array to process.
+ * @returns The cleaned object or array.
+ */
+removeBrackets(data: any): any {
+  if (typeof data === "string") {
+      return data.replace(/[()\[\]]/g, "").trim();
+  } else if (Array.isArray(data)) {
+      return data.map((item) => this.removeBrackets(item));
+  } else if (typeof data === "object" && data !== null) {
+      const cleanedObject: any = {};
+      for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+              cleanedObject[key] = this.removeBrackets(data[key]);
+          }
+      }
+      return cleanedObject;
+  }
+  return data; 
 }
 
 
