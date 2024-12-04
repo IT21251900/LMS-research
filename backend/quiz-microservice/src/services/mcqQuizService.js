@@ -12,10 +12,14 @@ const openai = new OpenAI({
 // Function to generate quiz questions based on content
 export const generateQuiz = async (content, difficultyLevel) => {
     const prompt = `
-        You are a professional quiz generator. Based on the following content, create 10 multiple-choice quiz questions. 
+        You are a professional quiz generator. Based on the following content, do the following:
+
+        1. Provide a relevant title for the quiz based on the content.
+        2. Create 10 multiple-choice quiz questions. 
         Each question should have one correct answer and 3 incorrect options. Provide the questions in valid JSON format:
 
         {
+            "title": "Quiz Title Here",   // Add a relevant title here
             "difficultyLevel": ${difficultyLevel},
             "quiz_questions": [
                 {
@@ -44,14 +48,22 @@ export const generateQuiz = async (content, difficultyLevel) => {
 
         // Extract and return only the quiz text from the response
         const quizText = response.choices[0].message.content.trim();
+
+        // Log the raw response to check for anomalies
+        console.log("Raw Response from OpenAI:", quizText);
+
+        // Manually clean the response if necessary
+        let cleanQuizText = quizText.replace(/}\s*{/g, '}, {');
+
+        console.log('Cleaned Response from OpenAI:', cleanQuizText);
         
         // Validate and parse JSON
         let quizData;
         try {
-            quizData = JSON.parse(quizText);
+            quizData = JSON.parse(cleanQuizText);
             console.log('Raw Quiz Data from OpenAI:', JSON.stringify(quizData, null, 2));
         } catch (jsonError) {
-            console.error('Invalid JSON from OpenAI:', quizText);
+            console.error('Invalid JSON from OpenAI:', cleanQuizText);
             throw new Error('OpenAI response was not valid JSON.');
         }
 
@@ -66,9 +78,10 @@ export const generateQuiz = async (content, difficultyLevel) => {
             otherAnswers: q['Other Answers'],
         }));
 
-        // console.log('Transformed Questions:', transformedQuestions);
+        // Extract the title
+        const title = quizData.title || 'Untitled Quiz';
 
-        return transformedQuestions;
+        return { title, questions: transformedQuestions };
     } catch (error) {
         console.error('Error generating quiz:', error.message);
         throw error;

@@ -8,13 +8,13 @@ const questionSchema = new mongoose.Schema({
 
 const quizSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  contentId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'PdfExtraction', 
-    required: true
-  },
-  userID: { type: String, required: true }, 
-  difficultyLevel: { type: Number, required: true },
+  // contentId: { 
+  //   type: mongoose.Schema.Types.ObjectId, 
+  //   ref: 'PdfExtraction', 
+  //   required: true
+  // },
+  userID: { type: String, required: false }, 
+  difficultyLevel: { type: Number, required: true, default: 50 },
   questions: [questionSchema],
 });
 

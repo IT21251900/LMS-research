@@ -31,6 +31,7 @@ export class QuizGeneratorComponent implements OnInit {
   errorMessage: string | null = null;
   isSubmitted = false;
   isLoading = false;
+  difficultyLevel: number = 50;
 
   constructor(private http: HttpClient) {}
 
@@ -40,39 +41,37 @@ export class QuizGeneratorComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
   
+    // POST request to create a short-answer quiz
     this.http
-      .get<{
-        quiz: {
-          title: string;
-          question: string[];
-          correctAnswer: string[];
-          // _additional: { id: string };
-        };
-      }>('http://localhost:8001/quizzes/short-answers/bf02e446-b5e8-4dff-b52e-90ff11a15c2a')
+      .post<{
+        message: string;
+        quiz: { id: string; title: string; questions: Array<{ question: string; correctAnswer: string }> };
+      }>('http://localhost:8001/quizzes/short-answers/create', {
+        difficultyLevel: this.difficultyLevel,
+      })
       .subscribe({
         next: (response) => {
-          const fetchedQuiz = response.quiz;
-          console.log(fetchedQuiz);
+          console.log('Response from POST request:', response);  // Log the full response
   
-          if (
-            fetchedQuiz &&
-            fetchedQuiz.question.length > 0 &&
-            fetchedQuiz.correctAnswer.length > 0 
-            // && fetchedQuiz._additional?.id
-          ) {
+          const fetchedQuiz = response.quiz;
+          console.log('Fetched quiz data:', fetchedQuiz);  // Log the fetched quiz
+  
+          if (fetchedQuiz && fetchedQuiz.questions?.length > 0) {
+            // Handle the fetched quiz properly
             this.quiz = {
-              id: "bf02e446-b5e8-4dff-b52e-90ff11a15c2a" , 
-              title: fetchedQuiz.title,
-              questions: fetchedQuiz.question.map((q, index) => ({
-                question: q,
-                correctAnswer: fetchedQuiz.correctAnswer[index],
-                otherAnswers: [],
-                allAnswers: undefined,
-                selectedAnswer: '',
-                isCorrect: undefined,
-                showCorrectAnswer: false,
+              id: fetchedQuiz.id, 
+              title: fetchedQuiz.title, 
+              questions: fetchedQuiz.questions.map((q) => ({
+                question: q.question,
+                correctAnswer: q.correctAnswer,
+                otherAnswers: [], 
+                selectedAnswer: '', 
+                isCorrect: undefined, 
+                showCorrectAnswer: false, 
               })),
             };
+            console.log('Processed quiz object:', this.quiz); 
+  
             this.isSubmitted = false;
             this.isLoading = false;
           } else {
@@ -81,8 +80,37 @@ export class QuizGeneratorComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.errorMessage = 'Failed to generate short answer quiz.';
-          console.error(err);
+          this.errorMessage = 'Failed to generate short-answer quiz.';
+          console.error('Error generating short-answer quiz:', err);  
+          this.isLoading = false;
+        },
+      });
+  }  
+
+  fetchSAQuiz(quizId: string): void {
+    console.log('Fetching quiz with ID:', quizId);  // Log the quiz ID you're trying to fetch
+    
+    this.http
+      .get<{ quiz: Quiz }>(`http://localhost:8001/quizzes/short-answers/${quizId}`)
+      .subscribe({
+        next: (response) => {
+          console.log('Response from GET request:', response);  // Log the full response
+          const quiz = response.quiz;
+          console.log('Fetched quiz data:', quiz);  // Log the fetched quiz data
+          
+          if (quiz && quiz.questions && quiz.questions.length > 0) {
+            this.quiz = quiz;
+            console.log('Quiz object after fetching:', this.quiz);  // Log the quiz object after fetching
+            this.isSubmitted = false;
+            this.isLoading = false;
+          } else {
+            this.errorMessage = 'No questions found in the quiz.';
+            this.isLoading = false;
+          }
+        },
+        error: (err) => {
+          this.errorMessage = 'Failed to fetch short-answer quiz.';
+          console.error('Error fetching short-answer quiz:', err);  
           this.isLoading = false;
         },
       });
@@ -91,31 +119,56 @@ export class QuizGeneratorComponent implements OnInit {
   generateMCQQuiz(): void {
     this.isLoading = true;
     this.errorMessage = null;
-
-    this.http.get<{ quiz: Quiz }>('http://localhost:8001/quizzes/mcq/674d30c3b2af998534564318')
+  
+    // POST request to generate quiz (send userID, difficultyLevel, etc.)
+    this.http
+      .post<{ quiz: { id: string } }>('http://localhost:8001/quizzes/mcq/generate', {
+        difficultyLevel: this.difficultyLevel
+      })
       .subscribe({
         next: (response) => {
-          const quiz = response.quiz;
-
-          if (quiz && quiz.questions && quiz.questions.length > 0) {
-            quiz.questions.forEach((q: Question) => {
-              q.allAnswers = [q.correctAnswer, ...(q.otherAnswers || [])];
-              q.allAnswers = q.allAnswers.sort(() => Math.random() - 0.5); // Shuffle answers
-            });
-            this.quiz = quiz;
-            this.isSubmitted = false;
-            this.isLoading = false;
+          const quizId = response.quiz.id;
+          console.log('Quiz generated with ID:', quizId);
+          if (quizId) {
+            // Once quiz is generated, fetch it using GET request
+            this.fetchQuiz(quizId);
           } else {
-            this.errorMessage = 'No questions found in the quiz.';
+            this.errorMessage = 'Failed to generate quiz.';
             this.isLoading = false;
           }
         },
         error: (err) => {
-          this.errorMessage = 'Failed to generate multiple-choice quiz.';
+          this.errorMessage = 'Failed to generate quiz.';
           console.error(err);
           this.isLoading = false;
         }
       });
+  }
+
+  fetchQuiz(quizId: string): void {
+    this.http.get<{ quiz: Quiz }>(`http://localhost:8001/quizzes/mcq/${quizId}`).subscribe({
+      next: (response) => {
+        const quiz = response.quiz;
+        if (quiz && quiz.questions && quiz.questions.length > 0) {
+          // Shuffle answers for MCQ
+          quiz.questions.forEach((q: Question) => {
+            q.allAnswers = [q.correctAnswer, ...(q.otherAnswers || [])];
+            q.allAnswers = q.allAnswers.sort(() => Math.random() - 0.5); // Shuffle answers
+          });
+          this.quiz = quiz;
+          this.isSubmitted = false;
+          this.isLoading = false;
+        } else {
+          this.errorMessage = 'No questions found in the quiz.';
+          this.isLoading = false;
+        }
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to fetch quiz.';
+        console.error(err);
+        this.isLoading = false;
+      }
+    });
   }
 
   submitMCQQuiz(): void {
