@@ -84,6 +84,7 @@ export class MainDashboardComponent {
         this.router.navigate(["/home/dashboard/chapters"]);
         break;
       case "quizzes":
+        this.togglePanelVisibility('first')
         this.router.navigate(["/home/dashboard/quizzes"]);
         break;
       case "roles":
