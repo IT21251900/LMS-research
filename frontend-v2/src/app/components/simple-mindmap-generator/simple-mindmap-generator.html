@@ -17,7 +17,10 @@
 
     </div>
     <div class=" bg-[#2D2E31] p-4 min-h-[72vh] rounded-b-xl relative">
-
+           <!-- Loading -->
+    <div *ngIf="isLoading" class="loading">
+      <p>Loading...</p>
+    </div>
       <button class="absolute bottom-3 right-3  bg-[#A2C3F5] hover:bg-[#96baf1] hover:scale-110 rounded-full min-h-10 min-w-10 text-black z-10" (click)="downloadMindMap()">
         <i class="fas fa-download"></i>
       </button>

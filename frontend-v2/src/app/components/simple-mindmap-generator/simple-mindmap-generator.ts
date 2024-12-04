@@ -24,6 +24,7 @@ export class SimpleMindMapGeneratorComponent implements OnInit{
   mermaidString: string | null = null;
   temperature: number = 0.7;
   zoomLevel: number = 1;
+  isLoading : boolean = false;
 
   zoomIn() {
     this.zoomLevel = Math.min(this.zoomLevel + 0.1, 3);
@@ -112,6 +113,7 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
 
   // Method to call OpenAI API
   async callOpenAi() {
+    this.isLoading = true;
     this.result = '';
     
     const url = 'https://api.openai.com/v1/chat/completions';
@@ -136,8 +138,10 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
         responseType: 'text'
       }).toPromise();
       console.log('API response received:', response);
+      this.isLoading = false;
       this.handleApiResponse(response);
     } catch (error) {
+      this.isLoading = false;
       console.error('Error calling API:', error);
     }
   }
