@@ -5,49 +5,65 @@ import client from '../../configs/weaviateConfig.js';
 
 // Create Quiz: Generate quiz questions based on provided content
 export const createSAQuiz = async (req, res) => {
-  const { contentId, userID, difficultyLevel } = req.body;
+  const { difficultyLevel } = req.body;
 
     // Validate required fields
-    if (!contentId) {
-        return res.status(400).json({ message: 'Content ID is required.' });
-        }
-    if (!userID) {
-        return res.status(400).json({ message: 'User ID is required.' });
-    }
-    if (difficultyLevel === undefined || difficultyLevel === null) {
-        return res.status(400).json({ message: 'Difficulty Level is required.' });
-    }
+    // if (!contentId) {
+    //     return res.status(400).json({ message: 'Content ID is required.' });
+    //     }
+    // if (!userID) {
+    //     return res.status(400).json({ message: 'User ID is required.' });
+    // }
+    // Set default difficulty level if not provided
+    const resolvedDifficultyLevel = 
+        difficultyLevel !== undefined && difficultyLevel !== null 
+            ? difficultyLevel 
+            : 50;
 
   try {
-    // Fetch the content data from an external service (e.g., mindmap-microservice)
-    const response = await axios.get(`http://localhost:${process.env.MINDMAP_PORT}/lms/getPdfExtractedData/${contentId}`);
+    // Fetch the extracted elements from the new endpoint
+    const response = await axios.get(`http://localhost:${process.env.MINDMAP_PORT}/lms/pdfcontentExtractElements`);
 
-    const contentData = response.data;
-    if (!contentData || !contentData.Sections || contentData.Sections.length === 0) {
-      return res.status(400).json({ message: 'No valid content data found for the provided Content ID.' });
+    // Ensure response data is valid
+    const extractedElements = response.data;
+    if (!extractedElements || extractedElements.length === 0) {
+        return res.status(400).json({ message: 'No valid content data found.' });
     }
 
-    const contentTitle = contentData.Title || "Untitled Content";
-    console.log('Content Title:', contentTitle);
+    // Combine the text of all extracted elements
+    const combinedContent = extractedElements
+    .map(element => element.text.trim()) // Extract text only
+    .filter(text => text) // Exclude empty or undefined text
+    .join('\n'); // Combine into a single string
 
     // Generate quiz questions using OpenAI model
-    const questions = await generateShortQuiz(contentData, difficultyLevel);
+    const { title, questions } = await generateShortQuiz({ content: combinedContent }, resolvedDifficultyLevel);
 
     if (!questions || questions.length === 0) {
       return res.status(400).json({ message: 'No questions could be generated from the content.' });
     }
 
     // Store quiz in Weaviate
-    await storeQuizInWeaviate({
-      title: `Quiz for ${contentTitle}`,
-      contentId,
-      userID,                
-      difficultyLevel,
+    const savedQuiz = await storeQuizInWeaviate({
+      title,
+      // contentId,
+      // userID,                
+      difficultyLevel:resolvedDifficultyLevel,
       question: questions.map(q => q.question),  
       correctAnswer: questions.map(q => q.correctAnswer)
     });
 
-    res.status(201).json({ message: 'Quiz created successfully.', quiz: questions });
+    // Extract quizId from the stored quiz response
+    const quizId = savedQuiz.quiz.id;
+
+    res.status(201).json({
+      message: 'Quiz created successfully.',
+      quiz: {
+        id: quizId,          
+        title: title,        
+        questions: questions 
+      }
+    });
   } catch (error) {
     console.error('Error creating quiz:', error.message);
     res.status(500).json({ message: 'Failed to create quiz.', error: error.message });
