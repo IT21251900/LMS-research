@@ -29,72 +29,6 @@ const openai = new OpenAI({
  * @param {string} inputFilePath - Path to the PDF file to extract content from
  * @returns {Promise<object>} - Extracted PDF content
  */
-// async function extractPdfContent(inputFilePath) {
-//   let readStream;
-//   try {
-//     // Initial setup, create credentials instance
-//     const credentials = new ServicePrincipalCredentials({
-//       clientId: process.env.PDF_SERVICES_CLIENT_ID,
-//       clientSecret: process.env.PDF_SERVICES_CLIENT_SECRET,
-//     });
-
-//     // Creates a PDF Services instance
-//     const pdfServices = new PDFServices({ credentials });
-
-//     // Creates an asset(s) from source file(s) and upload
-//     readStream = fs.createReadStream(inputFilePath);
-//     const inputAsset = await pdfServices.upload({
-//       readStream,
-//       mimeType: MimeType.PDF,
-//     });
-
-//     // Create parameters for the job
-//     const params = new ExtractPDFParams({
-//       elementsToExtract: [ExtractElementType.TEXT],
-//     });
-
-//     // Creates a new job instance
-//     const job = new ExtractPDFJob({ inputAsset, params });
-
-//     // Submit the job and get the job result
-//     const pollingURL = await pdfServices.submit({ job });
-//     const pdfServicesResponse = await pdfServices.getJobResult({
-//       pollingURL,
-//       resultType: ExtractPDFResult,
-//     });
-
-//     // Get content from the resulting asset(s)
-//     const resultAsset = pdfServicesResponse.result.resource;
-//     const streamAsset = await pdfServices.getContent({ asset: resultAsset });
-
-//     // Generate output file path and save the result
-//     const outputFilePath = createOutputFilePath();
-//     console.log(`Saving asset at ${outputFilePath}`);
-
-//     const writeStream = fs.createWriteStream(outputFilePath);
-//     streamAsset.readStream.pipe(writeStream);
-
-//     await extractLatestZipFileToFolder();
-//     return {
-//       message: "PDF extraction and saving completed successfully.",
-//       outputPath: outputFilePath,
-//     };
-//   } catch (err) {
-//     if (
-//       err instanceof SDKError ||
-//       err instanceof ServiceUsageError ||
-//       err instanceof ServiceApiError
-//     ) {
-//       console.log("Exception encountered while executing operation", err);
-//     } else {
-//       console.log("Exception encountered while executing operation", err);
-//     }
-//     throw err; // Re-throw to handle in the calling function
-//   } finally {
-//     readStream?.destroy();
-//   }
-// }
-
 async function extractPdfContent(inputFilePath) {
   let readStream;
   try {
@@ -321,55 +255,55 @@ async function processExtractedContent(extractedFilePath) {
     }));
 
     // Process and save the data
-    // const structuredData = await structureContentWithGPT(texts);
-    // console.log(structuredData);
-    // console.log(typeof structuredData);
+    const structuredData = await structureContentWithGPT(texts);
+    console.log(structuredData);
+    console.log(typeof structuredData);
 
-    const structuredData = [
-      "```json\n" +
-        "{\n" +
-        '  "Title": "Extracted PDF Content",\n' +
-        '  "Sections": [\n' +
-        "    {\n" +
-        '      "H1": "1.1 What is Networking?",\n' +
-        '      "Content": [\n' +
-        '        "Networking is the process of connecting multiple devices, such as computers, printers, and servers, to enable communication, resource sharing, and data exchange. These connections can be wired (using cables) or wireless (using electromagnetic waves). Networking forms the backbone of modern technology, supporting systems ranging from simple home setups to complex global infrastructures. It allows devices to share resources efficiently, such as internet connections, storage, and processing power.",\n' +
-        '        "For example, a home network connects personal computers, smartphones, and smart TVs to a single internet source, while corporate networks link offices worldwide for seamless collaboration."\n' +
-        "      ],\n" +
-        '      "SubSections": [\n' +
-        "        {\n" +
-        '          "H2": "1.1.1 Examples of Networking",\n' +
-        '          "Content": [\n' +
-        '            "Networking is embedded in various aspects of daily life and organizational systems, improving efficiency and connectivity. Examples include:",\n' +
-        '            "Networking simplifies operations, enhances convenience, and supports real-time interactions across diverse platforms."\n' +
-        "          ],\n" +
-        '          "SubSections": [\n' +
-        "            {\n" +
-        '              "H3": "1.1.1.1 Banking Systems",\n' +
-        '              "Content": [\n' +
-        '                "Networking plays a critical role in banking, connecting branches, ATMs, and online platforms to provide integrated services. Modern banking systems depend on robust networks to enable:"\n' +
-        "              ],\n" +
-        '              "SubSections": [\n' +
-        "                {\n" +
-        '                  "H4": "",\n' +
-        '                  "Content": [\n' +
-        '                    "• Personal Devices: Smartphones, laptops, and tablets connect to the internet or each other through Wi-Fi or Bluetooth for sharing files, streaming media, or online communication.",\n' +
-        '                    "• Corporate Systems: Offices use Local Area Networks (LANs) for secure data sharing, employee collaboration, and accessing shared printers or drives.",\n' +
-        '                    "• Public Services: Governments rely on networks to maintain databases for public records, such as tax systems, and to enable online services like license renewals or bill payments.",\n' +
-        '                    "• Inter-branch Connectivity: Branches are linked to central servers, allowing customers to access their accounts from any location.",\n' +
-        '                    "• ATM Networks: ATMs use secure networking protocols to interact with banking servers, facilitating withdrawals, deposits, and balance inquiries."\n' +
-        "                  ]\n" +
-        "                }\n" +
-        "              ]\n" +
-        "            }\n" +
-        "          ]\n" +
-        "        }\n" +
-        "      ]\n" +
-        "    }\n" +
-        "  ]\n" +
-        "}\n" +
-        "```"
-    ];
+    // const structuredData = [
+    //   "```json\n" +
+    //     "{\n" +
+    //     '  "Title": "Extracted PDF Content",\n' +
+    //     '  "Sections": [\n' +
+    //     "    {\n" +
+    //     '      "H1": "1.1 What is Networking?",\n' +
+    //     '      "Content": [\n' +
+    //     '        "Networking is the process of connecting multiple devices, such as computers, printers, and servers, to enable communication, resource sharing, and data exchange. These connections can be wired (using cables) or wireless (using electromagnetic waves). Networking forms the backbone of modern technology, supporting systems ranging from simple home setups to complex global infrastructures. It allows devices to share resources efficiently, such as internet connections, storage, and processing power.",\n' +
+    //     '        "For example, a home network connects personal computers, smartphones, and smart TVs to a single internet source, while corporate networks link offices worldwide for seamless collaboration."\n' +
+    //     "      ],\n" +
+    //     '      "SubSections": [\n' +
+    //     "        {\n" +
+    //     '          "H2": "1.1.1 Examples of Networking",\n' +
+    //     '          "Content": [\n' +
+    //     '            "Networking is embedded in various aspects of daily life and organizational systems, improving efficiency and connectivity. Examples include:",\n' +
+    //     '            "Networking simplifies operations, enhances convenience, and supports real-time interactions across diverse platforms."\n' +
+    //     "          ],\n" +
+    //     '          "SubSections": [\n' +
+    //     "            {\n" +
+    //     '              "H3": "1.1.1.1 Banking Systems",\n' +
+    //     '              "Content": [\n' +
+    //     '                "Networking plays a critical role in banking, connecting branches, ATMs, and online platforms to provide integrated services. Modern banking systems depend on robust networks to enable:"\n' +
+    //     "              ],\n" +
+    //     '              "SubSections": [\n' +
+    //     "                {\n" +
+    //     '                  "H4": "",\n' +
+    //     '                  "Content": [\n' +
+    //     '                    "• Personal Devices: Smartphones, laptops, and tablets connect to the internet or each other through Wi-Fi or Bluetooth for sharing files, streaming media, or online communication.",\n' +
+    //     '                    "• Corporate Systems: Offices use Local Area Networks (LANs) for secure data sharing, employee collaboration, and accessing shared printers or drives.",\n' +
+    //     '                    "• Public Services: Governments rely on networks to maintain databases for public records, such as tax systems, and to enable online services like license renewals or bill payments.",\n' +
+    //     '                    "• Inter-branch Connectivity: Branches are linked to central servers, allowing customers to access their accounts from any location.",\n' +
+    //     '                    "• ATM Networks: ATMs use secure networking protocols to interact with banking servers, facilitating withdrawals, deposits, and balance inquiries."\n' +
+    //     "                  ]\n" +
+    //     "                }\n" +
+    //     "              ]\n" +
+    //     "            }\n" +
+    //     "          ]\n" +
+    //     "        }\n" +
+    //     "      ]\n" +
+    //     "    }\n" +
+    //     "  ]\n" +
+    //     "}\n" +
+    //     "```"
+    // ];
 
     // Access the first element of the array (which is a string) and remove unwanted characters
     let structuredDataString = [];
