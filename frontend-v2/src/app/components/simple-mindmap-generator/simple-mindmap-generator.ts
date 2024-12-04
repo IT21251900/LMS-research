@@ -135,7 +135,7 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
         observe: 'body',
         responseType: 'text'
       }).toPromise();
-
+      console.log('API response received:', response);
       this.handleApiResponse(response);
     } catch (error) {
       console.error('Error calling API:', error);
@@ -144,6 +144,7 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
 
   // Handling the API response
   handleApiResponse(response: string) {
+    console.log('Processing API response...');
     const resultString = response.split("\n").reduce((acc, line) => {
       const message = line.replace(/^data: /, '').trim();
       if (message && message !== '[DONE]') {
@@ -174,6 +175,7 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
 
   ngAfterViewChecked() {
     if (this.mermaidString) {
+      console.log('Rendering Mermaid diagram after view checked...');
       try {
         const mermaidElement = document.querySelector('.mermaid') as HTMLElement;
         if (mermaidElement) {
