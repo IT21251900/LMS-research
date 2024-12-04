@@ -26,7 +26,7 @@ export class SimpleMindMapGeneratorComponent implements OnInit{
   zoomLevel: number = 1;
 
   zoomIn() {
-    this.zoomLevel += 0.1; 
+    this.zoomLevel = Math.min(this.zoomLevel + 0.1, 3);
   }
 
   zoomOut() {

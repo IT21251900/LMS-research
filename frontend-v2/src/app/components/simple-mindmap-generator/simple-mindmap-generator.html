@@ -23,7 +23,9 @@
       </button>
 
       <div *ngIf="activeTab === 'Mindmapping'" class="mindmap-container">
-        <div *ngIf="result" class="result-container">
+        <div *ngIf="result" class="result-container"
+        [ngStyle]="{ transform: 'scale(' + zoomLevel + ')', transformOrigin: '0 0' }"
+        >
           <div class="mermaid" [innerHTML]="result"></div>
         </div>
 
